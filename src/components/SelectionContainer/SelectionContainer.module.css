@@ -1,0 +1,9 @@
+.selectionContainer {
+	height: var(--cardHeight);
+	width: calc(var(--cardWidth)*4);
+
+	border: var(--border) black;
+
+	display: flex;
+	flex-direction: row;
+}

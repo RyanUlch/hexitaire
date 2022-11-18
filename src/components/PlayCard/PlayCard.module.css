@@ -1,0 +1,17 @@
+.PlayCard {
+	height: var(--cardHeight);
+	width: var(--cardWidth);
+	color: white;
+
+	border-radius: var(--borderRadius);
+}
+
+.red {
+	background-color: var(--redColor);
+	border: var(--border) var(--blackColor);
+}
+
+.black {
+	background-color: var(--blackColor);
+	border: var(--border) var(--redColor);
+}
