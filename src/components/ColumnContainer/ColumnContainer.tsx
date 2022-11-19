@@ -1,7 +1,8 @@
 import classes from './ColumnContainer.module.css';
 import { useEffect } from 'react';
+import PlayCard from '../PlayCard/PlayCard';
 
-const ColumnContainer = (props: {onInit: any, containerID: string, set: JSX.Element[]}) => {
+const ColumnContainer = (props: {check: any, onInit: any, containerID: string}) => {
 	
 	useEffect(()=>{
 		// const bounds = document.querySelector(`#${props.containerID}`)?.getBoundingClientRect();
@@ -13,7 +14,7 @@ const ColumnContainer = (props: {onInit: any, containerID: string, set: JSX.Elem
 		if (bounds) {
 			// Updates the state of 'dropSections' from props.
 			// For test, using constant value of object property
-			props.onInit((state: any) => {
+			props.onInit((state: {col0: number[]}) => {
 				return {
 					...state,
 					//[props.containerID]: [bounds.left, bounds.left+bounds.width],
@@ -26,7 +27,7 @@ const ColumnContainer = (props: {onInit: any, containerID: string, set: JSX.Elem
 	return (
 		// <div id={props.containerID} className={classes.column}>
 		<div id='col0' className={classes.column}>
-			{props.set}
+			<PlayCard check={props.check} isRed={true} key={`00`}num={0} suit={0}/>
 		</div>
 	)
 }
