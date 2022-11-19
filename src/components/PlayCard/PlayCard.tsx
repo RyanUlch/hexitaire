@@ -1,14 +1,11 @@
 import classes from './PlayCard.module.css'
 import Draggable from "react-draggable";
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
-const PlayCard = (props: {isRed: boolean, key: string, num: number, suit: number}) => {
-	const [position, setPosition] = useState({x: 0, y: 0});
-	
-	const trackPos = (data: {x: number, y: number}) => {
-		setPosition({ x: data.x, y: data.y });
-	};
+import { verifyPosition } from '../../helpers/verifyPosition';
 
+const PlayCard = (props: {ctx: any, isRed: boolean, key: string, num: number, suit: number}) => {
+	// Sets the suit symbol as a string based on suit number
 	const suitSymbol = (suitNum: number) => {
 		switch(suitNum) {
 			case 0:	return '♥';	case 1:	return '♦';
@@ -17,6 +14,7 @@ const PlayCard = (props: {isRed: boolean, key: string, num: number, suit: number
 		}
 	}
 
+	// Sets the number in a string (as using hexidecimal: 0-9, A-F)
 	const numberSymbol = (cardNum: number) => {
 		if (cardNum < 10) return String(cardNum);
 		switch(cardNum) {
@@ -27,12 +25,15 @@ const PlayCard = (props: {isRed: boolean, key: string, num: number, suit: number
 		}
 	}
 
+	// Removed Draggable for test, instead of onStop (dropping a card),
+	// The div runs verifyPosition helper function with the state value passed from
+	// Game Container
 	return (
-		<Draggable onDrag={(event, data) => trackPos(data)}>
-			<div className={`${classes.PlayCard} ${props.isRed ? classes.red : classes.black}`}>
+		// <Draggable onStop={(event: any, data: any) => props.onMove(event, data)}>
+			<div onClick={(e: any) => verifyPosition(props.ctx)} className={`${classes.PlayCard} ${props.isRed ? classes.red : classes.black}`}>
 				<p>{numberSymbol(props.num)} {suitSymbol(props.suit)}</p>
 			</div>
-		</Draggable>
+		// </Draggable>
 	);
 }
 
