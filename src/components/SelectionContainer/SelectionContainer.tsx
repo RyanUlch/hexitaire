@@ -1,9 +1,9 @@
 import classes from './SelectionContainer.module.css';
 
-const SelectionContainer = (props: {set: JSX.Element[]}) => {
+const SelectionContainer = (props: {children: any}) => {
 	return (
 		<div className={classes.selectionContainer}>
-			{props.set}
+			{props.children}
 		</div>
 	);
 }

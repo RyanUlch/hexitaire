@@ -2,13 +2,8 @@ import classes from './PlayCard.module.css'
 import Draggable from "react-draggable";
 import { useState } from 'react';
 
-const PlayCard = (props: {isRed: boolean, key: string, num: number, suit: number}) => {
-	const [position, setPosition] = useState({x: 0, y: 0});
-	
-	const trackPos = (data: {x: number, y: number}) => {
-		setPosition({ x: data.x, y: data.y });
-	};
-
+const PlayCard = (props: {onMove: any, cardID: number[], key: string, currentLoc: any}) => {
+	// Sets the suit symbol as a string based on suit number
 	const suitSymbol = (suitNum: number) => {
 		switch(suitNum) {
 			case 0:	return '♥';	case 1:	return '♦';
@@ -17,6 +12,7 @@ const PlayCard = (props: {isRed: boolean, key: string, num: number, suit: number
 		}
 	}
 
+	// Sets the number in a string (as using hexadecimal: 0-9, A-F)
 	const numberSymbol = (cardNum: number) => {
 		if (cardNum < 10) return String(cardNum);
 		switch(cardNum) {
@@ -27,10 +23,18 @@ const PlayCard = (props: {isRed: boolean, key: string, num: number, suit: number
 		}
 	}
 
+	const [cardInfo, setCardInfo] = useState(
+		{
+			isRed: props.cardID[0] < 2,
+			suitSymbol: suitSymbol(props.cardID[0]),
+			numberSymbol: numberSymbol(props.cardID[1]),
+		}
+	);
+
 	return (
-		<Draggable onDrag={(event, data) => trackPos(data)}>
-			<div className={`${classes.PlayCard} ${props.isRed ? classes.red : classes.black}`}>
-				<p>{numberSymbol(props.num)} {suitSymbol(props.suit)}</p>
+		<Draggable onStop={(event: any, data: any) => props.onMove(event, data, props.cardID)}>
+			<div className={`${classes.PlayCard} ${cardInfo.isRed ? classes.red : classes.black}`}>
+				<p>{cardInfo.numberSymbol} {cardInfo.suitSymbol}</p>
 			</div>
 		</Draggable>
 	);
