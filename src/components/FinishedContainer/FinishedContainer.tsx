@@ -1,7 +1,7 @@
 import classes from './FinishedContainer.module.css';
 import { useEffect } from 'react';
 
-const FinishedContainer = (props: {onInit: any,containerID: string, set: JSX.Element[]}) => {
+const FinishedContainer = (props: {onInit: any,containerID: string, children: any}) => {
 	useEffect(()=>{
 		const bounds = document.querySelector(`#${props.containerID}`)?.getBoundingClientRect();
 		if (bounds) {
@@ -17,7 +17,7 @@ const FinishedContainer = (props: {onInit: any,containerID: string, set: JSX.Ele
 	return (
 		<div id={props.containerID} className={classes.finished}>
 			Finished Pile
-			{props.set}
+			{props.children}
 		</div>
 	)
 }
