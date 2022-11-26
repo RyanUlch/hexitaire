@@ -1,8 +1,8 @@
 import classes from './PlayCard.module.css'
-import Draggable from "react-draggable";
-import { useState } from 'react';
+import Draggable from "../Draggable/Draggable";
+import { useEffect, useState } from 'react';
 
-const PlayCard = (props: {onMove: any, cardID: number[], key: string, currentLoc: any}) => {
+const PlayCard = (props: {onMove: any, cardInfo: number[], cardID: string, key: string, currentLoc: any, next: {cardID: number[], childKey: string}[]}) => {
 	// Sets the suit symbol as a string based on suit number
 	const suitSymbol = (suitNum: number) => {
 		switch(suitNum) {
@@ -25,19 +25,28 @@ const PlayCard = (props: {onMove: any, cardID: number[], key: string, currentLoc
 
 	const [cardInfo, setCardInfo] = useState(
 		{
-			isRed: props.cardID[0] < 2,
-			suitSymbol: suitSymbol(props.cardID[0]),
-			numberSymbol: numberSymbol(props.cardID[1]),
+			isRed: props.cardInfo[0] < 2,
+			suitSymbol: suitSymbol(props.cardInfo[0]),
+			numberSymbol: numberSymbol(props.cardInfo[1]),
 		}
 	);
 
+	useEffect(()=> {
+		console.log(cardInfo.numberSymbol, cardInfo.suitSymbol);
+	}, [])
+
 	return (
-		<Draggable onStop={(event: any, data: any) => props.onMove(event, data, props.cardID)}>
-			<div className={`${classes.PlayCard} ${cardInfo.isRed ? classes.red : classes.black}`}>
-				<p>{cardInfo.numberSymbol} {cardInfo.suitSymbol}</p>
-			</div>
-		</Draggable>
+		<div>
+			<Draggable className='dragElement' cardID={props.cardID}>
+				<div className={`${classes.PlayCard} ${cardInfo.isRed ? classes.red : classes.black}`}>
+					<p>{cardInfo.numberSymbol} {cardInfo.suitSymbol}</p>
+				</div>
+			</Draggable>
+			{props.next.length > 0 && <PlayCard onMove={props.onMove} cardInfo={props.next[0].cardID} cardID={props.next[0].childKey} key={props.next[0].childKey} currentLoc={props.currentLoc} next={props.next.slice(1)}/>}
+		</div>
 	);
 }
 
 export default PlayCard;
+
+//onStop={(event: any, data: any) => props.onMove(event, data, props.cardID)}

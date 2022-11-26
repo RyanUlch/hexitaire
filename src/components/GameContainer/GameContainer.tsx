@@ -42,7 +42,8 @@ const GameContainer = () => {
 		const orderedDeck = [];
 		for (let suit = 0; suit < 4; ++suit) {
 			for (let num = 0; num < 16; ++num) {
-				orderedDeck.push({suit: suit, num: num});
+				const key = `${suit}${num}`;
+				orderedDeck.push({cardID: [suit, num], childKey: key});
 			}
 		}
 		return orderedDeck;
@@ -51,11 +52,11 @@ const GameContainer = () => {
 
 	const [orderedDeck] = useState(cardGenerator());
 
-	const shuffle = (origDeck: {suit: number, num: number}[]) => {
+	const shuffle = (origDeck: {cardID: number[], childKey: string}[]) => {
 		const shuffleDeck = origDeck;
 		let currentIndex = shuffleDeck.length,  randomIndex;
 		// While there remain elements to shuffle.
-		while (currentIndex != 0) {
+		while (currentIndex !== 0) {
 			// Pick a remaining element.
 			randomIndex = Math.floor(Math.random() * currentIndex);
 			--currentIndex;
@@ -115,35 +116,27 @@ const GameContainer = () => {
 		}
 	}, []);
 
-	const createSets = (cardSet: {suit: number, num: number}[], location: string) => {
-		const cardArray = [];
-		for (let i = 0; i < cardSet.length; ++i) {
-			const key = `${cardSet[0]}${cardSet[1]}`;
-			cardArray.push(<PlayCard onMove={verifyPosition} cardID={[cardSet[i].suit, cardSet[i].num]} key={key} currentLoc={location}/>);
-		}
-		return cardArray;
-	}
 
 	return (
 		<>		
-			<div className={classes.topContainer}>
+			{/* <div className={classes.topContainer}>
 				<DrawContainer flipCards={flipCards} isEmpty={cardLayout.Draw.length === 0}/>
-				<SelectionContainer>{createSets(cardLayout.Shown, 'Shown')}</SelectionContainer>
-				<FinishedContainer onInit={setDropSections} containerID='fin0' key='fin0'>{createSets(cardLayout.Fin0, 'Fin0')}</FinishedContainer>
-				<FinishedContainer onInit={setDropSections} containerID='fin1' key='fin1'>{createSets(cardLayout.Fin1, 'Fin1')}</FinishedContainer>
-				<FinishedContainer onInit={setDropSections} containerID='fin2' key='fin2'>{createSets(cardLayout.Fin2, 'Fin2')}</FinishedContainer>
-				<FinishedContainer onInit={setDropSections} containerID='fin3' key='fin3'>{createSets(cardLayout.Fin3, 'Fin3')}</FinishedContainer>
-			</div>
-			<div id='separatingLine' />
+				<SelectionContainer>{createSets(cardLayout.Shown)}</SelectionContainer>
+				<FinishedContainer onInit={setDropSections} containerID='fin0' key='fin0'>{createSets(cardLayout.Fin0)}</FinishedContainer>
+				<FinishedContainer onInit={setDropSections} containerID='fin1' key='fin1'>{createSets(cardLayout.Fin1)}</FinishedContainer>
+				<FinishedContainer onInit={setDropSections} containerID='fin2' key='fin2'>{createSets(cardLayout.Fin2)}</FinishedContainer>
+				<FinishedContainer onInit={setDropSections} containerID='fin3' key='fin3'>{createSets(cardLayout.Fin3)}</FinishedContainer>
+			</div> */}
+			{/* <div id='separa tingLine' /> */}
 			<div className={classes.columns}>
-				<ColumnContainer onInit={setDropSections} containerID='col0' key='col0'>{createSets(cardLayout.Col0, 'Col0')}</ColumnContainer> 
-				<ColumnContainer onInit={setDropSections} containerID='col1' key='col1'>{createSets(cardLayout.Col1, 'Col1')}</ColumnContainer>
-				<ColumnContainer onInit={setDropSections} containerID='col2' key='col2'>{createSets(cardLayout.Col2, 'Col2')}</ColumnContainer> 
-				<ColumnContainer onInit={setDropSections} containerID='col3' key='col3'>{createSets(cardLayout.Col3, 'Col3')}</ColumnContainer> 
-				<ColumnContainer onInit={setDropSections} containerID='col4' key='col4'>{createSets(cardLayout.Col4, 'Col4')}</ColumnContainer> 
-				<ColumnContainer onInit={setDropSections} containerID='col5' key='col5'>{createSets(cardLayout.Col5, 'Col5')}</ColumnContainer> 
-				<ColumnContainer onInit={setDropSections} containerID='col6' key='col6'>{createSets(cardLayout.Col6, 'Col6')}</ColumnContainer> 
-				<ColumnContainer onInit={setDropSections} containerID='col7' key='col7'>{createSets(cardLayout.Col7, 'Col7')}</ColumnContainer> 
+				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col0' key='col0' column={cardLayout.Col0} />
+				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col1' key='col1' column={cardLayout.Col1} />
+				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col2' key='col2' column={cardLayout.Col2} />
+				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col3' key='col3' column={cardLayout.Col3} />
+				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col4' key='col4' column={cardLayout.Col4} />
+				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col5' key='col5' column={cardLayout.Col5} />
+				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col6' key='col6' column={cardLayout.Col6} />
+				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col7' key='col7' column={cardLayout.Col7} />
 			</div>
 		</>
 	)

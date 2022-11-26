@@ -20,3 +20,7 @@ div {
 	height: 50px;
 	background-color: black;
 }
+
+.dragElement {
+	position: absolute;
+}
