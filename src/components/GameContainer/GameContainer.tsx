@@ -127,16 +127,16 @@ const GameContainer = () => {
 				<FinishedContainer onInit={setDropSections} containerID='fin2' key='fin2'>{createSets(cardLayout.Fin2)}</FinishedContainer>
 				<FinishedContainer onInit={setDropSections} containerID='fin3' key='fin3'>{createSets(cardLayout.Fin3)}</FinishedContainer>
 			</div> */}
-			{/* <div id='separa tingLine' /> */}
+			{/* <div id='separatingLine' /> */}
 			<div className={classes.columns}>
-				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col0' key='col0' column={cardLayout.Col0} />
-				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col1' key='col1' column={cardLayout.Col1} />
-				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col2' key='col2' column={cardLayout.Col2} />
-				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col3' key='col3' column={cardLayout.Col3} />
+				{/* <ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col0' key='col0' column={cardLayout.Col0} /> */}
+				{/* <ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col1' key='col1' column={cardLayout.Col1} /> */}
+				{/* <ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col2' key='col2' column={cardLayout.Col2} /> */}
+				{/* <ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col3' key='col3' column={cardLayout.Col3} /> */}
 				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col4' key='col4' column={cardLayout.Col4} />
-				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col5' key='col5' column={cardLayout.Col5} />
-				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col6' key='col6' column={cardLayout.Col6} />
-				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col7' key='col7' column={cardLayout.Col7} />
+				{/* <ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col5' key='col5' column={cardLayout.Col5} /> */}
+				{/* <ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col6' key='col6' column={cardLayout.Col6} /> */}
+				{/* <ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col7' key='col7' column={cardLayout.Col7} /> */}
 			</div>
 		</>
 	)

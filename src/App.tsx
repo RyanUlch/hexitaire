@@ -1,12 +1,8 @@
-import logo from './logo.svg';
 import './App.css';
-
 import GameContainer from './components/GameContainer/GameContainer';
 
 function App() {
-  return (
-   <GameContainer />
-  );
+	return (<GameContainer />);
 }
 
 export default App;

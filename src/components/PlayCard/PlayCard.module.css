@@ -2,7 +2,7 @@
 	height: var(--cardHeight);
 	width: var(--cardWidth);
 	color: white;
-
+	position: absolute;
 	border-radius: var(--borderRadius);
 }
 
@@ -14,4 +14,12 @@
 .black {
 	background-color: var(--blackColor);
 	border: var(--border) var(--redColor);
+}
+
+.myDiv {
+	position: absolute;
+}
+
+.cardText {
+	user-select: none;
 }
