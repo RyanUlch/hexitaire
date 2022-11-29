@@ -17,14 +17,16 @@ const GameContainer = () => {
 		finished: [[0, 0], [0, 0], [0, 0], [0, 0]],
 		columns: [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]],
 	});
-
-	const verifyPosition = useCallback((event: any, data: any, cardID: string, prevSection: string) => {
-		event.preventDefault();
-		const cardLocation = data.node.getBoundingClientRect();
+console.log(dropSections);
+	const verifyPosition = useCallback((data: any, cardID: string, prevSection: string) => {
+		console.log(data);
+		const cardLocation = data.srcElement.getBoundingClientRect();
 		if (dropSections) {
-			if (cardLocation.top < dropSections.middleLine)
-			console.log('up');
+			if (cardLocation.top < dropSections.middleLine) {
+				console.log('up');
+			}
 			else {
+				console.log(dropSections);
 				for (let i = 0; i < dropSections.columns.length; ++i) {
 					if (dropSections.columns[i][0] < cardLocation.left && dropSections.columns[i][1] > cardLocation.left) {
 						// Card drop is within the bounds of a column, and should be taken out of old column and into new one here.
@@ -42,8 +44,8 @@ const GameContainer = () => {
 		const orderedDeck = [];
 		for (let suit = 0; suit < 4; ++suit) {
 			for (let num = 0; num < 16; ++num) {
-				const key = `${suit}${num}`;
-				orderedDeck.push({cardID: [suit, num], childKey: key});
+				const key = `${num}${suit}`;
+				orderedDeck.push({cardID: [num, suit], childKey: key});
 			}
 		}
 		return orderedDeck;
@@ -72,15 +74,15 @@ const GameContainer = () => {
 
 	const [cardLayout, setCardLayout] = useState(
 		{
-			Draw: shuffledDeck.slice(36, 63),
-			Shown: shuffledDeck.slice(0, 0),
+			Draw:	shuffledDeck.slice(36, 63),
+			Shown:	shuffledDeck.slice(0, 0),
 			Hidden: shuffledDeck.slice(0, 0),
-			Fin0: shuffledDeck.slice(0, 0), Fin1: shuffledDeck.slice(0, 0),
-			Fin2: shuffledDeck.slice(0, 0), Fin3: shuffledDeck.slice(0, 0),
-			Col0: shuffledDeck.slice(0, 1), Col1: shuffledDeck.slice(1, 3),
-			Col2: shuffledDeck.slice(3, 6), Col3: shuffledDeck.slice(6, 10),
-			Col4: shuffledDeck.slice(10, 15), Col5: shuffledDeck.slice(15, 21),
-			Col6: shuffledDeck.slice(21, 28), Col7: shuffledDeck.slice(28, 36),
+			Fin0:	shuffledDeck.slice(0, 0),	Fin1: shuffledDeck.slice(0, 0),
+			Fin2:	shuffledDeck.slice(0, 0),	Fin3: shuffledDeck.slice(0, 0),
+			Col0:	shuffledDeck.slice(0, 1),	Col1: shuffledDeck.slice(1, 3),
+			Col2:	shuffledDeck.slice(3, 6),	Col3: shuffledDeck.slice(6, 10),
+			Col4:	shuffledDeck.slice(10, 15), Col5: shuffledDeck.slice(15, 21),
+			Col6:	shuffledDeck.slice(21, 28), Col7: shuffledDeck.slice(28, 36),
 		}
 	);
 
@@ -129,14 +131,14 @@ const GameContainer = () => {
 			</div> */}
 			{/* <div id='separatingLine' /> */}
 			<div className={classes.columns}>
-				{/* <ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col0' key='col0' column={cardLayout.Col0} /> */}
-				{/* <ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col1' key='col1' column={cardLayout.Col1} /> */}
-				{/* <ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col2' key='col2' column={cardLayout.Col2} /> */}
-				{/* <ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col3' key='col3' column={cardLayout.Col3} /> */}
+				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col0' key='col0' column={cardLayout.Col0} />
+				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col1' key='col1' column={cardLayout.Col1} />
+				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col2' key='col2' column={cardLayout.Col2} />
+				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col3' key='col3' column={cardLayout.Col3} />
 				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col4' key='col4' column={cardLayout.Col4} />
-				{/* <ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col5' key='col5' column={cardLayout.Col5} /> */}
-				{/* <ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col6' key='col6' column={cardLayout.Col6} /> */}
-				{/* <ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col7' key='col7' column={cardLayout.Col7} /> */}
+				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col5' key='col5' column={cardLayout.Col5} />
+				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col6' key='col6' column={cardLayout.Col6} />
+				<ColumnContainer onMove={verifyPosition} onInit={setDropSections} containerID='col7' key='col7' column={cardLayout.Col7} />
 			</div>
 		</>
 	)
