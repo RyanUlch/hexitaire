@@ -1,6 +1,0 @@
-.column {
-	display: flex;
-	flex-direction: column;
-	border: var(--border) black;
-	width: var(--cardWidth);
-}
