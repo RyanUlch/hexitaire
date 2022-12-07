@@ -16,16 +16,16 @@ type container = {
 // The type for all the information required by Hexitaire
 type gameContainer = {
 	containers: [
-
-	// Container containing the not shown cards to pull from for flipped container
-	container[],	// Draw Pile
-	// Container Users can only pull cards from
-	container[],	// Hidden Draw Pile
-	// Containers User can drop cards to and from
-	container[],	// In Play Containers
-	container[],	// Finished containers
+		// Container containing the not shown cards to pull from for flipped container
+		container[],	// Draw Pile
+		// Container Users can only pull cards from
+		container[],	// Hidden Draw Pile
+		// Containers User can drop cards to and from
+		container[],	// In Play Containers
+		container[],	// Finished containers
 	],
 	middleLine: number
+	moves: number
 }
 
 // Create cards for entire Deck in order (suits: 0-3, numbers: 0-15)
@@ -127,6 +127,7 @@ const createStartingDeck = (): gameContainer =>  {
 			],
 		],
 		middleLine: 0,
+		moves: 0,
 	}
 }
 
@@ -150,6 +151,8 @@ const AppProvider = (props: { children: any }) => {
 	)
 }
 
-const useAppContext = () => React.useContext(AppContext);
 
-export { useAppContext, AppProvider };
+
+//const useAppContext = () => React.useContext(AppContext);
+
+export { AppContext, AppProvider };

@@ -2,10 +2,10 @@
 import { useEffect, useContext } from 'react';
 import classes from './GameContainer.module.css'
 
-import InPlayContainer from './InPlayContainer/InPlayContainer';
-import { useAppContext } from '../../context/context';
+import InPlayContainer from '../InPlayContainer/InPlayContainer';
+import { AppContext } from '../../context/context';
 const GameContainer = () => {
-	const {state, dispatch} = useAppContext();
+	const {state, dispatch} = useContext(AppContext);
 
 	
 	useEffect(()=> {
@@ -14,7 +14,6 @@ const GameContainer = () => {
 			type: 'SETMIDDLELINE',
 			payload: middleLineElement?.getBoundingClientRect().top,
 		})
-		
 	}, []);
 
 	return (
