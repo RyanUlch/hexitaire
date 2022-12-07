@@ -1,6 +1,7 @@
 import { useRef, useContext, useState, useEffect } from 'react';
 
 import { useAppContext } from '../../context/context';
+import { cardMidHeight, cardMidWidth } from '../../helpers/globals';
 
 import classes from './PlayCard.module.css';
 
@@ -12,27 +13,27 @@ const PlayCard = (props: {
 	const {state, dispatch} = useAppContext();
 	const [position, setPosition] = useState({left: 0, top: 0});
 	const [cardInfo, setCardInfo] = useState({
-		suit: state[props.container[0]][props.container[1]].cardContainer[props.position].suit,
-		number: state[props.container[0]][props.container[1]].cardContainer[props.position].number,
-		isRed: state[props.container[0]][props.container[1]].cardContainer[props.position].suit < 2,
-		hasChildren: state[props.container[0]][props.container[1]].cardContainer.length > props.position+1,
+		suit: state.containers[props.container[0]][props.container[1]].cardContainer[props.position].suit,
+		number: state.containers[props.container[0]][props.container[1]].cardContainer[props.position].number,
+		isRed: state.containers[props.container[0]][props.container[1]].cardContainer[props.position].suit < 2,
+		hasChildren: state.containers[props.container[0]][props.container[1]].cardContainer.length > props.position+1,
 	});
 	const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
 
 	// Don't allow movement if every other card are not opposite color suits
 	// And don't allow movement if the entire stack is not in descending order
-	const recursiveCheck: (isRed: boolean, index: number, lVal: number, rVal: number) => boolean = (isRed, index, lVal, rVal) => {
-		const container = state[props.container[0]][props.container[1]].cardContainer;
-		console.log(isRed, index, lVal, rVal);
-		if ((lVal-1 !== rVal) || isRed === container[index].suit < 2) {
+	const recursiveCheck: (isRed: boolean, index: number, lVal: number, rVal: number, container: any) => boolean = (isRed, index, lVal, rVal, container) => {
+		console.log(container.length > index+1);
+		if ((lVal-1 !== rVal) || isRed === container[index+1].suit < 2) {
 			return false;
 		} else {
-			if (container.length > index+1) {
+			if (container.length > index+2) {
 				return recursiveCheck(
 					container[index].suit < 2,
 					index+1,
 					container[index].number,
 					container[index+1].number,
+					container,
 				);
 			} else {
 				return true;
@@ -43,15 +44,32 @@ const PlayCard = (props: {
 	// Don't move card stack if it's not valid
 	const tryToMove = () => {
 		// If the Card is the last card in the stack/pile, it can always be moved
-		if (state[props.container[0]][props.container[1]].cardContainer.length > props.position+1) {
+		const container = state.containers[props.container[0]][props.container[1]].cardContainer;
+		if (container.length > props.position+1) {
 			return recursiveCheck(
 				cardInfo.isRed,
-				0,
-				cardInfo.number,
-				state[props.container[0]][props.container[1]].cardContainer[1].number,
+				props.position,
+				container[props.position].number,
+				container[props.position+1].number,
+				container,
 			);
 		} else {
 			return true;
+		}
+	}
+
+	// Attempt to drop the held card. If within the same container, just re-add to container
+	const attemptCardDrop = (e: any) => {
+		if (e.target) {
+			const cardDropLocation = e.target.getBoundingClientRect();
+			dispatch({
+				type: 'MOVECARD',
+				payload: {
+					cardTop: cardDropLocation.top-cardMidHeight,
+					cardLeft: cardDropLocation.left-cardMidWidth,
+					StartingContainer: props.container,
+				}
+			})
 		}
 	}
 
@@ -68,7 +86,7 @@ const PlayCard = (props: {
 					document.onmouseup = null;
 					document.onmousemove = null;
 					if (canMove) {
-						//props.onMove(e, props.cardID, "");
+						attemptCardDrop(e);
 					}
 					canMove = true;
 				};
@@ -77,16 +95,16 @@ const PlayCard = (props: {
 						e = e || window.event;
 						e.preventDefault();
 						if (tryToMove()) {
-							console.log('moving');
 							setPosition({
-								top: e.clientY - 3.5 * parseFloat(getComputedStyle(document.documentElement).fontSize),
-								left: e.clientX - 2.5 * parseFloat(getComputedStyle(document.documentElement).fontSize),
+								top: e.clientY - cardMidHeight,
+								left: e.clientX - cardMidWidth,
 							})
 						} else {
 							canMove = false;
 						}
 					}
 				};
+
 			};
 		}
 	}, []);
@@ -115,9 +133,9 @@ const PlayCard = (props: {
 		// Set the initial position once the column info available
 		setPosition({
 			top: props.position*2 * parseFloat(getComputedStyle(document.documentElement).fontSize),
-			left: state[props.container[0]][props.container[1]].containerDisplay[0]
+			left: state.containers[props.container[0]][props.container[1]].containerDisplay[0]
 		});
-	}, [state[props.container[0]][props.container[1]].containerDisplay[0]]);
+	}, [state.containers[props.container[0]][props.container[1]].containerDisplay[0]]);
 
 	// Move with the parent element
 	useEffect(()=> {

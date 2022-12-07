@@ -14,7 +14,9 @@ type container = {
 }
 
 // The type for all the information required by Hexitaire
-type gameContainer = [
+type gameContainer = {
+	containers: [
+
 	// Container containing the not shown cards to pull from for flipped container
 	container[],	// Draw Pile
 	// Container Users can only pull cards from
@@ -22,7 +24,9 @@ type gameContainer = [
 	// Containers User can drop cards to and from
 	container[],	// In Play Containers
 	container[],	// Finished containers
-]
+	],
+	middleLine: number
+}
 
 // Create cards for entire Deck in order (suits: 0-3, numbers: 0-15)
 const cardGenerator = () => {
@@ -55,73 +59,75 @@ const shuffle = (origDeck: card[]) => {
 // Take the shuffled deck and give cards to containers to create the starting State
 const createStartingDeck = (): gameContainer =>  {
 	const shuffledDeck = shuffle(cardGenerator());
-	return [
-		[
-			{
-				cardContainer: shuffledDeck.slice(0, 0),
-				containerDisplay: [0, 0],
-			},
+	return {
+		containers: [
+			[
+				{
+					cardContainer: shuffledDeck.slice(0, 0),
+					containerDisplay: [0, 0],
+				},
+			],
+			[
+				{
+					cardContainer: shuffledDeck.slice(36, 63),
+					containerDisplay: [0, 0],
+				},
+			],
+			[
+				{
+					cardContainer: shuffledDeck.slice(0, 1),
+					containerDisplay: [0, 0],
+				},
+				{
+					cardContainer: shuffledDeck.slice(1, 3),
+					containerDisplay: [0, 0],
+				},
+				{
+					cardContainer: shuffledDeck.slice(3, 6),
+					containerDisplay: [0, 0],
+				},
+				{
+					cardContainer: shuffledDeck.slice(6, 10),
+					containerDisplay: [0, 0],
+				},
+				{
+					cardContainer: shuffledDeck.slice(10, 15),
+					containerDisplay: [0, 0],
+				},
+				{
+					cardContainer: shuffledDeck.slice(15, 21),
+					containerDisplay: [0, 0],
+				},
+				{
+					cardContainer: shuffledDeck.slice(21, 28),
+					containerDisplay: [0, 0],
+				},
+				{
+					cardContainer: shuffledDeck.slice(28, 36),
+					containerDisplay: [0, 0],
+				},
+			],
+			[
+				{
+					cardContainer: shuffledDeck.slice(0, 0),
+					containerDisplay: [0, 0],
+				},
+				{
+					cardContainer: shuffledDeck.slice(0, 0),
+					containerDisplay: [0, 0],
+				},
+				{
+					cardContainer: shuffledDeck.slice(0, 0),
+					containerDisplay: [0, 0],
+				},
+				{
+					cardContainer: shuffledDeck.slice(0, 0),
+					containerDisplay: [0, 0],
+				},
+			],
 		],
-		[
-			{
-				cardContainer: shuffledDeck.slice(36, 63),
-				containerDisplay: [0, 0],
-			},
-		],
-		[
-			{
-				cardContainer: shuffledDeck.slice(0, 1),
-				containerDisplay: [0, 0],
-			},
-			{
-				cardContainer: shuffledDeck.slice(1, 3),
-				containerDisplay: [0, 0],
-			},
-			{
-				cardContainer: shuffledDeck.slice(3, 6),
-				containerDisplay: [0, 0],
-			},
-			{
-				cardContainer: shuffledDeck.slice(6, 10),
-				containerDisplay: [0, 0],
-			},
-			{
-				cardContainer: shuffledDeck.slice(10, 15),
-				containerDisplay: [0, 0],
-			},
-			{
-				cardContainer: shuffledDeck.slice(15, 21),
-				containerDisplay: [0, 0],
-			},
-			{
-				cardContainer: shuffledDeck.slice(21, 28),
-				containerDisplay: [0, 0],
-			},
-			{
-				cardContainer: shuffledDeck.slice(28, 36),
-				containerDisplay: [0, 0],
-			},
-		],
-		[
-			{
-				cardContainer: shuffledDeck.slice(0, 0),
-				containerDisplay: [0, 0],
-			},
-			{
-				cardContainer: shuffledDeck.slice(0, 0),
-				containerDisplay: [0, 0],
-			},
-			{
-				cardContainer: shuffledDeck.slice(0, 0),
-				containerDisplay: [0, 0],
-			},
-			{
-				cardContainer: shuffledDeck.slice(0, 0),
-				containerDisplay: [0, 0],
-			},
-		],
-		
-	]
+		middleLine: 0,
+	}
 }
 
 // The initial state of the gameContainer, has an initial shuffled deck, but no information for the containers bounds at first.

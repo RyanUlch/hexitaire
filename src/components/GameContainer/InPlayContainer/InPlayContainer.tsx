@@ -21,10 +21,10 @@ const InPlayContainer = (props: {containerNum: number}) => {
 	}, []);
 
 	const cardDisplay = () => {
-		if (state[2][props.containerNum].cardContainer.length > 0) {
+		if (state.containers[2][props.containerNum].cardContainer.length > 0) {
 			return (
 				<PlayCard
-					parentPosition={[state[2][props.containerNum].containerDisplay[0], state[2][props.containerNum].containerDisplay[1]]}
+					parentPosition={[state.containers[2][props.containerNum].containerDisplay[0], state.containers[2][props.containerNum].containerDisplay[1]]}
 					container={[2, props.containerNum]}
 					position={0}
 				/>
