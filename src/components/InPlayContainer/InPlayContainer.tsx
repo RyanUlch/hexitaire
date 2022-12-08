@@ -1,13 +1,13 @@
 import { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../../context/context';
 import PlayCard from '../PlayCard/PlayCard';
+import { cardHeight } from '../../helpers/globals';
 
 const InPlayContainer = (props: {containerNum: number}) => {
 	const {state, dispatch} = useContext(AppContext);
 	const [bounds, setBounds] = useState({left: 0, top: 0});
 	useEffect(() => {
 		const getBounds = document.querySelector(String(`#c${props.containerNum}`))?.getBoundingClientRect();
-		console.log()
 		if (getBounds) {
 			dispatch({
 				type: 'SETCOLUMNBOUNDS',
@@ -19,22 +19,10 @@ const InPlayContainer = (props: {containerNum: number}) => {
 			});
 			setBounds({
 				left: getBounds.left,
-				top: getBounds.top,
+				top: cardHeight,
 			})
 		}
 	}, []);
-
-	// const [cardDisplay, setCardDisplay] = useState(()=> {
-	// 	return (state.containers[2][props.containerNum].cardContainer.length > 0) ?
-	// 		<PlayCard
-	// 			parentPosition={[state.containers[2][props.containerNum].containerDisplay[0], state.containers[2][props.containerNum].containerDisplay[1]]}
-	// 			container={[2, props.containerNum]}
-	// 			position={0}
-	// 		/>	:
-	// 		<div>No Cards</div>;
-	// });
-
-
 
 	const [containerCount, setContainerCount] = useState((state.containers[2][props.containerNum].cardContainer.length > 0) ? 0 : -1)
 		
@@ -42,30 +30,35 @@ const InPlayContainer = (props: {containerNum: number}) => {
 		setContainerCount((state.containers[2][props.containerNum].cardContainer.length > 0) ? 0 : -1);
 	}, [state]);
 
-	const [card, setCard] = useState<JSX.Element>();
+	const [card, setCard] = useState<JSX.Element>(<PlayCard
+		parentPosition={[bounds.left, bounds.top]}
+		container={[2, props.containerNum]}
+		position={containerCount}
+		moves={state.moves}
+		showOne={false}
+	/>);
 
-	useEffect(() => {
-		// setCard(<PlayCard
-		// 	parentPosition={[bounds.top, bounds.left]}
-		// 	container={[2, props.containerNum]}
-		// 	position={containerCount}
-		// 	moves={state.moves}
-		// />)
-	}, [...Object.values(state)]);
+	useEffect(()=> {
+		setCard(
+			<PlayCard
+				parentPosition={[bounds.left, bounds.top]}
+				container={[2, props.containerNum]}
+				position={containerCount}
+				moves={state.moves}
+				showOne={false}
+			/>
+		);
+	}, [state.containers[2][props.containerNum].cardContainer.length])
 
-
-	// useEffect(()=> {
-	// 	setCardDisplay((state: any) => state);
-	// }, [state.containers[2][props.containerNum].cardContainer]);
-	//{card}
 	return (
 		<div id={`c${props.containerNum}`} className='container'>
-			
+			{/* {card} */}
 			<PlayCard
 			parentPosition={[bounds.left, bounds.top]}
 			container={[2, props.containerNum]}
 			position={containerCount}
 			moves={state.moves}
+			showOne={false}
 		/>
 		</div>
 	)

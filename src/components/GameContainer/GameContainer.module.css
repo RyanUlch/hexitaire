@@ -1,11 +1,25 @@
-.columns {
+.containers {
 	display: flex;
 	flex-direction: row;
+	width: 100vw;
 }
 
-.topContainer {
+.containers > div {
+	width: var(--cardWidth);
+	background-color: cyan;
+	border: 2px solid black;
+}
+
+.top {
 	display: flex;
 	flex-direction: row;
+	width: 100vw;
+	height: var(--cardHeight);
+	background-color: blue;
+}
+
+.bottom {
+	height: 50vh;
 }
 
 .gameContainer {

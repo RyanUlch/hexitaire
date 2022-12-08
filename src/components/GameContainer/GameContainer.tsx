@@ -4,6 +4,7 @@ import classes from './GameContainer.module.css'
 
 import InPlayContainer from '../InPlayContainer/InPlayContainer';
 import { AppContext } from '../../context/context';
+import FinishedContainer from '../FinishedContainer/FinishedContainer';
 const GameContainer = () => {
 	const {state, dispatch} = useContext(AppContext);
 
@@ -18,8 +19,14 @@ const GameContainer = () => {
 
 	return (
 		<>
+			<div className={`${classes.containers} ${classes.top}`}>		
+				<FinishedContainer containerNum={0} />
+				<FinishedContainer containerNum={1} />
+				<FinishedContainer containerNum={2} />
+				<FinishedContainer containerNum={3} />
+			</div>
 			<div id='MiddleLine' />
-			<div className='columns'>		
+			<div className={`${classes.containers} ${classes.bottom}`}>		
 				<InPlayContainer containerNum={0} />
 				<InPlayContainer containerNum={1} />
 				<InPlayContainer containerNum={2} />

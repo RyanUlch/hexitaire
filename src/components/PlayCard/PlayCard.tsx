@@ -10,30 +10,11 @@ const PlayCard = (props: {
 	container: number[],
 	position: number
 	moves: number,
+	showOne: boolean,
 }) => {
 	const {state, dispatch} = useContext(AppContext);
 	const [position, setPosition] = useState({left: state.containers[props.container[0]][props.container[1]].containerDisplay[0], top: 0});
 	const [moved, setMoved] = useState(false);
-
-	// const [cardInfo, setCardInfo] = useState(()=> {
-	// 	if (props.position === -1) {
-	// 		return {
-	// 			suit: -1,
-	// 			number: -1,
-	// 			isRed: true,
-	// 			hasChildren: false,
-	// 		}
-	// 	} else {
-	// 		return {
-	// 			//index: indexof(state.containers[props.container[0]][props.container[1]]
-	// 			suit: state.containers[props.container[0]][props.container[1]].cardContainer[props.position].suit,
-	// 			number: state.containers[props.container[0]][props.container[1]].cardContainer[props.position].number,
-	// 			isRed: state.containers[props.container[0]][props.container[1]].cardContainer[props.position].suit < 2,
-	// 			hasChildren: state.containers[props.container[0]][props.container[1]].cardContainer.length > props.position+1,
-	// 		}
-	// 	}
-	// });
-	//const [keyState, setKeyState] = useState(`${props.container[0]}${props.container[1]}${props.position}}`);
 
 //console.log(state.containers[props.container[0]][props.container[1]].cardContainer, props.position);
 	let cardInfo = (props.position === -1 || !state.containers[props.container[0]][props.container[1]].cardContainer[props.position]) 
@@ -49,36 +30,10 @@ const PlayCard = (props: {
 		number: state.containers[props.container[0]][props.container[1]].cardContainer[props.position].number,
 		isRed: state.containers[props.container[0]][props.container[1]].cardContainer[props.position].suit < 2,
 		//hasChildren: state.containers[props.container[0]][props.container[1]].cardContainer.length > props.position+1,
-		child: state.containers[props.container[0]][props.container[1]].cardContainer.length > props.position+1
-			? <PlayCard parentPosition={[position.left, position.top]}container={props.container} position={props.position+1} moves={props.moves}/>
+		child: state.containers[props.container[0]][props.container[1]].cardContainer.length > props.position+1 && !props.showOne
+			? <PlayCard parentPosition={[position.left, position.top]}container={props.container} position={props.position+1} moves={props.moves} showOne={false}/>
 			: <></>
 	}
-
-	// useEffect(()=> {
-	// 	console.log('update');
-	// 	cardInfo = (props.position === -1 || !state.containers[props.container[0]][props.container[1]].cardContainer[props.position]) 
-	// 	? {
-	// 		suit: -1,
-	// 		number: -1,
-	// 		isRed: true,
-	// 		child: <></>,
-	// 	}
-	// 	: {
-	// 		//index: indexof(state.containers[props.container[0]][props.container[1]]
-	// 		suit: state.containers[props.container[0]][props.container[1]].cardContainer[props.position].suit,
-	// 		number: state.containers[props.container[0]][props.container[1]].cardContainer[props.position].number,
-	// 		isRed: state.containers[props.container[0]][props.container[1]].cardContainer[props.position].suit < 2,
-	// 		//hasChildren: state.containers[props.container[0]][props.container[1]].cardContainer.length > props.position+1,
-	// 		child: state.containers[props.container[0]][props.container[1]].cardContainer.length > props.position+1
-	// 			? <PlayCard parentPosition={[position.left, position.top]}container={props.container} position={props.position+1} containerLength={props.containerLength} />
-	// 			: <></>
-	// 	}
-	// }, [state.moves])
-	//[...Object.values(state), ...Object.values(state.containers), ...Object.values(state.containers[props.container[0]]), ...Object.values(state.containers[props.container[0]][props.container[1]]),*/ ...Object.values(state.containers[props.container[0]][props.container[1]].cardContainer)])
-	
-
-		
-	
 
 	const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
 
@@ -87,7 +42,6 @@ const PlayCard = (props: {
 	const recursiveCheck: (index: number, container: any) => boolean = (index,container) => {
 		const lVal = container[index];
 		const rVal = container[index+1];
-		console.log(lVal, rVal);
 		if ((lVal.number-1 === rVal.number) && lVal.suit < 2 !== rVal.suit < 2) {
 			if (container.length > index+2) {
 				return recursiveCheck(
@@ -104,6 +58,7 @@ const PlayCard = (props: {
 
 	// Don't move card stack if it's not valid
 	const tryToMove = () => {
+		console.log('trying to move');
 		// If the Card is the last card in the stack/pile, it can always be moved
 		const container = state.containers[props.container[0]][props.container[1]].cardContainer;
 		if (container.length > props.position+1) {
@@ -196,7 +151,6 @@ const PlayCard = (props: {
 			left: state.containers[props.container[0]][props.container[1]].containerDisplay[0]
 		});
 	}, []);
-	//}, [state.containers[props.container[0]][props.container[1]].containerDisplay[0], state.containers[props.container[0]][props.container[1]].cardContainer]);
 
 	// Move with the parent element
 	useEffect(()=> {
@@ -207,13 +161,6 @@ const PlayCard = (props: {
 		});
 	}, [props.parentPosition, props.moves]);
 
-	// useEffect(()=> {
-	// 	console.log('update');
-	// 	setPosition({
-	// 			left: props.parentPosition[0],
-	// 			top: props.parentPosition[1] + (2*parseFloat(getComputedStyle(document.documentElement).fontSize)),
-	// 	})
-	// }, []);
 
 	return (
 		cardInfo.number!==-1
@@ -221,7 +168,9 @@ const PlayCard = (props: {
 				<p className={classes.cardText}>{numberSymbol()}{suitSymbol()}</p>
 				{cardInfo.child}
 			</div>
-			: <></>
+			: <div ref={ref} style={{left: position.left, top: position.top}} className={classes.empty}>
+				{cardInfo.child}
+			</div>
 	);
 }
 
