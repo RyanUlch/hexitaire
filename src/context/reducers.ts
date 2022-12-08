@@ -40,37 +40,42 @@ export const cardReducer = (state: any, action: any) => {
 				for (let i = 0; i < containers.length; ++i) {
 					// Check if cards are dropped within the bounds of the columns
 					if (containers[i].containerDisplay[0] < cardLeft && cardLeft < containers[i].containerDisplay[1]) {
-						// Card dropped within bounds of Finished Container
-						console.log('Card dropped within bounds of Finished Container');
-						console.log(containers[i].cardContainer.length);
-						if(containers[i].cardContainer.length > 0) {
-							// check if the card being dropped is valid
-							console.log('check if the card being dropped is valid')
-							if (dropCheckFinished(moveState.containers[3][i].cardContainer.slice(-1)[0], moveState.containers, [action.payload.StartingContainer[0], action.payload.StartingContainer[1]], action.payload.position)) {
-								const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
-								moveState.containers[3][i].cardContainer.push(...addToContainer);
-								moveState.moves += 1;
-								return {...moveState};
-							} else {
-								// If incorrect placement, reset position
-								console.log('Incorrect placement, reset position')
-								return {...moveState};
-							}
-						} else if (moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer[action.payload.position].number === 0) {
-							// Card being dropped is the 0 card to an empty container.
-							console.log('Card being dropped is the 0 card to an empty container')
-							if (moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.length === action.payload.position+1) {
-								// card has no children, and can be added to finished container
-								console.log('card has no children, and can be added to finished container')
-								const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
-								moveState.containers[3][i].cardContainer.push(...addToContainer);
-								moveState.moves += 1;
-								return {...moveState};
-							}
-						} else {
-							// Card is not the 0th card, reset position
-							console.log('Card is not the 0th card, reset position')
+						if (3 === action.payload.StartingContainer[0] && i === action.payload.StartingContainer[1]) {
+							// Card is from the same container as it was dropped, reset it
+							console.log('Card is from the same container as it was dropped, reset it');
 							return {...moveState};
+						} else {
+							// Card dropped within bounds of Finished Container
+							console.log('Card dropped within bounds of Finished Container');
+							if(containers[i].cardContainer.length > 0) {
+								// check if the card being dropped is valid
+								console.log('check if the card being dropped is valid')
+								if (dropCheckFinished(moveState.containers[3][i].cardContainer.slice(-1)[0], moveState.containers, [action.payload.StartingContainer[0], action.payload.StartingContainer[1]], action.payload.position)) {
+									const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
+									moveState.containers[3][i].cardContainer.push(...addToContainer);
+									moveState.moves += 1;
+									return {...moveState};
+								} else {
+									// If incorrect placement, reset position
+									console.log('Incorrect placement, reset position')
+									return {...moveState};
+								}
+							} else if (moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer[action.payload.position].number === 0) {
+								// Card being dropped is the 0 card to an empty container.
+								console.log('Card being dropped is the 0 card to an empty container')
+								if (moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.length === action.payload.position+1) {
+									// card has no children, and can be added to finished container
+									console.log('card has no children, and can be added to finished container')
+									const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
+									moveState.containers[3][i].cardContainer.push(...addToContainer);
+									moveState.moves += 1;
+									return {...moveState};
+								}
+							} else {
+								// Card is not the 0th card, reset position
+								console.log('Card is not the 0th card, reset position')
+								return {...moveState};
+							}
 						}
 					}
 				}
@@ -90,31 +95,36 @@ export const cardReducer = (state: any, action: any) => {
 					// Check if cards are dropped within the bounds of the columns
 					console.log('Check if cards are dropped within the bounds of the columns')
 					if ((containers[i].containerDisplay[0] < cardLeft) && (cardLeft < containers[i].containerDisplay[1])) {
-						
-						// Check if the container has any cards
-						console.log('Check if the container has any cards')
-
-						if(containers[i].cardContainer.length > 0) { 
-							// check if the card being dropped is valid
-							console.log('check if the card being dropped is valid')
-							if (dropCheckInPlay(moveState.containers[2][i].cardContainer.slice(-1)[0], moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer[action.payload.position])) {
-								const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
-								moveState.containers[2][i].cardContainer.push(...addToContainer);
-								moveState.moves += 1;
-								return {...moveState};
-							} else {
-								// Incorrect placement, reset position
-								console.log('Incorrect placement, reset position')
-								return {...moveState};
-							}
+						if (2 === action.payload.StartingContainer[0] && i === action.payload.StartingContainer[1]) {
+							// Card is from the same container as it was dropped, reset it
+							console.log('Card is from the same container as it was dropped, reset it')
+							return {...moveState};
 						} else {
-							// Is an empty container, can put any card there
-							console.log('Is an empty container, can put any card there')
-							const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
-								moveState.containers[2][i].cardContainer.push(...addToContainer);
-								moveState.moves += 1;
-								console.log(moveState);
-								return {...moveState};
+							// Check if the container has any cards
+							console.log('Check if the container has any cards')
+
+							if(containers[i].cardContainer.length > 0) { 
+								// check if the card being dropped is valid
+								console.log('check if the card being dropped is valid')
+								if (dropCheckInPlay(moveState.containers[2][i].cardContainer.slice(-1)[0], moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer[action.payload.position])) {
+									const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
+									moveState.containers[2][i].cardContainer.push(...addToContainer);
+									moveState.moves += 1;
+									return {...moveState};
+								} else {
+									// Incorrect placement, reset position
+									console.log('Incorrect placement, reset position')
+									return {...moveState};
+								}
+							} else {
+								// Is an empty container, can put any card there
+								console.log('Is an empty container, can put any card there')
+								const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
+									moveState.containers[2][i].cardContainer.push(...addToContainer);
+									moveState.moves += 1;
+									console.log(moveState);
+									return {...moveState};
+							}
 						}
 					}
 				}

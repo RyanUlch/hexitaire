@@ -1,0 +1,13 @@
+.card {
+	width: var(--cardWidth);
+	height: var(--cardHeight);
+	background-color: green;
+}
+
+.empty {
+
+}
+
+.full {
+
+}
