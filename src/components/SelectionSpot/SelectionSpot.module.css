@@ -5,9 +5,9 @@
 }
 
 .empty {
-
+	background-color: brown;
 }
 
 .full {
-
+	background-color: lime;
 }

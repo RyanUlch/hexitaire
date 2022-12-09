@@ -30,36 +30,17 @@ const InPlayContainer = (props: {containerNum: number}) => {
 		setContainerCount((state.containers[2][props.containerNum].cardContainer.length > 0) ? 0 : -1);
 	}, [state]);
 
-	const [card, setCard] = useState<JSX.Element>(<PlayCard
-		parentPosition={[bounds.left, bounds.top]}
-		container={[2, props.containerNum]}
-		position={containerCount}
-		moves={state.moves}
-		showOne={false}
-	/>);
-
-	useEffect(()=> {
-		setCard(
+	return (
+		<div id={`c${props.containerNum}`} className='container'>
+			{/* {card} */}
 			<PlayCard
 				parentPosition={[bounds.left, bounds.top]}
 				container={[2, props.containerNum]}
 				position={containerCount}
 				moves={state.moves}
 				showOne={false}
+				zIndex={1}
 			/>
-		);
-	}, [state.containers[2][props.containerNum].cardContainer.length])
-
-	return (
-		<div id={`c${props.containerNum}`} className='container'>
-			{/* {card} */}
-			<PlayCard
-			parentPosition={[bounds.left, bounds.top]}
-			container={[2, props.containerNum]}
-			position={containerCount}
-			moves={state.moves}
-			showOne={false}
-		/>
 		</div>
 	)
 }

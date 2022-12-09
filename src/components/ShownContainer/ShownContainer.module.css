@@ -1,0 +1,3 @@
+.holder {
+	width: calc(3*var(--cardWidth)) !important;
+}

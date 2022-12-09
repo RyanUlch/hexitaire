@@ -1,12 +1,10 @@
 .containers {
 	display: flex;
 	flex-direction: row;
-	width: 100vw;
 }
 
 .containers > div {
 	width: var(--cardWidth);
-	background-color: cyan;
 	border: 2px solid black;
 }
 
@@ -15,7 +13,7 @@
 	flex-direction: row;
 	width: 100vw;
 	height: var(--cardHeight);
-	background-color: blue;
+
 }
 
 .bottom {

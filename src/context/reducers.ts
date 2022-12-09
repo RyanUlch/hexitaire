@@ -1,5 +1,4 @@
 const dropCheckInPlay: (lVal: {number: number, suit: number}, rVal: {number: number, suit: number}) => boolean = (lVal, rVal) => {
-	console.log(lVal);
 	return ((lVal.number-1 === rVal.number) && lVal.suit < 2 !== rVal.suit < 2) ? true : false;
 }
 
@@ -20,6 +19,21 @@ const dropCheckFinished: (lVal: {number: number, suit: number}, containers: any,
 
 export const cardReducer = (state: any, action: any) => {
 	switch (action.type) {
+		case 'FLIPCARDS':
+			const flipState = state;
+			const newCards = flipState.containers[1][0].cardContainer.splice(0, 3);
+			flipState.containers[4][0].cardContainer.push(...flipState.containers[0][0].cardContainer.splice(0));
+			flipState.containers[0][0].cardContainer.push(...newCards);
+			flipState.moves += 1;
+			return flipState;
+
+		case 'RESETFLIPPEDCARDS':
+			const resetFlipState = state;
+			resetFlipState.containers[4][0].cardContainer.push(...resetFlipState.containers[0][0].cardContainer.splice(0));
+			resetFlipState.containers[1][0].cardContainer = resetFlipState.containers[4][0].cardContainer.splice(0);
+			resetFlipState.moves += 1;
+			return resetFlipState;
+
 		case 'SETCOLUMNBOUNDS':
 			const updateState = state;
 			updateState.containers[action.payload.column[0]][action.payload.column[1]].containerDisplay[0] = action.payload.left;

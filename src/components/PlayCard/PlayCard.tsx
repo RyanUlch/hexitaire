@@ -1,7 +1,7 @@
 import { useRef, useContext, useState, useEffect } from 'react';
 
 import { AppContext } from '../../context/context';
-import { cardMidHeight, cardMidWidth } from '../../helpers/globals';
+import { cardMidHeight, cardMidWidth, fontSize } from '../../helpers/globals';
 
 import classes from './PlayCard.module.css';
 
@@ -11,10 +11,14 @@ const PlayCard = (props: {
 	position: number
 	moves: number,
 	showOne: boolean,
+	zIndex: number,
 }) => {
 	const {state, dispatch} = useContext(AppContext);
 	const [position, setPosition] = useState({left: state.containers[props.container[0]][props.container[1]].containerDisplay[0], top: 0});
+	//const [position, setPosition] = useState({left: props.parentPosition[0], top: 0});
+
 	const [moved, setMoved] = useState(false);
+	const [isMoving, setIsMoving] = useState(false);
 
 //console.log(state.containers[props.container[0]][props.container[1]].cardContainer, props.position);
 	let cardInfo = (props.position === -1 || !state.containers[props.container[0]][props.container[1]].cardContainer[props.position]) 
@@ -31,7 +35,7 @@ const PlayCard = (props: {
 		isRed: state.containers[props.container[0]][props.container[1]].cardContainer[props.position].suit < 2,
 		//hasChildren: state.containers[props.container[0]][props.container[1]].cardContainer.length > props.position+1,
 		child: state.containers[props.container[0]][props.container[1]].cardContainer.length > props.position+1 && !props.showOne
-			? <PlayCard parentPosition={[position.left, position.top]}container={props.container} position={props.position+1} moves={props.moves} showOne={false}/>
+			? <PlayCard zIndex={props.zIndex+1} parentPosition={[position.left, position.top]}container={props.container} position={props.position+1} moves={props.moves} showOne={false}/>
 			: <></>
 	}
 
@@ -58,9 +62,10 @@ const PlayCard = (props: {
 
 	// Don't move card stack if it's not valid
 	const tryToMove = () => {
-		console.log('trying to move');
+		//console.log('trying to move');
 		// If the Card is the last card in the stack/pile, it can always be moved
 		const container = state.containers[props.container[0]][props.container[1]].cardContainer;
+		//console.log(container.length > props.position+1);
 		if (container.length > props.position+1) {
 			return recursiveCheck(
 				props.position,
@@ -99,6 +104,7 @@ const PlayCard = (props: {
 				document.onmouseup = () => {
 					document.onmouseup = null;
 					document.onmousemove = null;
+					setIsMoving(false);
 					if (canMove) {
 						attemptCardDrop(e);
 						setMoved((prev) => !prev);
@@ -110,6 +116,7 @@ const PlayCard = (props: {
 						e = e || window.event;
 						e.preventDefault();
 						if (tryToMove()) {
+							setIsMoving(true);
 							setPosition({
 								top: e.clientY - cardMidHeight,
 								left: e.clientX - cardMidWidth,
@@ -154,23 +161,19 @@ const PlayCard = (props: {
 
 	// Move with the parent element
 	useEffect(()=> {
-		//console.log(props.parentPosition);
+		const addition = ((props.position > 0) && !props.showOne) ? (2*fontSize) : 0;
 		setPosition({
 				left: props.parentPosition[0],
-				top: props.parentPosition[1] + (2*parseFloat(getComputedStyle(document.documentElement).fontSize)),
+				top: props.parentPosition[1] + addition,
 		});
 	}, [props.parentPosition, props.moves]);
-
+console.log(isMoving);
 
 	return (
-		cardInfo.number!==-1
-			? <div ref={ref} style={{left: position.left, top: position.top}} className={`${classes.PlayCard} ${cardInfo.isRed ? classes.red : classes.black}`}>
-				<p className={classes.cardText}>{numberSymbol()}{suitSymbol()}</p>
-				{cardInfo.child}
-			</div>
-			: <div ref={ref} style={{left: position.left, top: position.top}} className={classes.empty}>
-				{cardInfo.child}
-			</div>
+		<div ref={ref} style={isMoving ? {zIndex: 9000, left: position.left, top: position.top} : {zIndex: props.zIndex, left: position.left, top: position.top}} className={cardInfo.number!==-1 ? `${classes.PlayCard} ${cardInfo.isRed ? classes.red : classes.black}`: classes.empty}>
+			{cardInfo.number!==-1 ? <p className={classes.cardText}>{numberSymbol()}{suitSymbol()}</p> : <></>}
+			{cardInfo.child}
+		</div>
 	);
 }
 

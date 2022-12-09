@@ -1,10 +1,11 @@
 
 import { useEffect, useContext } from 'react';
 import classes from './GameContainer.module.css'
-
+import SelectionSpot from '../SelectionSpot/SelectionSpot';
 import InPlayContainer from '../InPlayContainer/InPlayContainer';
 import { AppContext } from '../../context/context';
 import FinishedContainer from '../FinishedContainer/FinishedContainer';
+import ShownContainer from '../ShownContainer/ShownContainer';
 const GameContainer = () => {
 	const {state, dispatch} = useContext(AppContext);
 
@@ -19,11 +20,13 @@ const GameContainer = () => {
 
 	return (
 		<>
-			<div className={`${classes.containers} ${classes.top}`}>		
+			<div className={`${classes.containers} ${classes.top}`}>
 				<FinishedContainer containerNum={0} />
 				<FinishedContainer containerNum={1} />
 				<FinishedContainer containerNum={2} />
 				<FinishedContainer containerNum={3} />
+				<SelectionSpot moves={state.moves} />
+				<ShownContainer moves={state.moves} />
 			</div>
 			<div id='MiddleLine' />
 			<div className={`${classes.containers} ${classes.bottom}`}>		

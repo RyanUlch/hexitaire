@@ -40,6 +40,7 @@ const FinishedContainer = (props: {containerNum: number}) => {
 				position={containerCount}
 				moves={state.moves}
 				showOne={true}
+				zIndex={1}
 			/>
 		</div>
 	)

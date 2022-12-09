@@ -23,6 +23,7 @@ type gameContainer = {
 		// Containers User can drop cards to and from
 		container[],	// In Play Containers
 		container[],	// Finished containers
+		container[],	// Reset Draw Pile
 	],
 	middleLine: number
 	moves: number
@@ -58,7 +59,7 @@ const shuffle = (origDeck: card[]) => {
 
 // Take the shuffled deck and give cards to containers to create the starting State
 const createStartingDeck = (): gameContainer =>  {
-	const shuffledDeck = shuffle(cardGenerator());
+	const shuffledDeck = cardGenerator()//shuffle(cardGenerator());
 	return {
 		containers: [
 			[
@@ -120,6 +121,12 @@ const createStartingDeck = (): gameContainer =>  {
 					cardContainer: shuffledDeck.slice(0, 0),
 					containerDisplay: [0, 0],
 				},
+				{
+					cardContainer: shuffledDeck.slice(0, 0),
+					containerDisplay: [0, 0],
+				},
+			],
+			[
 				{
 					cardContainer: shuffledDeck.slice(0, 0),
 					containerDisplay: [0, 0],
