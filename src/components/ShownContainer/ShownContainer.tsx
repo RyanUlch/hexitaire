@@ -30,13 +30,12 @@ const ShownContainer = (props: {moves: number}) => {
 					moves={props.moves}
 					showOne={true}
 					zIndex={i}
+					key={`${state.containers[0][0].cardContainer.length > 0 ? state.containers[0][0].cardContainer[i].number+'-'+state.containers[0][0].cardContainer[i].suit+'-'+state.moves : 'ShownEmpty'}`}
 				/>)
 			}
 			return cards;	
 		});
 	}, [state]);
-
-	console.log(props.moves);
 
 	return (
 		<div id='shown' className={classes.holder}>

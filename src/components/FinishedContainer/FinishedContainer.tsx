@@ -30,8 +30,6 @@ const FinishedContainer = (props: {containerNum: number}) => {
 		setContainerCount((state.containers[3][props.containerNum].cardContainer.length-1));
 	}, [state]);
 
-	const [card, setCard] = useState<JSX.Element>();
-
 	return (
 		<div id={`c${props.containerNum}`} className='container'>
 			<PlayCard

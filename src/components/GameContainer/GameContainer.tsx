@@ -9,7 +9,6 @@ import ShownContainer from '../ShownContainer/ShownContainer';
 const GameContainer = () => {
 	const {state, dispatch} = useContext(AppContext);
 
-	
 	useEffect(()=> {
 		const middleLineElement = document.querySelector('#MiddleLine');
 		dispatch({
@@ -17,6 +16,15 @@ const GameContainer = () => {
 			payload: middleLineElement?.getBoundingClientRect().top,
 		})
 	}, []);
+
+	const newGame = (event: any) => {
+		dispatch({
+			type: 'NEWGAME',
+			payload: {
+				difficulty: event.target.value,
+			}
+		})
+	}
 
 	return (
 		<>
@@ -39,6 +47,9 @@ const GameContainer = () => {
 				<InPlayContainer containerNum={6} />
 				<InPlayContainer containerNum={7} />
 			</div>
+			<button onClick={newGame} value={1}>New Game (Easy)</button>
+			<button onClick={newGame} value={3}>New Game (Medium)</button>
+			<button onClick={newGame} value={5}>New Game (Hard)</button>
 		</>
 	)
 }

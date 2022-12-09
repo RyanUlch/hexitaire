@@ -18,10 +18,9 @@ const PlayCard = (props: {
 	//const [position, setPosition] = useState({left: props.parentPosition[0], top: 0});
 
 	const [moved, setMoved] = useState(false);
-	const [isMoving, setIsMoving] = useState(false);
-
+	const [zIndex, setZIndex] = useState(props.zIndex);
 //console.log(state.containers[props.container[0]][props.container[1]].cardContainer, props.position);
-	let cardInfo = (props.position === -1 || !state.containers[props.container[0]][props.container[1]].cardContainer[props.position]) 
+	let cardInfo = (!state.containers[props.container[0]][props.container[1]].cardContainer[props.position]) 
 	? {
 		suit: -1,
 		number: -1,
@@ -35,7 +34,14 @@ const PlayCard = (props: {
 		isRed: state.containers[props.container[0]][props.container[1]].cardContainer[props.position].suit < 2,
 		//hasChildren: state.containers[props.container[0]][props.container[1]].cardContainer.length > props.position+1,
 		child: state.containers[props.container[0]][props.container[1]].cardContainer.length > props.position+1 && !props.showOne
-			? <PlayCard zIndex={props.zIndex+1} parentPosition={[position.left, position.top]}container={props.container} position={props.position+1} moves={props.moves} showOne={false}/>
+			? <PlayCard 
+				zIndex={props.zIndex+1}
+				parentPosition={[position.left, position.top]}
+				container={props.container}
+				position={props.position+1}
+				moves={props.moves}
+				showOne={false}
+			/>
 			: <></>
 	}
 
@@ -104,7 +110,7 @@ const PlayCard = (props: {
 				document.onmouseup = () => {
 					document.onmouseup = null;
 					document.onmousemove = null;
-					setIsMoving(false);
+					setZIndex(props.zIndex);
 					if (canMove) {
 						attemptCardDrop(e);
 						setMoved((prev) => !prev);
@@ -116,7 +122,7 @@ const PlayCard = (props: {
 						e = e || window.event;
 						e.preventDefault();
 						if (tryToMove()) {
-							setIsMoving(true);
+							setZIndex(props.zIndex+9000);
 							setPosition({
 								top: e.clientY - cardMidHeight,
 								left: e.clientX - cardMidWidth,
@@ -170,7 +176,7 @@ const PlayCard = (props: {
 
 
 	return (
-		<div ref={ref} style={isMoving ? {zIndex: 9000, left: position.left, top: position.top} : {zIndex: props.zIndex, left: position.left, top: position.top}} className={cardInfo.number!==-1 ? `${classes.PlayCard} ${cardInfo.isRed ? classes.red : classes.black}`: classes.empty}>
+		<div ref={ref} style={{zIndex: zIndex, left: position.left, top: position.top}} className={cardInfo.number!==-1 ? `${classes.PlayCard} ${cardInfo.isRed ? classes.red : classes.black}`: classes.empty}>
 			{cardInfo.number!==-1 ? <p className={classes.cardText}>{numberSymbol()}{suitSymbol()}</p> : <></>}
 			{cardInfo.child}
 		</div>

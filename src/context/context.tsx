@@ -26,7 +26,8 @@ type gameContainer = {
 		container[],	// Reset Draw Pile
 	],
 	middleLine: number
-	moves: number
+	moves: number,
+	difficulty: number,
 }
 
 // Create cards for entire Deck in order (suits: 0-3, numbers: 0-15)
@@ -57,6 +58,11 @@ const shuffle = (origDeck: card[]) => {
 	return shuffleDeck;
 }
 
+
+export const shuffleDeck = () => {
+	return cardGenerator()//shuffle(cardGenerator());
+}
+
 // Take the shuffled deck and give cards to containers to create the starting State
 const createStartingDeck = (): gameContainer =>  {
 	const shuffledDeck = shuffle(cardGenerator());
@@ -64,77 +70,78 @@ const createStartingDeck = (): gameContainer =>  {
 		containers: [
 			[
 				{
-					cardContainer: shuffledDeck.slice(0, 0),
+					cardContainer: [],
 					containerDisplay: [0, 0],
 				},
 			],
 			[
 				{
-					cardContainer: shuffledDeck.slice(36, 63),
+					cardContainer: [],
 					containerDisplay: [0, 0],
 				},
 			],
 			[
 				{
-					cardContainer: shuffledDeck.slice(0, 1),
+					cardContainer: [],
 					containerDisplay: [0, 0],
 				},
 				{
-					cardContainer: shuffledDeck.slice(1, 3),
+					cardContainer: [],
 					containerDisplay: [0, 0],
 				},
 				{
-					cardContainer: shuffledDeck.slice(3, 6),
+					cardContainer: [],
 					containerDisplay: [0, 0],
 				},
 				{
-					cardContainer: shuffledDeck.slice(6, 10),
+					cardContainer: [],
 					containerDisplay: [0, 0],
 				},
 				{
-					cardContainer: shuffledDeck.slice(10, 15),
+					cardContainer: [],
 					containerDisplay: [0, 0],
 				},
 				{
-					cardContainer: shuffledDeck.slice(15, 21),
+					cardContainer: [],
 					containerDisplay: [0, 0],
 				},
 				{
-					cardContainer: shuffledDeck.slice(21, 28),
+					cardContainer: [],
 					containerDisplay: [0, 0],
 				},
 				{
-					cardContainer: shuffledDeck.slice(28, 36),
-					containerDisplay: [0, 0],
-				},
-			],
-			[
-				{
-					cardContainer: shuffledDeck.slice(0, 0),
-					containerDisplay: [0, 0],
-				},
-				{
-					cardContainer: shuffledDeck.slice(0, 0),
-					containerDisplay: [0, 0],
-				},
-				{
-					cardContainer: shuffledDeck.slice(0, 0),
-					containerDisplay: [0, 0],
-				},
-				{
-					cardContainer: shuffledDeck.slice(0, 0),
+					cardContainer: [],
 					containerDisplay: [0, 0],
 				},
 			],
 			[
 				{
-					cardContainer: shuffledDeck.slice(0, 0),
+					cardContainer: [],
+					containerDisplay: [0, 0],
+				},
+				{
+					cardContainer: [],
+					containerDisplay: [0, 0],
+				},
+				{
+					cardContainer: [],
+					containerDisplay: [0, 0],
+				},
+				{
+					cardContainer: [],
+					containerDisplay: [0, 0],
+				},
+			],
+			[
+				{
+					cardContainer: [],
 					containerDisplay: [0, 0],
 				},
 			],
 		],
 		middleLine: 0,
 		moves: 0,
+		difficulty: 0,
 	}
 }
 

@@ -24,22 +24,22 @@ const InPlayContainer = (props: {containerNum: number}) => {
 		}
 	}, []);
 
-	const [containerCount, setContainerCount] = useState((state.containers[2][props.containerNum].cardContainer.length > 0) ? 0 : -1)
+	//const [containerCount, setContainerCount] = useState((state.containers[2][props.containerNum].cardContainer.length > 0) ? 0 : -1)
 		
-	useEffect(()=> {
-		setContainerCount((state.containers[2][props.containerNum].cardContainer.length > 0) ? 0 : -1);
-	}, [state]);
+	// useEffect(()=> {
+	// 	setContainerCount((state.containers[2][props.containerNum].cardContainer.length > 0) ? 0 : -1);
+	// }, [state]);
 
 	return (
 		<div id={`c${props.containerNum}`} className='container'>
-			{/* {card} */}
 			<PlayCard
 				parentPosition={[bounds.left, bounds.top]}
 				container={[2, props.containerNum]}
-				position={containerCount}
+				position={0}
 				moves={state.moves}
 				showOne={false}
 				zIndex={1}
+				//key={`${(state.containers[2][props.containerNum].cardContainer.length > 0) ? state.containers[2][props.containerNum].cardContainer[0].number+'-'+state.containers[2][props.containerNum].cardContainer[0].suit : 'InPlay'+props.containerNum}`}
 			/>
 		</div>
 	)
