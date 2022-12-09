@@ -167,7 +167,7 @@ const PlayCard = (props: {
 				top: props.parentPosition[1] + addition,
 		});
 	}, [props.parentPosition, props.moves]);
-console.log(isMoving);
+
 
 	return (
 		<div ref={ref} style={isMoving ? {zIndex: 9000, left: position.left, top: position.top} : {zIndex: props.zIndex, left: position.left, top: position.top}} className={cardInfo.number!==-1 ? `${classes.PlayCard} ${cardInfo.isRed ? classes.red : classes.black}`: classes.empty}>

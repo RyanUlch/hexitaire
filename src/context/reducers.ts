@@ -21,29 +21,29 @@ export const cardReducer = (state: any, action: any) => {
 	switch (action.type) {
 		case 'FLIPCARDS':
 			const flipState = state;
-			const newCards = flipState.containers[1][0].cardContainer.splice(0, 3);
+			const newCards = flipState.containers[1][0].cardContainer.splice(0, 5);
 			flipState.containers[4][0].cardContainer.push(...flipState.containers[0][0].cardContainer.splice(0));
 			flipState.containers[0][0].cardContainer.push(...newCards);
 			flipState.moves += 1;
-			return flipState;
+			return {...flipState};
 
 		case 'RESETFLIPPEDCARDS':
 			const resetFlipState = state;
 			resetFlipState.containers[4][0].cardContainer.push(...resetFlipState.containers[0][0].cardContainer.splice(0));
 			resetFlipState.containers[1][0].cardContainer = resetFlipState.containers[4][0].cardContainer.splice(0);
 			resetFlipState.moves += 1;
-			return resetFlipState;
+			return {...resetFlipState};
 
 		case 'SETCOLUMNBOUNDS':
 			const updateState = state;
 			updateState.containers[action.payload.column[0]][action.payload.column[1]].containerDisplay[0] = action.payload.left;
 			updateState.containers[action.payload.column[0]][action.payload.column[1]].containerDisplay[1] = action.payload.right;
-			return updateState;
+			return {...updateState};
   
 		case 'SETMIDDLELINE':	// payload: number
 			const midLineState = state;
 			midLineState.middleLine = action.payload;
-			return midLineState;
+			return {...midLineState};
 
 		case 'MOVECARD':		// payload: {cardTop: number, cardLeft: number, StartingContainer: number[]}
 			const cardTop = action.payload.cardTop;
