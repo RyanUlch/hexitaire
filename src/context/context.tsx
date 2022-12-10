@@ -65,7 +65,6 @@ export const shuffleDeck = () => {
 
 // Take the shuffled deck and give cards to containers to create the starting State
 const createStartingDeck = (): gameContainer =>  {
-	const shuffledDeck = shuffle(cardGenerator());
 	return {
 		containers: [
 			[

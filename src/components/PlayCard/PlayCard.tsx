@@ -68,7 +68,7 @@ const PlayCard = (props: {
 
 	// Don't move card stack if it's not valid
 	const tryToMove = () => {
-		//console.log('trying to move');
+		console.log('trying to move');
 		// If the Card is the last card in the stack/pile, it can always be moved
 		const container = state.containers[props.container[0]][props.container[1]].cardContainer;
 		//console.log(container.length > props.position+1);

@@ -25,6 +25,7 @@ export const cardReducer = (state: any, action: any) => {
 			const newContainer = state;
 			newContainer.difficulty = action.payload.difficulty;
 			const deck = shuffleDeck();
+			console.log(deck);
 			newContainer.containers = [
 				[
 					{
@@ -34,7 +35,7 @@ export const cardReducer = (state: any, action: any) => {
 				],
 				[
 					{
-						cardContainer: deck.slice(36, 63),
+						cardContainer: deck.slice(36),
 						containerDisplay: [...state.containers[1][0].containerDisplay],
 
 					},
@@ -152,13 +153,15 @@ export const cardReducer = (state: any, action: any) => {
 							// Card is from the same container as it was dropped, reset it
 							return {...moveState};
 						} else {
-							console.log(moveState.containers);
 							// Card dropped within bounds of Finished Container
 							if(containers[i].cardContainer.length > 0) {
 								// check if the card being dropped is valid
 								if (dropCheckFinished(moveState.containers[3][i].cardContainer.slice(-1)[0], moveState.containers, [action.payload.StartingContainer[0], action.payload.StartingContainer[1]], action.payload.position)) {
 									const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
 									moveState.containers[3][i].cardContainer.push(...addToContainer);
+									if (action.payload.StartingContainer[0] === 0 && state.containers[0][0].cardContainer.length === 0 && state.containers[4][0].cardContainer.length > 0) {
+										moveState.containers[0][0].cardContainer = moveState.containers[4][0].cardContainer.splice(-1);
+									}
 									moveState.moves += 1;
 									return {...moveState};
 								} else {
@@ -171,6 +174,10 @@ export const cardReducer = (state: any, action: any) => {
 									// card has no children, and can be added to finished container
 									const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
 									moveState.containers[3][i].cardContainer.push(...addToContainer);
+									console.log(action.payload.StartingContainer[0], state.containers[0][0].cardContainer, moveState.containers[4][0].cardContainer)
+									if (action.payload.StartingContainer[0] === 0 && state.containers[0][0].cardContainer.length === 0 && state.containers[4][0].cardContainer.length > 0) {
+										moveState.containers[0][0].cardContainer = moveState.containers[4][0].cardContainer.splice(-1);
+									}
 									moveState.moves += 1;
 									return {...moveState};
 								}
@@ -196,9 +203,15 @@ export const cardReducer = (state: any, action: any) => {
 							// Check if the container has any cards
 							if(containers[i].cardContainer.length > 0) { 
 								// check if the card being dropped is valid
+								console.log(moveState.containers[2][i].cardContainer.slice(-1)[0], action.payload.StartingContainer, state);
+
 								if (dropCheckInPlay(moveState.containers[2][i].cardContainer.slice(-1)[0], moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer[action.payload.position], state)) {
 									const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
 									moveState.containers[2][i].cardContainer.push(...addToContainer);
+									console.log(action.payload.StartingContainer[0], state.containers[0][0].cardContainer, moveState.containers[4][0].cardContainer)
+									if (action.payload.StartingContainer[0] === 0 && state.containers[0][0].cardContainer.length === 0 && state.containers[4][0].cardContainer.length > 0) {
+										moveState.containers[0][0].cardContainer = moveState.containers[4][0].cardContainer.splice(-1);
+									}
 									moveState.moves += 1;
 									return {...moveState};
 								} else {
@@ -209,8 +222,11 @@ export const cardReducer = (state: any, action: any) => {
 								// Is an empty container, can put any card there
 								const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
 									moveState.containers[2][i].cardContainer.push(...addToContainer);
+									console.log(action.payload.StartingContainer[0], state.containers[0][0].cardContainer, moveState.containers[4][0].cardContainer)
+									if (action.payload.StartingContainer[0] === 0 && state.containers[0][0].cardContainer.length === 0 && state.containers[4][0].cardContainer.length > 0) {
+										moveState.containers[0][0].cardContainer = moveState.containers[4][0].cardContainer.splice(-1);
+									}
 									moveState.moves += 1;
-									console.log(moveState);
 									return {...moveState};
 							}
 						}

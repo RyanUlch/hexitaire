@@ -50,6 +50,7 @@ const GameContainer = () => {
 			<button onClick={newGame} value={1}>New Game (Easy)</button>
 			<button onClick={newGame} value={3}>New Game (Medium)</button>
 			<button onClick={newGame} value={5}>New Game (Hard)</button>
+			<p>Moves: {state.moves}</p>
 		</>
 	)
 }

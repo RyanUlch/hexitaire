@@ -33,6 +33,15 @@ const ShownContainer = (props: {moves: number}) => {
 					key={`${state.containers[0][0].cardContainer.length > 0 ? state.containers[0][0].cardContainer[i].number+'-'+state.containers[0][0].cardContainer[i].suit+'-'+state.moves : 'ShownEmpty'}`}
 				/>)
 			}
+			cards.push(<PlayCard
+				parentPosition={[(bounds.left), bounds.top]}
+				container={[4, 0]}
+				position={state.containers[4][0].cardContainer.length-1}
+				moves={props.moves}
+				showOne={true}
+				zIndex={-1}
+				key={`${state.containers[4][0].cardContainer.length > 0 ? state.containers[4][0].cardContainer[state.containers[4][0].cardContainer.length-1].number+'-'+state.containers[4][0].cardContainer[state.containers[4][0].cardContainer.length-1].suit+'-'+state.moves : 'ShownEmpty'}`}
+			/>)
 			return cards;	
 		});
 	}, [state]);
