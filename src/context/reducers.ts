@@ -7,7 +7,6 @@ const dropCheckInPlay: (lVal: {number: number, suit: number}, rVal: {number: num
 
 const dropCheckFinished: (lVal: {number: number, suit: number}, containers: any, starting: number[], position: number) => boolean = (lVal, containers, starting, position) => {
 	const rVal = containers[starting[0]][starting[1]].cardContainer[position];
-	console.log(lVal, rVal);
 	if ((lVal.number+1 === rVal.number) && (lVal.suit === rVal.suit)) {
 		if (containers[starting[0]][starting[1]].cardContainer.length > position+1) {
 			return dropCheckFinished(rVal, containers, starting, position+1);;
@@ -156,7 +155,7 @@ export const cardReducer = (state: any, action: any) => {
 							// Card dropped within bounds of Finished Container
 							if(containers[i].cardContainer.length > 0) {
 								// check if the card being dropped is valid
-								if (dropCheckFinished(moveState.containers[3][i].cardContainer.slice(-1)[0], moveState.containers, [action.payload.StartingContainer[0], action.payload.StartingContainer[1]], action.payload.position)) {
+								if (dropCheckFinished(moveState.containers[3][i].cardContainer.slice(-1)[0], moveState.containers, [action.payload.StartingContainer[0], action.payload.StartingContainer[1]], action.payload.StartingContainer[0] === 3 ? moveState.containers[3][action.payload.StartingContainer[1]].cardContainer.length-1 : action.payload.position)) {
 									const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
 									moveState.containers[3][i].cardContainer.push(...addToContainer);
 									if (action.payload.StartingContainer[0] === 0 && state.containers[0][0].cardContainer.length === 0 && state.containers[4][0].cardContainer.length > 0) {
@@ -203,12 +202,10 @@ export const cardReducer = (state: any, action: any) => {
 							// Check if the container has any cards
 							if(containers[i].cardContainer.length > 0) { 
 								// check if the card being dropped is valid
-								console.log(moveState.containers[2][i].cardContainer.slice(-1)[0], action.payload.StartingContainer, state);
-
-								if (dropCheckInPlay(moveState.containers[2][i].cardContainer.slice(-1)[0], moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer[action.payload.position], state)) {
+								const secondCard = action.payload.StartingContainer[0] === 3 ? moveState.containers[3][action.payload.StartingContainer[1]].cardContainer.length-1 : moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer[action.payload.position];
+								if (dropCheckInPlay(moveState.containers[2][i].cardContainer.slice(-1)[0], secondCard, state)) {
 									const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
 									moveState.containers[2][i].cardContainer.push(...addToContainer);
-									console.log(action.payload.StartingContainer[0], state.containers[0][0].cardContainer, moveState.containers[4][0].cardContainer)
 									if (action.payload.StartingContainer[0] === 0 && state.containers[0][0].cardContainer.length === 0 && state.containers[4][0].cardContainer.length > 0) {
 										moveState.containers[0][0].cardContainer = moveState.containers[4][0].cardContainer.splice(-1);
 									}
@@ -222,7 +219,6 @@ export const cardReducer = (state: any, action: any) => {
 								// Is an empty container, can put any card there
 								const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
 									moveState.containers[2][i].cardContainer.push(...addToContainer);
-									console.log(action.payload.StartingContainer[0], state.containers[0][0].cardContainer, moveState.containers[4][0].cardContainer)
 									if (action.payload.StartingContainer[0] === 0 && state.containers[0][0].cardContainer.length === 0 && state.containers[4][0].cardContainer.length > 0) {
 										moveState.containers[0][0].cardContainer = moveState.containers[4][0].cardContainer.splice(-1);
 									}

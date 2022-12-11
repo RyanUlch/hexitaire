@@ -86,6 +86,7 @@ const PlayCard = (props: {
 	const attemptCardDrop = (e: any) => {
 		if (e.target) {
 			const cardDropLocation = e.target.getBoundingClientRect();
+			console.log(props.position);
 			dispatch({
 				type: 'MOVECARD',
 				payload: {

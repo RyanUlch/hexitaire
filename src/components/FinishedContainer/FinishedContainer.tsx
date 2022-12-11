@@ -6,7 +6,7 @@ const FinishedContainer = (props: {containerNum: number}) => {
 	const {state, dispatch} = useContext(AppContext);
 	const [bounds, setBounds] = useState({left: 0, top: 0});
 	useEffect(() => {
-		const getBounds = document.querySelector(String(`#c${props.containerNum}`))?.getBoundingClientRect();
+		const getBounds = document.querySelector(String(`#f${props.containerNum}`))?.getBoundingClientRect();
 		console.log()
 		if (getBounds) {
 			dispatch({
@@ -29,10 +29,10 @@ const FinishedContainer = (props: {containerNum: number}) => {
 	useEffect(()=> {
 		console.log(state.containers[3][props.containerNum].cardContainer.length)
 		setContainerCount((state.containers[3][props.containerNum].cardContainer.length-1));
-	}, [state]);
+	}, [state.containers[3][props.containerNum].cardContainer.length]);
 
 	return (
-		<div id={`c${props.containerNum}`} className='container'>
+		<div id={`f${props.containerNum}`} key={`f${props.containerNum}`} className='container'>
 			<PlayCard
 				parentPosition={[bounds.left, bounds.top]}
 				container={[3, props.containerNum]}
@@ -41,7 +41,7 @@ const FinishedContainer = (props: {containerNum: number}) => {
 				showOne={true}
 				zIndex={1}
 			/>
-			{/* {containerCount-1 >= 0 ?
+			{containerCount-1 >= 0 ?
 				<PlayCard
 					parentPosition={[bounds.left, bounds.top]}
 					container={[3, props.containerNum]}
@@ -51,7 +51,7 @@ const FinishedContainer = (props: {containerNum: number}) => {
 					zIndex={0}
 				/>
 				: <></>
-			} */}
+			}
 		</div>
 	)
 }
