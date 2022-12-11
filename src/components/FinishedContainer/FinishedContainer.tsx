@@ -24,9 +24,10 @@ const FinishedContainer = (props: {containerNum: number}) => {
 		}
 	}, []);
 
-	const [containerCount, setContainerCount] = useState((state.containers[3][props.containerNum].cardContainer.length > 0) ? 0 : -1)
+	const [containerCount, setContainerCount] = useState(state.containers[3][props.containerNum].cardContainer.length -1)
 		
 	useEffect(()=> {
+		console.log(state.containers[3][props.containerNum].cardContainer.length)
 		setContainerCount((state.containers[3][props.containerNum].cardContainer.length-1));
 	}, [state]);
 
@@ -40,6 +41,17 @@ const FinishedContainer = (props: {containerNum: number}) => {
 				showOne={true}
 				zIndex={1}
 			/>
+			{/* {containerCount-1 >= 0 ?
+				<PlayCard
+					parentPosition={[bounds.left, bounds.top]}
+					container={[3, props.containerNum]}
+					position={containerCount-1}
+					moves={state.moves}
+					showOne={true}
+					zIndex={0}
+				/>
+				: <></>
+			} */}
 		</div>
 	)
 }
