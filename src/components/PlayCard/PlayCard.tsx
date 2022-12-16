@@ -17,7 +17,6 @@ const PlayCard = (props: {
 	const [position, setPosition] = useState({left: state.containers[props.container[0]][props.container[1]].containerDisplay[0], top: 0});
 	//const [position, setPosition] = useState({left: props.parentPosition[0], top: 0});
 
-	const [moved, setMoved] = useState(false);
 	const [zIndex, setZIndex] = useState(props.zIndex);
 //console.log(state.containers[props.container[0]][props.container[1]].cardContainer, props.position);
 	let cardInfo = (!state.containers[props.container[0]][props.container[1]].cardContainer[props.position]) 
@@ -86,7 +85,6 @@ const PlayCard = (props: {
 	const attemptCardDrop = (e: any) => {
 		if (e.target) {
 			const cardDropLocation = e.target.getBoundingClientRect();
-			console.log(props.position);
 			dispatch({
 				type: 'MOVECARD',
 				payload: {
@@ -103,6 +101,7 @@ const PlayCard = (props: {
 	useEffect(()=> {
 		const element = ref.current;
 		let canMove = true;
+		let isMoving = false;
 		if (element) {
 			element.onmousedown = (e: Event) => {
 				e = e || window.event;
@@ -114,7 +113,7 @@ const PlayCard = (props: {
 					setZIndex(props.zIndex);
 					if (canMove) {
 						attemptCardDrop(e);
-						setMoved((prev) => !prev);
+						isMoving = false;
 					}
 					canMove = true;
 				};
@@ -122,8 +121,8 @@ const PlayCard = (props: {
 					if (canMove) {
 						e = e || window.event;
 						e.preventDefault();
-						if (tryToMove()) {
-							setZIndex(props.zIndex+9000);
+						if (isMoving || tryToMove()) {
+							isMoving = true;
 							setPosition({
 								top: e.clientY - cardMidHeight,
 								left: e.clientX - cardMidWidth,
