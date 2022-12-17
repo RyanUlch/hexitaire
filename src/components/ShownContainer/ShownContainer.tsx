@@ -4,20 +4,30 @@ import PlayCard from '../PlayCard/PlayCard';
 import { AppContext } from '../../context/context';
 import { cardMidWidth } from '../../helpers/globals';
 
-const ShownContainer = (props: {moves: number}) => {
+const ShownContainer = (props: {moves: number, topLine: number | undefined}) => {
 	const {state, dispatch} = useContext(AppContext);
 	const [shownCards, setShownCards] = useState<JSX.Element[]>([])
 	const [bounds, setBounds] = useState({left: 0, top: 0});
 
+	// useEffect(() => {
+	// 	const getBounds = document.querySelector(String(`#shown`))?.getBoundingClientRect();
+	// 	if (getBounds) {
+	// 		setBounds({
+	// 			left: getBounds.left,
+	// 			top: getBounds.top,
+	// 		});
+	// 	}
+	// }, []);
+
 	useEffect(() => {
 		const getBounds = document.querySelector(String(`#shown`))?.getBoundingClientRect();
-		if (getBounds) {
+		if (getBounds?.left && getBounds?.top) {
 			setBounds({
 				left: getBounds.left,
 				top: getBounds.top,
-			});
+			})
 		}
-	}, []);
+	}, [props.topLine]);
 
 	useEffect(() => {
 		setShownCards(() => {
@@ -26,7 +36,7 @@ const ShownContainer = (props: {moves: number}) => {
 				cards.push(<PlayCard
 					parentPosition={[(bounds.left+(i*cardMidWidth)), bounds.top]}
 					container={[0, 0]}
-					position={i}
+					positionInContainer={i}
 					moves={props.moves}
 					showOne={true}
 					zIndex={i}
@@ -36,7 +46,7 @@ const ShownContainer = (props: {moves: number}) => {
 			cards.push(<PlayCard
 				parentPosition={[(bounds.left), bounds.top]}
 				container={[4, 0]}
-				position={state.containers[4][0].cardContainer.length-1}
+				positionInContainer={state.containers[4][0].cardContainer.length-1}
 				moves={props.moves}
 				showOne={true}
 				zIndex={-1}

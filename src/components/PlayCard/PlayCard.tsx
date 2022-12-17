@@ -2,13 +2,14 @@ import { useRef, useContext, useState, useEffect } from 'react';
 
 import { AppContext } from '../../context/context';
 import { cardMidHeight, cardMidWidth, fontSize } from '../../helpers/globals';
+import GameContainer from '../GameContainer/GameContainer';
 
 import classes from './PlayCard.module.css';
 
 const PlayCard = (props: {
 	parentPosition: number[],
 	container: number[],
-	position: number
+	positionInContainer: number
 	moves: number,
 	showOne: boolean,
 	zIndex: number,
@@ -16,10 +17,9 @@ const PlayCard = (props: {
 	const {state, dispatch} = useContext(AppContext);
 	const [position, setPosition] = useState({left: state.containers[props.container[0]][props.container[1]].containerDisplay[0], top: 0});
 	//const [position, setPosition] = useState({left: props.parentPosition[0], top: 0});
-
 	const [zIndex, setZIndex] = useState(props.zIndex);
-//console.log(state.containers[props.container[0]][props.container[1]].cardContainer, props.position);
-	let cardInfo = (!state.containers[props.container[0]][props.container[1]].cardContainer[props.position]) 
+	//const [containerPosition, setContainerPosition] = useState(0);
+	let cardInfo = (!state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer]) 
 	? {
 		suit: -1,
 		number: -1,
@@ -28,21 +28,28 @@ const PlayCard = (props: {
 	}
 	: {
 		//index: indexof(state.containers[props.container[0]][props.container[1]]
-		suit: state.containers[props.container[0]][props.container[1]].cardContainer[props.position].suit,
-		number: state.containers[props.container[0]][props.container[1]].cardContainer[props.position].number,
-		isRed: state.containers[props.container[0]][props.container[1]].cardContainer[props.position].suit < 2,
+		suit: state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer].suit,
+		number: state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer].number,
+		isRed: state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer].suit < 2,
 		//hasChildren: state.containers[props.container[0]][props.container[1]].cardContainer.length > props.position+1,
-		child: state.containers[props.container[0]][props.container[1]].cardContainer.length > props.position+1 && !props.showOne
+		child: state.containers[props.container[0]][props.container[1]].cardContainer.length > props.positionInContainer+1 && !props.showOne
 			? <PlayCard 
 				zIndex={props.zIndex+1}
 				parentPosition={[position.left, position.top]}
 				container={props.container}
-				position={props.position+1}
+				positionInContainer={props.positionInContainer+1}
 				moves={props.moves}
 				showOne={false}
 			/>
-			: <></>
+			: <></>,
 	}
+
+	const [containerPosition, setContainerPosition] = useState(props.positionInContainer);
+
+
+	useEffect(()=> {
+		setContainerPosition(props.positionInContainer)
+	}, [props.positionInContainer]);
 
 	const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
 
@@ -67,13 +74,11 @@ const PlayCard = (props: {
 
 	// Don't move card stack if it's not valid
 	const tryToMove = () => {
-		console.log('trying to move');
 		// If the Card is the last card in the stack/pile, it can always be moved
-		const container = state.containers[props.container[0]][props.container[1]].cardContainer;
-		//console.log(container.length > props.position+1);
-		if (container.length > props.position+1) {
+		let container = state.containers[props.container[0]][props.container[1]].cardContainer;
+		if (container.length > containerPosition+1 && props.container[0] !== 3) {
 			return recursiveCheck(
-				props.position,
+				containerPosition,
 				container,
 			);
 		} else {
@@ -84,14 +89,14 @@ const PlayCard = (props: {
 	// Attempt to drop the held card. If within the same container, just re-add to container
 	const attemptCardDrop = (e: any) => {
 		if (e.target) {
-			const cardDropLocation = e.target.getBoundingClientRect();
+			let cardDropLocation = e.target.getBoundingClientRect();
 			dispatch({
 				type: 'MOVECARD',
 				payload: {
 					cardTop: cardDropLocation.top+cardMidHeight,
 					cardLeft: cardDropLocation.left+cardMidWidth,
 					StartingContainer: props.container,
-					position: props.position,
+					position: props.container[0] === 3 ? state.containers[props.container[0]][props.container[1]].cardContainer.length-1: props.positionInContainer,
 				}
 			})
 		}
@@ -100,36 +105,34 @@ const PlayCard = (props: {
 	// Move Cards if Possible
 	useEffect(()=> {
 		const element = ref.current;
-		let canMove = true;
 		let isMoving = false;
 		if (element) {
 			element.onmousedown = (e: Event) => {
 				e = e || window.event;
 				e.preventDefault();
 				e.stopPropagation();
+				if (isMoving || tryToMove()) {
+					isMoving = true;
+				} else {
+					isMoving = false;
+				}
 				document.onmouseup = () => {
 					document.onmouseup = null;
 					document.onmousemove = null;
 					setZIndex(props.zIndex);
-					if (canMove) {
+					if (isMoving) {
 						attemptCardDrop(e);
 						isMoving = false;
 					}
-					canMove = true;
 				};
 				document.onmousemove = (e: any) => {
-					if (canMove) {
-						e = e || window.event;
-						e.preventDefault();
-						if (isMoving || tryToMove()) {
-							isMoving = true;
-							setPosition({
-								top: e.clientY - cardMidHeight,
-								left: e.clientX - cardMidWidth,
-							})
-						} else {
-							canMove = false;
-						}
+					e = e || window.event;
+					e.preventDefault();
+					if (isMoving) {
+						setPosition({
+							top: e.clientY - cardMidHeight,
+							left: e.clientX - cardMidWidth,
+						})
 					}
 				};
 
@@ -160,14 +163,14 @@ const PlayCard = (props: {
 	useEffect(()=> {
 		// Set the initial position once the column info available
 		setPosition({
-			top: props.position*2 * parseFloat(getComputedStyle(document.documentElement).fontSize),
+			top: props.positionInContainer*2 * parseFloat(getComputedStyle(document.documentElement).fontSize),
 			left: state.containers[props.container[0]][props.container[1]].containerDisplay[0]
 		});
 	}, []);
 
 	// Move with the parent element
 	useEffect(()=> {
-		const addition = ((props.position > 0) && !props.showOne) ? (2*fontSize) : 0;
+		const addition = ((props.positionInContainer > 0) && !props.showOne) ? (2*fontSize) : 0;
 		setPosition({
 				left: props.parentPosition[0],
 				top: props.parentPosition[1] + addition,
@@ -177,7 +180,12 @@ const PlayCard = (props: {
 
 	return (
 		<div ref={ref} style={{zIndex: zIndex, left: position.left, top: position.top}} className={cardInfo.number!==-1 ? `${classes.PlayCard} ${cardInfo.isRed ? classes.red : classes.black}`: classes.empty}>
-			{cardInfo.number!==-1 ? <p className={classes.cardText}>{numberSymbol()}{suitSymbol()}</p> : <></>}
+			{cardInfo.number!==-1 
+			? <div className={classes.cardText}>
+				<p className={classes.top}>{numberSymbol()}{suitSymbol()}</p>
+				<p className={classes.middle}>{numberSymbol()}{suitSymbol()}</p>
+				<p className={classes.bottom}>{numberSymbol()}{suitSymbol()}</p>
+			</div> : <></>}
 			{cardInfo.child}
 		</div>
 	);

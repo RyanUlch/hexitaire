@@ -4,18 +4,36 @@
 	color: white;
 	position: fixed;
 	border-radius: var(--borderRadius);
+	border: var(--border);
+	user-select: none;
 }
 
 .red {
 	background-color: var(--redColor);
-	border: var(--border) var(--blackColor);
 }
 
 .black {
 	background-color: var(--blackColor);
-	border: var(--border) var(--redColor);
 }
 
 .cardText {
-	user-select: none;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: calc(var(--cardHeight) - (var(--borderWidth)*2));
+	padding: 0 3px;
+}
+
+.top {
+	align-self: flex-start;
+}
+
+.middle {
+	align-self: center;
+	font-size: calc(var(--fontSize)*2.5);
+}
+
+.bottom {
+	align-self: flex-end;
+	transform: scale(-1, -1);
 }

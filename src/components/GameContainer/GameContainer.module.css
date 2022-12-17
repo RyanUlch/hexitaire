@@ -1,6 +1,7 @@
 .containers {
 	display: flex;
 	flex-direction: row;
+	width: 100%;
 }
 
 .containers > div {
@@ -23,4 +24,39 @@
 .gameContainer {
 	display: flex;
 	flex-direction: column;
+	min-width: 450px;
+	width: 100vw;
+}
+
+body {
+	background-image: url('/public/images/background.jpg');
+	background-repeat: repeat;
+	background-position: center;
+	background-size:contain;
+	background-color: #C68946;
+}
+
+.headerImage {
+	width: 100%;
+}
+
+.moves {
+	text-align: center;
+}
+
+.easy {
+	background-color: rgb(99, 199, 0);
+}
+
+.medium {
+	background-color: rgb(221, 127, 39);
+}
+
+.hard {
+	background-color: rgb(194, 31, 31);
+}
+
+.attribute {
+	position: fixed;
+	bottom: 0;
 }

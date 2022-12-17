@@ -1,12 +1,15 @@
 :root {
-	--cardWidth: 5rem;
-	--cardHeight: 7rem;
+	--cardWidth: calc(100vw / 8);
+	--cardHeight: calc(var(--cardWidth) * 1.4);
 
 	--borderRadius: 5px;
-	--border: 2px solid;
+	--borderWidth: 2px;
+	--border: var(--borderWidth) solid black;
 
-	--blackColor: black;
-	--redColor: red;
+	--blackColor: #11E083;
+	--redColor: #E21284;
+
+	--fontSize: clamp(0.5rem, 2vw, 2rem);
 }
 
 div {
@@ -14,7 +17,7 @@ div {
 }
 
 .container {
-	border: var(--border grey);
-	width: 100%;
-	height: 100%;
+	/* border: var(--border grey); */
+	/* width: 100%; */
+	/* height: 100%; */
 }

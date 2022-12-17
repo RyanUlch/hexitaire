@@ -1,7 +1,6 @@
 import { shuffleDeck } from './context';
 
 const dropCheckInPlay: (lVal: {number: number, suit: number}, rVal: {number: number, suit: number}, state: any) => boolean = (lVal, rVal, state) => {
-	console.log(lVal, rVal);
 	return ((lVal.number-1 === rVal.number) && lVal.suit < 2 !== rVal.suit < 2) ? true : false;
 }
 
@@ -24,7 +23,6 @@ export const cardReducer = (state: any, action: any) => {
 			const newContainer = state;
 			newContainer.difficulty = action.payload.difficulty;
 			const deck = shuffleDeck();
-			console.log(deck);
 			newContainer.containers = [
 				[
 					{
@@ -140,9 +138,9 @@ export const cardReducer = (state: any, action: any) => {
 			return {...midLineState};
 
 		case 'MOVECARD':		// payload: {cardTop: number, cardLeft: number, StartingContainer: number[]}
-			const cardTop = action.payload.cardTop;
-			const cardLeft = action.payload.cardLeft;
-			const moveState = state;
+			let cardTop = action.payload.cardTop;
+			let cardLeft = action.payload.cardLeft;
+			let moveState = state;
 			if (cardTop < moveState.middleLine) {
 				const containers = state.containers[3];
 				for (let i = 0; i < containers.length; ++i) {
@@ -156,7 +154,7 @@ export const cardReducer = (state: any, action: any) => {
 							if(containers[i].cardContainer.length > 0) {
 								// check if the card being dropped is valid
 								if (dropCheckFinished(moveState.containers[3][i].cardContainer.slice(-1)[0], moveState.containers, [action.payload.StartingContainer[0], action.payload.StartingContainer[1]], action.payload.StartingContainer[0] === 3 ? moveState.containers[3][action.payload.StartingContainer[1]].cardContainer.length-1 : action.payload.position)) {
-									const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
+									const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.StartingContainer[0] !== 3 ? action.payload.position : -1);
 									moveState.containers[3][i].cardContainer.push(...addToContainer);
 									if (action.payload.StartingContainer[0] === 0 && state.containers[0][0].cardContainer.length === 0 && state.containers[4][0].cardContainer.length > 0) {
 										moveState.containers[0][0].cardContainer = moveState.containers[4][0].cardContainer.splice(-1);
@@ -171,9 +169,8 @@ export const cardReducer = (state: any, action: any) => {
 								// Card being dropped is the 0 card to an empty container.
 								if (moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.length === action.payload.position+1) {
 									// card has no children, and can be added to finished container
-									const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
+									const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.StartingContainer[0] !== 3 ? action.payload.position : -1);
 									moveState.containers[3][i].cardContainer.push(...addToContainer);
-									console.log(action.payload.StartingContainer[0], state.containers[0][0].cardContainer, moveState.containers[4][0].cardContainer)
 									if (action.payload.StartingContainer[0] === 0 && state.containers[0][0].cardContainer.length === 0 && state.containers[4][0].cardContainer.length > 0) {
 										moveState.containers[0][0].cardContainer = moveState.containers[4][0].cardContainer.splice(-1);
 									}
