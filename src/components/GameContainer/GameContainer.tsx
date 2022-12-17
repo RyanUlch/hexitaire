@@ -21,7 +21,7 @@ const GameContainer = () => {
 			type: 'SETMIDDLELINE',
 			payload: middleLineElement?.getBoundingClientRect().top,
 		})
-		setTopLine( middleLineElement?.getBoundingClientRect().top)
+		setTopLine(middleLineElement?.getBoundingClientRect().top)
 	}, [windowSize.height, windowSize.width]);
 
 	useEffect(() => {

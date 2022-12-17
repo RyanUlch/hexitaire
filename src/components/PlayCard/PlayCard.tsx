@@ -14,10 +14,11 @@ const PlayCard = (props: {
 	showOne: boolean,
 	zIndex: number,
 }) => {
+	const [zIndex, setZIndex] = useState(props.zIndex);
+
 	const {state, dispatch} = useContext(AppContext);
 	const [position, setPosition] = useState({left: state.containers[props.container[0]][props.container[1]].containerDisplay[0], top: 0});
 	//const [position, setPosition] = useState({left: props.parentPosition[0], top: 0});
-	const [zIndex, setZIndex] = useState(props.zIndex);
 	//const [containerPosition, setContainerPosition] = useState(0);
 	let cardInfo = (!state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer]) 
 	? {
@@ -74,8 +75,10 @@ const PlayCard = (props: {
 
 	// Don't move card stack if it's not valid
 	const tryToMove = () => {
+		
 		// If the Card is the last card in the stack/pile, it can always be moved
 		let container = state.containers[props.container[0]][props.container[1]].cardContainer;
+		console.log(container.length, containerPosition);
 		if (container.length > containerPosition+1 && props.container[0] !== 3) {
 			return recursiveCheck(
 				containerPosition,
