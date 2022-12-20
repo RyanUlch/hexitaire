@@ -1,6 +1,16 @@
 :root {
-	--cardWidth: calc(100vw / 8);
-	--cardHeight: calc(var(--cardWidth) * 1.4);
+	--gameContainerWidthMin: 400px;
+	--gameContainerWidth: 100vw;
+	--gameContainerWidthMax: 800px;
+	
+	--cardWidthMin: calc(var(--gameContainerWidthMin) / 8);
+	--cardWidth: calc(var(--gameContainerWidth) / 8);
+	--cardWidthMax: calc(var(--gameContainerWidthMax) / 8);
+
+	--cardHeightMin: calc((var(--gameContainerWidthMin) / 8) * 1.4);
+	--cardHeight: calc((var(--gameContainerWidth) / 8) * 1.4);
+	--cardHeightMax: calc((var(--gameContainerWidthMax) / 8) * 1.4);
+
 
 	--borderRadius: 5px;
 	--borderWidth: 2px;
@@ -9,7 +19,9 @@
 	--blackColor: #11E083;
 	--redColor: #E21284;
 
-	--fontSize: clamp(0.5rem, 2vw, 2rem);
+	--borderColor: black;
+	--invalidColor: grey;
+	--fontSize: clamp(0rem, 2vw, 2rem);
 }
 
 div {

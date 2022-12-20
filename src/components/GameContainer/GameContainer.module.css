@@ -1,44 +1,52 @@
 .containers {
 	display: flex;
 	flex-direction: row;
-	width: 100%;
+	/* width: 100%; */
 }
 
 .containers > div {
+	min-width: var(--cardWidthMin);
 	width: var(--cardWidth);
+	max-width: var(--cardWidthMax);
 	border: 2px solid black;
 }
 
 .top {
 	display: flex;
 	flex-direction: row;
-	width: 100vw;
+	min-height: var(--cardHeightMin);
 	height: var(--cardHeight);
-
+	max-height: var(--cardHeightMax);
 }
 
 .bottom {
-	height: 50vh;
+	height: 100%;
 }
 
 .gameContainer {
 	display: flex;
 	flex-direction: column;
-	min-width: 450px;
-	width: 100vw;
+	min-width: var(--gameContainerWidthMin);
+	width: var(--gameContainerWidth);
+	max-width: var(--gameContainerWidthMax);
+	margin: 0 auto;
+	height: 100vh;
 }
 
 body {
 	background-image: url('/public/images/background.jpg');
 	background-repeat: repeat;
 	background-position: center;
-	background-size:contain;
+	background-size:auto;
 	background-color: #C68946;
+
+	overflow-x: hidden;
 }
 
 .headerImage {
 	width: 100%;
-	height: calc(100vw * 0.20390625);
+	max-height: calc(var(--gameContainerWidthMax) * 0.20390625);
+	height: calc(var(--gameContainerWidth) * 0.20390625);
 }
 
 .moves {
@@ -57,7 +65,14 @@ body {
 	background-color: rgb(194, 31, 31);
 }
 
-.attribute {
-	position: fixed;
-	bottom: 0;
+.name {
+	
+}
+
+.footer {
+	
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 0 20px;
 }

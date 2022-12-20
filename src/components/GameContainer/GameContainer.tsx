@@ -71,8 +71,11 @@ const GameContainer = () => {
 			<button className={classes.easy} onClick={newGame} value={1}>New Game (Easy)</button>
 			<button className={classes.medium} onClick={newGame} value={3}>New Game (Medium)</button>
 			<button className={classes.hard} onClick={newGame} value={5}>New Game (Hard)</button>
-			<p className={classes.moves}>Moves: {state.moves}</p>
-			<p className={classes.attribute}>Background Image by <a href="https://www.freepik.com/free-photo/top-view-felt-fabric-texture_27640942.htm#query=felt%20texture&position=40&from_view=search&track=sph">Freepik</a></p>
+			<footer className={classes.footer}>
+				<p className={classes.attribute}>Background Image by <a href="https://www.freepik.com/free-photo/top-view-felt-fabric-texture_27640942.htm#query=felt%20texture&position=40&from_view=search&track=sph">Freepik</a></p>
+				<p className={classes.moves}>Moves: {state.moves}</p>
+				<p className={classes.name}>A <a href='https:RyanUlch.com'><span>Ryan Ulch</span></a> website</p>
+			</footer>
 		</div>
 	)
 }

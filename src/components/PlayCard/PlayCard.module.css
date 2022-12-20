@@ -1,6 +1,12 @@
 .PlayCard {
+	min-height: var(--cardHeightMin);
 	height: var(--cardHeight);
+	max-height: var(--cardHeightMax);
+
+	min-width: var(--cardWidthMin);
 	width: var(--cardWidth);
+	max-width: var(--cardWidthMax);
+
 	color: white;
 	position: fixed;
 	border-radius: var(--borderRadius);
@@ -21,6 +27,7 @@
 	flex-direction: column;
 	justify-content: space-between;
 	height: calc(var(--cardHeight) - (var(--borderWidth)*2));
+	max-height: calc(var(--cardHeightMax) - (var(--borderWidth)*2));
 	padding: 0 3px;
 }
 
@@ -30,7 +37,7 @@
 
 .middle {
 	align-self: center;
-	font-size: calc(var(--fontSize)*2.5);
+	font-size: clamp(1.4rem, calc(var(--fontSize)*2.5), 3rem);
 }
 
 .bottom {
