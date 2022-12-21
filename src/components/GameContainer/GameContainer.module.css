@@ -11,12 +11,15 @@
 	border: 2px solid black;
 }
 
+
+
 .top {
 	display: flex;
 	flex-direction: row;
-	min-height: var(--cardHeightMin);
-	height: var(--cardHeight);
-	max-height: var(--cardHeightMax);
+	/* min-height: var(--cardHeight); */
+	height: clamp(var(--cardHeightMin), var(--cardHeight),var(--cardHeightMax))
+	/* height: var(--cardHeightMax); */
+	/* max-height: var(--cardHeightMax); */
 }
 
 .bottom {

@@ -8,9 +8,15 @@
 	max-width: var(--cardWidthMax);
 
 	color: white;
-	position: fixed;
+	position:fixed;
 	border-radius: var(--borderRadius);
 	user-select: none;
+
+}
+
+.PlayCard:active {
+	z-index: 99 !important;
+
 }
 
 .valid {
@@ -20,6 +26,15 @@
 
 .invalid {
 	border: var(--border) var(--invalidColor);
+	color: var(--invalidColor);
+}
+
+.invalid.red {
+	background-color: var(--redInvalidColor);
+}
+
+.invalid.black {
+	background-color: var(--blackInvalidColor);
 
 }
 

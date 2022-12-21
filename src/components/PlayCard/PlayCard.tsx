@@ -57,38 +57,38 @@ const PlayCard = (props: {
 
 	// Don't allow movement if every other card are not opposite color suits
 	// And don't allow movement if the entire stack is not in descending order
-	const recursiveCheck: (index: number, container: any) => boolean = (index,container) => {
-		const lVal = container[index];
-		const rVal = container[index+1];
-		if ((lVal.number-1 === rVal.number) && lVal.suit < 2 !== rVal.suit < 2) {
-			if (container.length > index+2) {
-				return recursiveCheck(
-					index+1,
-					container,
-				);
-			} else {
-				return true;
-			}
-		} else {
-			return false;
-		}
-	}
+	// const recursiveCheck: (index: number, container: any) => boolean = (index,container) => {
+	// 	const lVal = container[index];
+	// 	const rVal = container[index+1];
+	// 	if ((lVal.number-1 === rVal.number) && lVal.suit < 2 !== rVal.suit < 2) {
+	// 		if (container.length > index+2) {
+	// 			return recursiveCheck(
+	// 				index+1,
+	// 				container,
+	// 			);
+	// 		} else {
+	// 			return true;
+	// 		}
+	// 	} else {
+	// 		return false;
+	// 	}
+	// }
 
-	// Don't move card stack if it's not valid
-	const tryToMove = () => {
+	// // Don't move card stack if it's not valid
+	// const tryToMove = () => {
 		
-		// If the Card is the last card in the stack/pile, it can always be moved
-		let container = state.containers[props.container[0]][props.container[1]].cardContainer;
-		//console.log(container.length, containerPosition);
-		if (container.length > containerPosition+1 && props.container[0] !== 3) {
-			return recursiveCheck(
-				containerPosition,
-				container,
-			);
-		} else {
-			return true;
-		}
-	}
+	// 	// If the Card is the last card in the stack/pile, it can always be moved
+	// 	let container = state.containers[props.container[0]][props.container[1]].cardContainer;
+	// 	//console.log(container.length, containerPosition);
+	// 	if (container.length > containerPosition+1 && props.container[0] !== 3) {
+	// 		return recursiveCheck(
+	// 			containerPosition,
+	// 			container,
+	// 		);
+	// 	} else {
+	// 		return true;
+	// 	}
+	// }
 
 	// Attempt to drop the held card. If within the same container, just re-add to container
 	const attemptCardDrop = (e: any) => {
@@ -207,7 +207,8 @@ const PlayCard = (props: {
 // console.log(props.container[1], state.containers[props.container[0]][props.container[1]]);
 	//}
 	return (
-		<div ref={ref} style={{zIndex: zIndex, left: position.left, top: position.top}} className={cardInfo.number!==-1 ? `${classes.PlayCard} ${state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer ? classes.valid : classes.invalid} ${cardInfo.isRed ? classes.red : classes.black}`: classes.empty}>
+
+		<div ref={ref} style={{zIndex: props.zIndex, left: position.left, top: position.top}} className={cardInfo.number!==-1 ? `${classes.PlayCard} ${state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer ? classes.valid : classes.invalid} ${cardInfo.isRed ? classes.red : classes.black}`: classes.empty}>
 			{cardInfo.number!==-1 
 			? <div className={classes.cardText}>
 				<p className={classes.top}>{numberSymbol()}{suitSymbol()}</p>

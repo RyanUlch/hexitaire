@@ -17,10 +17,12 @@
 	--border: var(--borderWidth) solid;
 
 	--blackColor: #11E083;
+	--blackInvalidColor: #086b3f;
 	--redColor: #E21284;
+	--redInvalidColor: #750b46;
 
 	--borderColor: black;
-	--invalidColor: grey;
+	--invalidColor: rgb(121, 121, 121);
 	--fontSize: clamp(0rem, 2vw, 2rem);
 }
 
@@ -28,8 +30,3 @@ div {
 	margin: 0;
 }
 
-.container {
-	/* border: var(--border grey); */
-	/* width: 100%; */
-	/* height: 100%; */
-}
