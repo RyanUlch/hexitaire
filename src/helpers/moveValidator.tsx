@@ -1,6 +1,7 @@
 export const validateAutoMove = (state: any, container: number[], position: number) => {
 	const card = state.containers[container[0]][container[1]].cardContainer[position];
 
+	// If the clicked card is the 0th card, find the first open finished container, place it there
 	if (card.number === 0) {
 		for (let i = 0; i < 4; ++i) {
 			if (state.containers[3][i].cardContainer.length === 0) {
@@ -14,6 +15,8 @@ export const validateAutoMove = (state: any, container: number[], position: numb
 			}
 		}
 	}
+
+	// Check all finished containers first, if there is a spot with that cards suit and is the next number, place it there
 	for (let i = 0; i < 4; ++i) {
 		if (state.containers[3][i].cardContainer.length > 0) {
 			const finCard = state.containers[3][i].cardContainer[state.containers[3][i].cardContainer.length-1];
@@ -29,6 +32,7 @@ export const validateAutoMove = (state: any, container: number[], position: numb
 		}
 	}
 
+	// If it is not ready to be sent to finished container, look through the top cards of each InPlay container to see if it is allowed within that stack
 	const emptyContainer = [];
 	for (let i = 0; i < 7; ++i) {
 		if (state.containers[2][i].cardContainer.length > 0) {
@@ -46,6 +50,8 @@ export const validateAutoMove = (state: any, container: number[], position: numb
 			emptyContainer.push(i);
 		}
 	}
+
+	// If the card is not able to be allowed in any container, but there was a free spot in an InPlay container, place it there
 	if (emptyContainer.length > 0) {
 		// return container info
 		return {
@@ -55,41 +61,68 @@ export const validateAutoMove = (state: any, container: number[], position: numb
 			position: position,
 		}
 	}
-	// return failed number
+
+	// Finally, there is no valid spot for the card to go, and should not be moved at all, send an object that indicated there is no valid spot (position: -1)
 	return {
 		position: -1,
 	}
+}
 
 
+export const autoFinish = (state: any) => {
+	const usedState = structuredClone(state);
+		
+	const finishSteps = [];
 
+	const InPlayLeft = [
+		usedState.containers[2][0].cardContainer.length,
+		usedState.containers[2][1].cardContainer.length,
+		usedState.containers[2][2].cardContainer.length,
+		usedState.containers[2][3].cardContainer.length,
+		usedState.containers[2][4].cardContainer.length,
+		usedState.containers[2][5].cardContainer.length,
+		usedState.containers[2][6].cardContainer.length,
+	];
 
-	// for (let i = 3; i > 1; --i) {
-	// 	for (let j = 0; j < state.containers[i].length; ++j) {
-	// 		if (state.containers[i][j].cardContainer.length > 0) {
-	// 			const endCard = state.containers[i][j].cardContainer.slice(-1)[0];
-	// 			console.log(endCard, action.payload.card);
-	// 			if (endCard.number === action.payload.card.number+1) {
-	// 				console.log('matched number')
-	// 				if (i === 3 && state.containers[action.payload.container[0]][action.payload.container[1]].cardContainer.length-1 === action.payload.position && (endCard.suit === action.payload.card.suit)) {
-	// 					console.log('Valid Drop in Finished')
-	// 				} else if (i === 2 && ((endCard.suit<2) !== (action.payload.card.suit<2))) {
-	// 					console.log('valid drop in inplay');
-	// 					console.log(i, j);
-	// 					// const newCards = 
-	// 					//moveState.containers[action.payload.container[0]][action.payload.container[1]].cardContainer.splice(action.payload.position);
-	// 					//containers[action.payload.container[0]][action.payload.container[1]].validFrom = containerCheck(containers[action.payload.container[0]][action.payload.container[1]]);
-	// 					state.containers[i][j].cardContainer.push(containers[action.payload.container[0]][action.payload.container[1]].cardContainer.slice(action.payload.position));
-	// 					state.containers[i][j].validFrom = containerCheck(state.containers[i][j]);
-	// 					return {
-	// 						...moveState,
-	// 						containers: [...containers],
-	// 						moves: moveState.moves+1,
-	// 					};
-	// 				}
-	// 			}
-	// 		} else if (i === 2) {
-	// 			emptyContainer.push(j);
-	// 		}
-	// 	}
-	// }
+	let totalLeft = 0;
+
+	for (let i = 0; i < InPlayLeft.length; ++i) {
+		totalLeft += InPlayLeft[i];
+	}
+
+	const finishedTopCard = [
+		usedState.containers[3][0].cardContainer.length-1,
+		usedState.containers[3][1].cardContainer.length-1,
+		usedState.containers[3][2].cardContainer.length-1,
+		usedState.containers[3][3].cardContainer.length-1,
+	]
+
+	for (let i = totalLeft; i > -1; --i) {
+		console.log(i, totalLeft);
+		let minimum = Math.min(...finishedTopCard);
+		console.log(minimum)
+		let finishedIndex = finishedTopCard.findIndex((topCard) => {return topCard === minimum});
+		console.log(finishedIndex);
+		let container = {...usedState.containers[3][finishedIndex]};
+		console.log(container);
+		let cardInfo = {...container.cardContainer[container.cardContainer.length-1]};
+		console.log(cardInfo);
+		for (let j = 0; j < 8; ++j) {
+			console.log(j);
+			
+			if (usedState.containers[2][j].cardContainer.length > 0 && usedState.containers[2][j].cardContainer[usedState.containers[2][j].cardContainer.length-1].suit === cardInfo.suit && usedState.containers[2][j].cardContainer[usedState.containers[2][j].cardContainer.length-1].number === cardInfo.number+1) {
+				finishSteps.push({
+					cardTop: usedState.middleLine-1,
+					cardLeft: container.containerDisplay[0]+1,
+					StartingContainer: [2, j],
+					position: usedState.containers[2][j].cardContainer.length-1,
+				});
+				usedState.containers[2][j].cardContainer.splice(-1);
+				usedState.containers[3][finishedIndex].cardContainer.push({number: cardInfo.number+1, suit: cardInfo.suit});
+				finishedTopCard[finishedIndex] += 1;
+				break;
+			}
+		}
+	}
+	return finishSteps;
 }

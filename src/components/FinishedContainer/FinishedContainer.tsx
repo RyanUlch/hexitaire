@@ -23,23 +23,9 @@ const FinishedContainer = (props: {containerNum: number, topLine: number | undef
 		}
 	}, [props.topLine]);
 
-	// useEffect(() => {
-	// 	const getBounds = document.querySelector(String(`#f${props.containerNum}`))?.getBoundingClientRect();
-		
-	// 	if (getBounds?.left && getBounds?.top) {
-	// 		setBounds({
-	// 			left: getBounds.left,
-	// 			top: getBounds.top,
-	// 		});
-	// 	}
-	// },[props.topLine]);
-
-	//const [containerCount, setContainerCount] = useState(state.containers[3][props.containerNum].cardContainer.length -1)
 	const [cardSet, setCardSet] = useState(<></>);
 
 	useEffect(()=> {
-		//.log(state.containers[3][props.containerNum].cardContainer.length)
-		//setContainerCount((state.containers[3][props.containerNum].cardContainer.length-1));
 		setCardSet((prevState) => {
 			if (state.containers[3][props.containerNum].cardContainer.length > 0) {
 				return (
@@ -71,7 +57,7 @@ const FinishedContainer = (props: {containerNum: number, topLine: number | undef
 			}
 		}
 	);
-	}, [state]);
+	}, [state.containers[3][props.containerNum].cardContainer.length]);
 
 	return (
 		<div id={`f${props.containerNum}`} key={`f${props.containerNum}`} className='container'>

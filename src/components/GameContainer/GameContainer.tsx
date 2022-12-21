@@ -6,7 +6,7 @@ import InPlayContainer from '../InPlayContainer/InPlayContainer';
 import { AppContext } from '../../context/context';
 import FinishedContainer from '../FinishedContainer/FinishedContainer';
 import ShownContainer from '../ShownContainer/ShownContainer';
-
+import { autoFinish } from '../../helpers/moveValidator';
 
 const GameContainer = () => {
 	const {state, dispatch} = useContext(AppContext);
@@ -34,7 +34,17 @@ const GameContainer = () => {
 			// If canWin is still true, the user has one and it can be automatically put into finished container
 			if (canWin) {
 				// TODO: change pop-up to ask if they want to automatically finish
-				alert('You Win!');
+				const toComplete = window.confirm('All Cards are free, would you like to auto complete?');
+				if (toComplete) {
+					const finishSteps = autoFinish(state);
+					for (let i = 0; i < finishSteps.length; ++i) {
+						dispatch({
+							type: 'MOVECARD',
+							payload: finishSteps[i],
+						});
+					}
+					setHasWon(true);
+				}
 			}
 		}
 	}, [state.moves]);
