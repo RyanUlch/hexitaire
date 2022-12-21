@@ -3,6 +3,7 @@ import { useRef, useContext, useState, useEffect } from 'react';
 import { AppContext } from '../../context/context';
 import { cardMidHeight, cardMidWidth, fontSize } from '../../helpers/globals';
 import GameContainer from '../GameContainer/GameContainer';
+import { validateAutoMove } from '../../helpers/moveValidator';
 
 import classes from './PlayCard.module.css';
 
@@ -78,7 +79,7 @@ const PlayCard = (props: {
 		
 		// If the Card is the last card in the stack/pile, it can always be moved
 		let container = state.containers[props.container[0]][props.container[1]].cardContainer;
-		console.log(container.length, containerPosition);
+		//console.log(container.length, containerPosition);
 		if (container.length > containerPosition+1 && props.container[0] !== 3) {
 			return recursiveCheck(
 				containerPosition,
@@ -110,11 +111,34 @@ const PlayCard = (props: {
 		const element = ref.current;
 		let isMoving = false;
 		if (element) {
+
+			element.ondblclick = (e: Event) => {
+				console.log('auto begin')
+				e = e || window.event;
+				e.preventDefault();
+				e.stopPropagation();
+				//console.log(props.positionInContainer)
+				if (state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer) {
+					console.log(cardInfo)
+					const moveTo = validateAutoMove(state, props.container, props.positionInContainer);
+					if (moveTo.position > -1) {
+						console.log(moveTo);
+						console.log(state);
+						dispatch({
+							type: 'MOVECARD',
+							payload: moveTo,
+						});
+					}
+				}
+			}
+
+
 			element.onmousedown = (e: Event) => {
 				e = e || window.event;
 				e.preventDefault();
 				e.stopPropagation();
-				if (isMoving || tryToMove()) {
+				///console.log(state.containers[props.container[0]][props.container[1]])
+				if (isMoving || state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer) {
 					isMoving = true;
 				} else {
 					isMoving = false;
@@ -179,10 +203,11 @@ const PlayCard = (props: {
 				top: props.parentPosition[1] + addition,
 		});
 	}, [props.parentPosition, props.moves]);
-
-
+	//if (state.containers[props.container[0]][props.container[0]]) {
+// console.log(props.container[1], state.containers[props.container[0]][props.container[1]]);
+	//}
 	return (
-		<div ref={ref} style={{zIndex: zIndex, left: position.left, top: position.top}} className={cardInfo.number!==-1 ? `${classes.PlayCard} ${cardInfo.isRed ? classes.red : classes.black}`: classes.empty}>
+		<div ref={ref} style={{zIndex: zIndex, left: position.left, top: position.top}} className={cardInfo.number!==-1 ? `${classes.PlayCard} ${state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer ? classes.valid : classes.invalid} ${cardInfo.isRed ? classes.red : classes.black}`: classes.empty}>
 			{cardInfo.number!==-1 
 			? <div className={classes.cardText}>
 				<p className={classes.top}>{numberSymbol()}{suitSymbol()}</p>

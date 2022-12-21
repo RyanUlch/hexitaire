@@ -14,7 +14,7 @@
 
 	--borderRadius: 5px;
 	--borderWidth: 2px;
-	--border: var(--borderWidth) solid black;
+	--border: var(--borderWidth) solid;
 
 	--blackColor: #11E083;
 	--redColor: #E21284;

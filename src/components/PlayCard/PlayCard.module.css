@@ -10,8 +10,17 @@
 	color: white;
 	position: fixed;
 	border-radius: var(--borderRadius);
-	border: var(--border);
 	user-select: none;
+}
+
+.valid {
+	border: var(--border) var(--borderColor);
+	color: rgb(0, 0, 0) !important;
+}
+
+.invalid {
+	border: var(--border) var(--invalidColor);
+
 }
 
 .red {

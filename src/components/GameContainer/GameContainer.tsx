@@ -6,6 +6,8 @@ import InPlayContainer from '../InPlayContainer/InPlayContainer';
 import { AppContext } from '../../context/context';
 import FinishedContainer from '../FinishedContainer/FinishedContainer';
 import ShownContainer from '../ShownContainer/ShownContainer';
+
+
 const GameContainer = () => {
 	const {state, dispatch} = useContext(AppContext);
 	const [windowSize, setWindowSize] = useState<{width: Number, height: number}>({
@@ -14,6 +16,28 @@ const GameContainer = () => {
 	});
 
 	const [topLine, setTopLine] = useState<number | undefined>(0);
+	const [hasWon, setHasWon] = useState(false);
+
+	useEffect(() => {
+		if (!hasWon) {
+			let canWin = true;
+			// Check that each InPlay container is valid from the top of the pile, if not, Can't win yet.
+			for (let i = 0; i < state.containers[2].length; ++i) {
+				if (state.containers[2][i].validFrom !== 0) {
+					canWin = false;
+				}
+			}
+			// Check there are no more cards in the draw, hidden, or reset piles, if all fails, the user has uncovered all cards, and can win!
+			if (canWin && (state.containers[0][0].cardContainer.length > 0 || state.containers[1][0].cardContainer.length > 0 || state.containers[4][0].cardContainer.length > 0)) {
+				canWin = false;
+			}
+			// If canWin is still true, the user has one and it can be automatically put into finished container
+			if (canWin) {
+				// TODO: change pop-up to ask if they want to automatically finish
+				alert('You Win!');
+			}
+		}
+	}, [state.moves]);
 
 	useEffect(()=> {
 		const middleLineElement = document.querySelector('#MiddleLine');
