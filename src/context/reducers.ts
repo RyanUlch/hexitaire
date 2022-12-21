@@ -1,4 +1,3 @@
-import { readlink } from 'fs';
 import { shuffleDeck } from './context';
 
 const dropCheckInPlay: (lVal: {number: number, suit: number}, rVal: {number: number, suit: number}, state: any) => boolean = (lVal, rVal, state) => {
@@ -35,7 +34,6 @@ const containerCheck = (container: any) => {
 		return 0;
 	}
 }
-
 
 export const cardReducer = (state: any, action: any) => {
 	switch (action.type) {

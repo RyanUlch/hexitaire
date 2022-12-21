@@ -154,7 +154,10 @@ const PlayCard = (props: {
 
 	// Move with the parent element
 	useEffect(()=> {
-		const addition = ((props.positionInContainer > 0) && !props.showOne) ? (2*fontSize) : 0;
+		let addition = ((props.positionInContainer > 0) && !props.showOne) ? (2*fontSize) : 0;
+		if (state.containers[props.container[0]][props.container[1]].cardContainer.length > 5) {
+			addition = addition * Math.pow(0.975, state.containers[props.container[0]][props.container[1]].cardContainer.length);//(0.95 * state.containers[props.container[0]][props.container[1]].cardContainer.length);
+		}
 		setPosition({
 				left: props.parentPosition[0],
 				top: props.parentPosition[1] + addition,
