@@ -1,27 +1,26 @@
 .PlayCard {
-	min-height: var(--cardHeightMin);
+	/* min-height: var(--cardHeightMin);
 	height: var(--cardHeight);
-	max-height: var(--cardHeightMax);
+	max-height: var(--cardHeightMax); */
+	height: var(--cardHeightClamp);
 
-	min-width: var(--cardWidthMin);
+	/* min-width: var(--cardWidthMin);
 	width: var(--cardWidth);
-	max-width: var(--cardWidthMax);
+	max-width: var(--cardWidthMax); */
+	width: var(--cardWidthClamp);
 
-	color: white;
-	position:fixed;
+	position: fixed;
 	border-radius: var(--borderRadius);
 	user-select: none;
-
 }
 
 .PlayCard:active {
 	z-index: 99 !important;
-
 }
 
 .valid {
 	border: var(--border) var(--borderColor);
-	color: rgb(0, 0, 0) !important;
+	color: black !important;
 }
 
 .invalid {
@@ -50,8 +49,8 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	height: calc(var(--cardHeight) - (var(--borderWidth)*2));
-	max-height: calc(var(--cardHeightMax) - (var(--borderWidth)*2));
+	height: calc(var(--cardHeightClamp) - (var(--borderWidth)*2));
+	/* max-height: calc(var(--cardHeightClamp) - (var(--borderWidth)*2)); */
 	padding: 0 3px;
 }
 

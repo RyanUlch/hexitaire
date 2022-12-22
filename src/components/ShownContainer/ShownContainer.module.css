@@ -1,5 +1,6 @@
 .holder {
-	min-width: calc(3*var(--cardWidthMin)) !important;
+	/* min-width: calc(3*var(--cardWidthMin)) !important;
 	width: calc(3*var(--cardWidth)) !important;
-	max-width: calc(3*var(--cardWidthMax)) !important;
+	max-width: calc(3*var(--cardWidthMax)) !important; */
+	width: calc(var(--cardWidthClamp) * 3) !important;
 }

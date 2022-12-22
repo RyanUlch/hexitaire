@@ -5,9 +5,10 @@
 }
 
 .containers > div {
-	min-width: var(--cardWidthMin);
+	/* min-width: var(--cardWidthMin);
 	width: var(--cardWidth);
-	max-width: var(--cardWidthMax);
+	max-width: var(--cardWidthMax); */
+	width: var(--cardWidthClamp);
 	border: 2px solid black;
 }
 
@@ -17,10 +18,11 @@
 	display: flex;
 	flex-direction: row;
 	/* min-height: var(--cardHeight); */
-	height: clamp(var(--cardHeightMin), var(--cardHeight),var(--cardHeightMax))
-	/* height: var(--cardHeightMax); */
+	/* height: clamp(var(--cardHeightMin), var(--cardHeight),var(--cardHeightMax)) */
+	height: calc(var(--cardHeightClamp) * 1.7);
 	/* max-height: var(--cardHeightMax); */
 }
+
 
 .bottom {
 	height: 100%;
@@ -29,9 +31,10 @@
 .gameContainer {
 	display: flex;
 	flex-direction: column;
-	min-width: var(--gameContainerWidthMin);
+	/* min-width: var(--gameContainerWidthMin);
 	width: var(--gameContainerWidth);
-	max-width: var(--gameContainerWidthMax);
+	max-width: var(--gameContainerWidthMax); */
+	width: var(--gameContainerWidthClamp);
 	margin: 0 auto;
 	height: 100vh;
 }
@@ -48,8 +51,8 @@ body {
 
 .headerImage {
 	width: 100%;
-	max-height: calc(var(--gameContainerWidthMax) * 0.20390625);
-	height: calc(var(--gameContainerWidth) * 0.20390625);
+	height: calc(var(--gameContainerWidthClamp) * 0.20390625);
+	/* height: calc(var(--gameContainerWidth) * 0.20390625); */
 }
 
 .moves {
