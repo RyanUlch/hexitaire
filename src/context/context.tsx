@@ -128,22 +128,22 @@ const createStartingDeck = (): gameContainer =>  {
 				{
 					cardContainer: [],
 					containerDisplay: [0, 0],
-					validFrom: -1,
+					validFrom: 0,
 				},
 				{
 					cardContainer: [],
 					containerDisplay: [0, 0],
-					validFrom: -1,
+					validFrom: 0,
 				},
 				{
 					cardContainer: [],
 					containerDisplay: [0, 0],
-					validFrom: -1,
+					validFrom: 0,
 				},
 				{
 					cardContainer: [],
 					containerDisplay: [0, 0],
-					validFrom: -1,
+					validFrom: 0,
 				},
 			],
 			[

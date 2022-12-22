@@ -18,6 +18,8 @@ const dropCheckFinished: (lVal: {number: number, suit: number}, containers: any,
 }
 
 const containerCheck = (container: any) => {
+	console.log(container);
+
 	// If the container is already valid from the start, or if the container has one or less cards, set validFrom to 0
 	if (container.validFrom === 0 || container.cardContainer.length <= 1) {
 		return 0;
@@ -161,7 +163,7 @@ export const cardReducer = (state: any, action: any) => {
 		case 'MOVECARD': {		// payload: {cardTop: number, cardLeft: number, StartingContainer: number[]}
 			let cardTop = action.payload.cardTop;
 			let cardLeft = action.payload.cardLeft;
-			let moveState = state;
+			let moveState = {...state};
 			if (cardTop < moveState.middleLine) {
 				// Card is dropped above the middle line, can only be validly dropped into finished containers
 				const containers = state.containers[3]; // 3 = Finished Containers
@@ -169,7 +171,9 @@ export const cardReducer = (state: any, action: any) => {
 					// Check if cards are dropped within the bounds of the columns
 					if (containers[i].containerDisplay[0] < cardLeft && cardLeft < containers[i].containerDisplay[1]) {
 						if (3 === action.payload.StartingContainer[0] && i === action.payload.StartingContainer[1]) {
+							console.log('It knows!');
 							// Card is from the same container as it was dropped, reset it
+
 							return {...moveState};
 						} else {
 							// Card dropped within bounds of Finished Container

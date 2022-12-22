@@ -47,6 +47,7 @@ const GameContainer = () => {
 				}
 			}
 		}
+		console.log(state.containers)
 	}, [state.moves]);
 
 	useEffect(()=> {

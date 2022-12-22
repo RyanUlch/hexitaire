@@ -78,7 +78,7 @@ const PlayCard = (props: {
 				e = e || window.event;
 				e.preventDefault();
 				e.stopPropagation();
-				if (state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer) {
+				if (props.container[0] === 3 || state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer) {
 					console.log(cardInfo)
 					const moveTo = validateAutoMove(state, props.container, props.positionInContainer);
 					if (moveTo.position > -1) {
@@ -162,7 +162,7 @@ const PlayCard = (props: {
 				left: props.parentPosition[0],
 				top: props.parentPosition[1] + addition,
 		});
-	}, [props.parentPosition, props.moves]);
+	}, [props.parentPosition, props.moves, state]);
 
 	return (
 
