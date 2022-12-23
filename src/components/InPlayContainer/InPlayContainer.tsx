@@ -22,25 +22,7 @@ const InPlayContainer = (props: {containerNum: number, topLine: number | undefin
 				top: getBounds.top,
 			})
 		}
-	}, [props.topLine]);
-
-	// useEffect(() => {
-	// 	const getBounds = document.querySelector(String(`#c${props.containerNum}`))?.getBoundingClientRect();
-	// 	if (getBounds?.left && getBounds?.top) {
-	// 		setBounds({
-	// 			left: getBounds.left,
-	// 			top: getBounds.top,
-	// 		})
-	// 	}
-	// }, [props.topLine]);
-
-	
-
-	//const [containerCount, setContainerCount] = useState((state.containers[2][props.containerNum].cardContainer.length > 0) ? 0 : -1)
-		
-	// useEffect(()=> {
-	// 	setContainerCount((state.containers[2][props.containerNum].cardContainer.length > 0) ? 0 : -1);
-	// }, [state]);
+	}, [state.window[0], state.window[1]]);
 
 	const [cardSet, setCardSet] = useState(<></>);
 
@@ -53,7 +35,7 @@ const InPlayContainer = (props: {containerNum: number, topLine: number | undefin
 				moves={state.moves}
 				showOne={false}
 				zIndex={1}
-				//key={`${(state.containers[2][props.containerNum].cardContainer.length > 0) ? state.containers[2][props.containerNum].cardContainer[0].number+'-'+state.containers[2][props.containerNum].cardContainer[0].suit : 'InPlay'+props.containerNum}`}
+				// key={`${(state.containers[2][props.containerNum].cardContainer.length > 0) ? state.containers[2][props.containerNum].cardContainer[0].number+'-'+state.containers[2][props.containerNum].cardContainer[0].suit : 'InPlay'+props.containerNum}`}
 			/>)
 		}
 	}, [state]);

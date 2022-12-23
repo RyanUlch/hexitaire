@@ -29,6 +29,7 @@ type gameContainer = {
 	middleLine: number,
 	moves: number,
 	difficulty: number,
+	window: number[],
 }
 
 // Create cards for entire Deck in order (suits: 0-3, numbers: 0-15)
@@ -157,6 +158,7 @@ const createStartingDeck = (): gameContainer =>  {
 		middleLine: 0,
 		moves: 0,
 		difficulty: 0,
+		window: [0, 0,],
 	}
 }
 

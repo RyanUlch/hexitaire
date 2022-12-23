@@ -7,14 +7,14 @@ import { AppContext } from '../../context/context';
 import FinishedContainer from '../FinishedContainer/FinishedContainer';
 import ShownContainer from '../ShownContainer/ShownContainer';
 import { autoFinish } from '../../helpers/moveValidator';
-
+import RulesModal from '../Modal/RulesModal/RulesModal';
 const GameContainer = () => {
 	const {state, dispatch} = useContext(AppContext);
 	const [windowSize, setWindowSize] = useState<{width: Number, height: number}>({
 		width: 0,
 		height: 0,
 	});
-
+	const [isShowRulesModal, setIsShowRulesModal] = useState(false);
 	const [topLine, setTopLine] = useState<number | undefined>(0);
 	const [hasWon, setHasWon] = useState(false);
 
@@ -54,9 +54,9 @@ const GameContainer = () => {
 		const middleLineElement = document.querySelector('#MiddleLine');
 		dispatch({
 			type: 'SETMIDDLELINE',
-			payload: middleLineElement?.getBoundingClientRect().top,
+			payload: [middleLineElement?.getBoundingClientRect().top, windowSize.height, windowSize.width],
 		})
-		setTopLine(middleLineElement?.getBoundingClientRect().top)
+		// setTopLine(middleLineElement?.getBoundingClientRect().top)
 	}, [windowSize.height, windowSize.width]);
 
 	useEffect(() => {
@@ -69,7 +69,7 @@ const GameContainer = () => {
 
 		window.addEventListener("resize", handleResize);
 		handleResize();
-	  return () => window.removeEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
 	}, []);
 
 	const newGame = (event: any) => {
@@ -81,37 +81,54 @@ const GameContainer = () => {
 		})
 	}
 
+	const openRulesModal = () => {
+		setIsShowRulesModal(true);
+	}
+
+	const closeRulesModal = () => {
+		setIsShowRulesModal(false);
+	}
+
 	return (
-		<div className={classes.gameContainer}>
-			<img className={classes.headerImage} src='\images\hexitairelaidoutThin.jpg' alt='Hexitaire Logo'/>
-			<div id='TopLine' className={`${classes.containers} ${classes.top}`}>
-				<FinishedContainer containerNum={0} topLine={topLine} />
-				<FinishedContainer containerNum={1} topLine={topLine} />
-				<FinishedContainer containerNum={2} topLine={topLine} />
-				<FinishedContainer containerNum={3} topLine={topLine} />
-				<SelectionSpot moves={state.moves} />
-				<ShownContainer moves={state.moves} topLine={topLine}/>
+		<>
+			{isShowRulesModal && <RulesModal onClose={closeRulesModal}/>}
+			<div className={classes.gameContainer}>
+				<img className={classes.headerImage} src='\images\hexitairelaidoutThin.jpg' alt='Hexitaire Logo'/>
+				<div id='TopLine' className={`${classes.containers} ${classes.top}`}>
+					<FinishedContainer containerNum={0} topLine={topLine} />
+					<FinishedContainer containerNum={1} topLine={topLine} />
+					<FinishedContainer containerNum={2} topLine={topLine} />
+					<FinishedContainer containerNum={3} topLine={topLine} />
+					<SelectionSpot moves={state.moves} />
+					<ShownContainer moves={state.moves} topLine={topLine}/>
+				</div>
+				<div id='MiddleLine' />
+				<div className={`${classes.containers} ${classes.bottom}`}>		
+					<InPlayContainer containerNum={0} topLine={state.middleLine} />
+					<InPlayContainer containerNum={1} topLine={state.middleLine} />
+					<InPlayContainer containerNum={2} topLine={state.middleLine} />
+					<InPlayContainer containerNum={3} topLine={state.middleLine} />
+					<InPlayContainer containerNum={4} topLine={state.middleLine} />
+					<InPlayContainer containerNum={5} topLine={state.middleLine} />
+					<InPlayContainer containerNum={6} topLine={state.middleLine} />
+					<InPlayContainer containerNum={7} topLine={state.middleLine} />
+				</div>
+				<div className={classes.buttons}>
+					<button className={`${classes.button} ${classes.easy}`} onClick={newGame} value={1}>New Game (Easy)</button>
+					<button className={`${classes.button} ${classes.medium}`} onClick={newGame} value={3}>New Game (Medium)</button>
+					<button className={`${classes.button} ${classes.hard}`} onClick={newGame} value={5}>New Game (Hard)</button>
+				</div>
+				<div className={classes.footer}>
+					<p>What are the <span onClick={openRulesModal}>Rules</span></p>
+					<p className={classes.moves}>Moves: {state.moves}</p>
+				</div>
+				
+				<footer className={classes.footer}>
+					<p className={classes.attribute}>Background Image by <a href="https://www.freepik.com/free-photo/top-view-felt-fabric-texture_27640942.htm#query=felt%20texture&position=40&from_view=search&track=sph">Freepik</a></p>
+					<p className={classes.name}>A <a href='https:RyanUlch.com'><span>Ryan Ulch</span></a> website</p>
+				</footer>
 			</div>
-			<div id='MiddleLine' />
-			<div className={`${classes.containers} ${classes.bottom}`}>		
-				<InPlayContainer containerNum={0} topLine={state.middleLine} />
-				<InPlayContainer containerNum={1} topLine={state.middleLine} />
-				<InPlayContainer containerNum={2} topLine={state.middleLine} />
-				<InPlayContainer containerNum={3} topLine={state.middleLine} />
-				<InPlayContainer containerNum={4} topLine={state.middleLine} />
-				<InPlayContainer containerNum={5} topLine={state.middleLine} />
-				<InPlayContainer containerNum={6} topLine={state.middleLine} />
-				<InPlayContainer containerNum={7} topLine={state.middleLine} />
-			</div>
-			<button className={classes.easy} onClick={newGame} value={1}>New Game (Easy)</button>
-			<button className={classes.medium} onClick={newGame} value={3}>New Game (Medium)</button>
-			<button className={classes.hard} onClick={newGame} value={5}>New Game (Hard)</button>
-			<footer className={classes.footer}>
-				<p className={classes.attribute}>Background Image by <a href="https://www.freepik.com/free-photo/top-view-felt-fabric-texture_27640942.htm#query=felt%20texture&position=40&from_view=search&track=sph">Freepik</a></p>
-				<p className={classes.moves}>Moves: {state.moves}</p>
-				<p className={classes.name}>A <a href='https:RyanUlch.com'><span>Ryan Ulch</span></a> website</p>
-			</footer>
-		</div>
+		</>
 	)
 }
 

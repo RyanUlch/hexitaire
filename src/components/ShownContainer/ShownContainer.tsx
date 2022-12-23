@@ -27,7 +27,7 @@ const ShownContainer = (props: {moves: number, topLine: number | undefined}) => 
 				top: getBounds.top,
 			})
 		}
-	}, [props.topLine]);
+	}, [state.window[0], state.window[1]]);
 
 	useEffect(() => {
 		setShownCards(() => {

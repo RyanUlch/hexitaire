@@ -1,0 +1,28 @@
+.backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: black;
+	opacity: 0.5;
+	width: 100vw;
+	height: 100vh;
+	z-index: 4;
+}
+
+.modal {
+	background-color: var(--blackColor);
+	border: var(--border) var(--redColor);
+	box-sizing: content-box;
+	position: fixed;
+	min-width: 400px;
+	max-width: 800px;
+	width: 70vw;
+	height: 50vmin;
+	overflow-y: auto;
+	overflow-X:hidden;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	top: 50%;
+	z-index: 5;
+	border-radius: 5px;
+}

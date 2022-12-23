@@ -17,15 +17,29 @@
 .top {
 	display: flex;
 	flex-direction: row;
+	flex-wrap: nowrap;
+	/* position:static; */
+	/* top: calc(var(--gameContainerWidthClamp) * 0.20390625); */
 	/* min-height: var(--cardHeight); */
 	/* height: clamp(var(--cardHeightMin), var(--cardHeight),var(--cardHeightMax)) */
-	height: calc(var(--cardHeightClamp) * 1.7);
+	/* height: calc(var(--cardHeightClamp) * 1.7); */
+	/* height: calc(var(--cardWidthClamp) * 1.4); */
+	/* min-height: calc((50) * 1.4);
+	height: calc((100 * 1.4));
+	max-height: calc((100 * 1.4)); */
 	/* max-height: var(--cardHeightMax); */
 }
 
 
 .bottom {
 	height: 100%;
+}
+
+.buttons {
+	display: flex;
+	flex-direction: row;
+	width: var(--gameContainerWidthClamp);
+	flex-wrap: nowrap;
 }
 
 .gameContainer {
@@ -52,7 +66,6 @@ body {
 .headerImage {
 	width: 100%;
 	height: calc(var(--gameContainerWidthClamp) * 0.20390625);
-	/* height: calc(var(--gameContainerWidth) * 0.20390625); */
 }
 
 .moves {
@@ -71,12 +84,15 @@ body {
 	background-color: rgb(194, 31, 31);
 }
 
+.button {
+	width: 100%;
+}
+
 .name {
 	
 }
 
 .footer {
-	
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;

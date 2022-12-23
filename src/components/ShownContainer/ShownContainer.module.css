@@ -3,4 +3,5 @@
 	width: calc(3*var(--cardWidth)) !important;
 	max-width: calc(3*var(--cardWidthMax)) !important; */
 	width: calc(var(--cardWidthClamp) * 3) !important;
+	height: var(--cardHeightClamp) !important;
 }

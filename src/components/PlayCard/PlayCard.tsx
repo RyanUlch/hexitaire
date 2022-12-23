@@ -2,7 +2,6 @@ import { useRef, useContext, useState, useEffect } from 'react';
 
 import { AppContext } from '../../context/context';
 import { cardMidHeight, cardMidWidth, fontSize } from '../../helpers/globals';
-import GameContainer from '../GameContainer/GameContainer';
 import { validateAutoMove } from '../../helpers/moveValidator';
 
 import classes from './PlayCard.module.css';
@@ -154,6 +153,7 @@ const PlayCard = (props: {
 
 	// Move with the parent element
 	useEffect(()=> {
+		console.log(props.container[0], props.parentPosition)
 		let addition = ((props.positionInContainer > 0) && !props.showOne) ? (2*fontSize) : 0;
 		if (state.containers[props.container[0]][props.container[1]].cardContainer.length > 5) {
 			addition = addition * Math.pow(0.975, state.containers[props.container[0]][props.container[1]].cardContainer.length);//(0.95 * state.containers[props.container[0]][props.container[1]].cardContainer.length);
@@ -162,7 +162,7 @@ const PlayCard = (props: {
 				left: props.parentPosition[0],
 				top: props.parentPosition[1] + addition,
 		});
-	}, [props.parentPosition, props.moves, state]);
+	}, [{...props.parentPosition}, props.moves, state.window[0], state.window[1]]);
 
 	return (
 

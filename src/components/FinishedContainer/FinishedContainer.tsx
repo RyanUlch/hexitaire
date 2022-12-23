@@ -5,8 +5,10 @@ import PlayCard from '../PlayCard/PlayCard';
 const FinishedContainer = (props: {containerNum: number, topLine: number | undefined}) => {
 	const {state, dispatch} = useContext(AppContext);
 	const [bounds, setBounds] = useState({left: 0, top: 0});
+
 	useEffect(() => {
 		const getBounds = document.querySelector(String(`#f${props.containerNum}`))?.getBoundingClientRect();
+		console.log(getBounds);
 		if (getBounds) {
 			dispatch({
 				type: 'SETCOLUMNBOUNDS',
@@ -21,7 +23,7 @@ const FinishedContainer = (props: {containerNum: number, topLine: number | undef
 				top: getBounds.top,
 			})
 		}
-	}, [props.topLine]);
+	}, [state.window[0], state.window[1]]);
 
 	const [cardSet, setCardSet] = useState(<></>);
 

@@ -157,7 +157,8 @@ export const cardReducer = (state: any, action: any) => {
 		}
 		case 'SETMIDDLELINE': {	// payload: number
 			const midLineState = state;
-			midLineState.middleLine = action.payload;
+			midLineState.middleLine = action.payload[0];
+			midLineState.window = [action.payload[1], action.payload[2]];
 			return {...midLineState};
 		}
 		case 'MOVECARD': {		// payload: {cardTop: number, cardLeft: number, StartingContainer: number[]}
