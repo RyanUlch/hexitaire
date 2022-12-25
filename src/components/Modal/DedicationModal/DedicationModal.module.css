@@ -1,0 +1,22 @@
+.imageContainer {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-around;
+}
+
+.imageContainer > img {
+	width: 30%;
+	border-radius: var(--borderRadius);
+	border: var(--border) black;
+}
+
+.title {
+	text-decoration: underline;
+	padding: 0 0 0 5px;
+	text-align: center;
+}
+
+.center {
+	text-align: center;
+}

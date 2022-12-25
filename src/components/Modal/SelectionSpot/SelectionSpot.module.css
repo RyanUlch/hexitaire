@@ -5,9 +5,13 @@
 }
 
 .empty {
-	background-color: brown;
+	background-color: none;
 }
 
 .full {
 	background-color: lime;
+}
+
+.container {
+	border: var(--border) var(--selectionSpotColor);
 }

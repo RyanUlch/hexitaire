@@ -1,0 +1,3 @@
+.container {
+	border: var(--border) var(--finishedColor);
+}

@@ -16,7 +16,7 @@
 
 
 	--borderRadius: 5px;
-	--borderWidth: 2px;
+	--borderWidth: 3px;
 	--border: var(--borderWidth) solid;
 
 	--blackColor: #11E083;
@@ -24,9 +24,21 @@
 	--redColor: #E21284;
 	--redInvalidColor: #750b46;
 
+
+	--textColor: black;
 	--borderColor: black;
 	--invalidColor: rgb(121, 121, 121);
 	--fontSize: clamp(0rem, 2vw, 2rem);
+
+	--fontSerif: ;
+	--fontSansSerif: ;
+	--fontCursive: 'Vujahday Script', "Brush Script MT", cursive;
+
+
+	--shownContainerColor: none;
+	--selectionSpotColor: rgb(89, 0, 0);
+	--InPlayColor: black;
+	--finishedColor: rgb(0, 199, 0);
 }
 
 div {

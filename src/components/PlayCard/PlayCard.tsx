@@ -1,4 +1,5 @@
-import { useRef, useContext, useState, useEffect } from 'react';
+import { useRef, useContext, useState, useEffect, useTransition } from 'react';
+import { isConstructorDeclaration } from 'typescript';
 
 import { AppContext } from '../../context/context';
 import { cardMidHeight, cardMidWidth, fontSize } from '../../helpers/globals';
@@ -15,9 +16,12 @@ const PlayCard = (props: {
 	zIndex: number,
 }) => {
 	const [zIndex, setZIndex] = useState(props.zIndex);
-
+	const [loaded, setLoaded] = useState(false);
 	const {state, dispatch} = useContext(AppContext);
-	const [position, setPosition] = useState({left: state.containers[props.container[0]][props.container[1]].containerDisplay[0], top: 0});
+	const [position, setPosition] = useState({
+		left: state.containers[props.container[0]][props.container[1]].containerDisplay[0],
+		top: props.positionInContainer*2 * parseFloat(getComputedStyle(document.documentElement).fontSize),
+	});
 	let cardInfo = (!state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer]) 
 	? {
 		suit: -1,
@@ -41,12 +45,7 @@ const PlayCard = (props: {
 			: <></>,
 	}
 
-	const [containerPosition, setContainerPosition] = useState(props.positionInContainer);
 
-
-	useEffect(()=> {
-		setContainerPosition(props.positionInContainer)
-	}, [props.positionInContainer]);
 
 	const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
 
@@ -143,30 +142,46 @@ const PlayCard = (props: {
 		}
 	}
 
-	useEffect(()=> {
-		// Set the initial position once the column info available
-		setPosition({
-			top: props.positionInContainer*2 * parseFloat(getComputedStyle(document.documentElement).fontSize),
-			left: state.containers[props.container[0]][props.container[1]].containerDisplay[0]
-		});
-	}, []);
+	// useEffect(()=> {
+	// 	// Set the initial position once the column info available
+	// 	setPosition({
+	// 		top: props.positionInContainer*2 * parseFloat(getComputedStyle(document.documentElement).fontSize),
+	// 		left: state.containers[props.container[0]][props.container[1]].containerDisplay[0]
+	// 	});
+	// }, []);
 
+	// const [timeoutID, setTimeoutID] = useState<NodeJS.Timeout>()
+	let timeout: NodeJS.Timeout;
 	// Move with the parent element
 	useEffect(()=> {
-		console.log(props.container[0], props.parentPosition)
-		let addition = ((props.positionInContainer > 0) && !props.showOne) ? (2*fontSize) : 0;
-		if (state.containers[props.container[0]][props.container[1]].cardContainer.length > 5) {
-			addition = addition * Math.pow(0.975, state.containers[props.container[0]][props.container[1]].cardContainer.length);//(0.95 * state.containers[props.container[0]][props.container[1]].cardContainer.length);
+		timeout = setTimeout(() => {
+			console.log(props.parentPosition);
+		//setTimeoutID(setTimeout(() => {
+			let addition = ((props.positionInContainer > 0) && !props.showOne) ? (2*fontSize) : 0;
+			if (state.containers[props.container[0]][props.container[1]].cardContainer.length > 5) {
+				addition = addition * Math.pow(0.975, state.containers[props.container[0]][props.container[1]].cardContainer.length);//(0.95 * state.containers[props.container[0]][props.container[1]].cardContainer.length);
+			}
+			setPosition({
+					left: props.parentPosition[0],
+					top: props.parentPosition[1] + addition,
+			});
+		}, 1);
+
+		return () => {
+			clearTimeout(timeout);
 		}
-		setPosition({
-				left: props.parentPosition[0],
-				top: props.parentPosition[1] + addition,
-		});
-	}, [{...props.parentPosition}, props.moves, state.window[0], state.window[1]]);
+
+	}, [props.parentPosition]);
+
+	useEffect(() => {
+		if (position) {
+			setLoaded(true);
+		}
+	}, [position]);
 
 	return (
 
-		<div ref={ref} style={{zIndex: props.zIndex, left: position.left, top: position.top}} className={cardInfo.number!==-1 ? `${classes.PlayCard} ${state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer ? classes.valid : classes.invalid} ${cardInfo.isRed ? classes.red : classes.black}`: classes.empty}>
+		<div ref={ref} style={{zIndex: props.zIndex, left: position.left, top: position.top}} className={cardInfo.number!==-1 && loaded ? `${classes.PlayCard} ${state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer ? classes.valid : classes.invalid} ${cardInfo.isRed ? classes.red : classes.black} ${props.parentPosition[1] === 0 ? classes.hidden : classes.shown}`: classes.empty}>
 			{cardInfo.number!==-1 
 			? <div className={classes.cardText}>
 				<p className={classes.top}>{numberSymbol()}{suitSymbol()}</p>

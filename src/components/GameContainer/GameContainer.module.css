@@ -9,7 +9,7 @@
 	width: var(--cardWidth);
 	max-width: var(--cardWidthMax); */
 	width: var(--cardWidthClamp);
-	border: 2px solid black;
+	/* border: 2px solid black; */
 }
 
 
@@ -18,21 +18,17 @@
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
-	/* position:static; */
-	/* top: calc(var(--gameContainerWidthClamp) * 0.20390625); */
-	/* min-height: var(--cardHeight); */
-	/* height: clamp(var(--cardHeightMin), var(--cardHeight),var(--cardHeightMax)) */
-	/* height: calc(var(--cardHeightClamp) * 1.7); */
-	/* height: calc(var(--cardWidthClamp) * 1.4); */
-	/* min-height: calc((50) * 1.4);
-	height: calc((100 * 1.4));
-	max-height: calc((100 * 1.4)); */
-	/* max-height: var(--cardHeightMax); */
 }
 
 
 .bottom {
-	height: 100%;
+	/* height: 100%; */
+	height: var(--cardHeightClamp)
+}
+
+.bottomButtons {
+	position: fixed;
+	bottom: 0;
 }
 
 .buttons {
@@ -40,6 +36,11 @@
 	flex-direction: row;
 	width: var(--gameContainerWidthClamp);
 	flex-wrap: nowrap;
+}
+
+.rulesBtn {
+	cursor: pointer;
+	text-decoration: underline;
 }
 
 .gameContainer {
@@ -51,6 +52,10 @@
 	width: var(--gameContainerWidthClamp);
 	margin: 0 auto;
 	height: 100vh;
+	/* border-width: 5px;
+	border-style: none inset;
+	border-color: black;
+	box-shadow: 0 0 20px black; */
 }
 
 body {
@@ -73,15 +78,15 @@ body {
 }
 
 .easy {
-	background-color: rgb(99, 199, 0);
+	background-color: var(--blackColor);
 }
 
 .medium {
-	background-color: rgb(221, 127, 39);
+	background-color: #0a8a51;
 }
 
 .hard {
-	background-color: rgb(194, 31, 31);
+	background-color: var(--blackInvalidColor);
 }
 
 .button {
@@ -89,12 +94,23 @@ body {
 }
 
 .name {
-	
+	font-family: var(--fontCursive);
+	color: var(--textColor);
 }
 
 .footer {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
 	padding: 0 20px;
+}
+
+.footerTop {
+	background-color: var(--redColor);
+	justify-content: space-around;
+	text-align: center;
+}
+
+.footerBottom {
+	background-color: var(--blackColor);
+	justify-content: space-between;
 }

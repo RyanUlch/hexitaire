@@ -1,0 +1,13 @@
+/* vujahday-script-regular - latin */
+@font-face {
+	font-family: 'Vujahday Script';
+	font-style: normal;
+	font-weight: 400;
+	src: url('/fonts/vujahday-script-v3-latin-regular.eot'); /* IE9 Compat Modes */
+	src: local(''),
+		url('/fonts/vujahday-script-v3-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+		url('/fonts/vujahday-script-v3-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+		url('/fonts/vujahday-script-v3-latin-regular.woff') format('woff'), /* Modern Browsers */
+		url('/fonts/vujahday-script-v3-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+		url('/fonts/vujahday-script-v3-latin-regular.svg#VujahdayScript') format('svg'); /* Legacy iOS */
+}

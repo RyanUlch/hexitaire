@@ -1,11 +1,12 @@
 import { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../../context/context';
 import PlayCard from '../PlayCard/PlayCard';
-import { cardHeight } from '../../helpers/globals';
+import classes from './InPlayContainers.module.css';
 
 const InPlayContainer = (props: {containerNum: number, topLine: number | undefined}) => {
 	const {state, dispatch} = useContext(AppContext);
 	const [bounds, setBounds] = useState({left: 0, top: 0});
+
 	useEffect(() => {
 		const getBounds = document.querySelector(String(`#c${props.containerNum}`))?.getBoundingClientRect();
 		if (getBounds) {
@@ -38,12 +39,11 @@ const InPlayContainer = (props: {containerNum: number, topLine: number | undefin
 				// key={`${(state.containers[2][props.containerNum].cardContainer.length > 0) ? state.containers[2][props.containerNum].cardContainer[0].number+'-'+state.containers[2][props.containerNum].cardContainer[0].suit : 'InPlay'+props.containerNum}`}
 			/>)
 		}
-	}, [state]);
+	}, [state.containers[2][props.containerNum].cardContainer.length]);
 
 	return (
-		<div id={`c${props.containerNum}`} className='container'>
+		<div id={`c${props.containerNum}`} className={classes.container}>
 			{cardSet}
-			
 		</div>
 	)
 }

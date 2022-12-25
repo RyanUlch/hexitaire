@@ -1,13 +1,14 @@
-
 import { useEffect, useState, useContext } from 'react';
 import classes from './GameContainer.module.css'
-import SelectionSpot from '../SelectionSpot/SelectionSpot';
+import SelectionSpot from '../Modal/SelectionSpot/SelectionSpot';
 import InPlayContainer from '../InPlayContainer/InPlayContainer';
 import { AppContext } from '../../context/context';
 import FinishedContainer from '../FinishedContainer/FinishedContainer';
 import ShownContainer from '../ShownContainer/ShownContainer';
 import { autoFinish } from '../../helpers/moveValidator';
 import RulesModal from '../Modal/RulesModal/RulesModal';
+import DedicationModal from '../Modal/DedicationModal/DedicationModal';
+
 const GameContainer = () => {
 	const {state, dispatch} = useContext(AppContext);
 	const [windowSize, setWindowSize] = useState<{width: Number, height: number}>({
@@ -15,11 +16,14 @@ const GameContainer = () => {
 		height: 0,
 	});
 	const [isShowRulesModal, setIsShowRulesModal] = useState(false);
+	const [isShowDedicationModal, setIsShowDedicationModal] = useState(false);
+
 	const [topLine, setTopLine] = useState<number | undefined>(0);
-	const [hasWon, setHasWon] = useState(false);
+
+	const [winConditions, setWinConditions] = useState([false, false]);
 
 	useEffect(() => {
-		if (!hasWon) {
+		if (!winConditions[0] && !winConditions[1]) {
 			let canWin = true;
 			// Check that each InPlay container is valid from the top of the pile, if not, Can't win yet.
 			for (let i = 0; i < state.containers[2].length; ++i) {
@@ -32,7 +36,7 @@ const GameContainer = () => {
 				canWin = false;
 			}
 			// If canWin is still true, the user has one and it can be automatically put into finished container
-			if (canWin) {
+			if (canWin && !winConditions[0]) {
 				// TODO: change pop-up to ask if they want to automatically finish
 				const toComplete = window.confirm('All Cards are free, would you like to auto complete?');
 				if (toComplete) {
@@ -43,11 +47,17 @@ const GameContainer = () => {
 							payload: finishSteps[i],
 						});
 					}
-					setHasWon(true);
+					setWinConditions([true, true]);
 				}
+			} else if (state.containers[3][0].cardContainer.length === 16 && state.containers[3][1].cardContainer.length === 16 && state.containers[3][2].cardContainer.length === 16 && state.containers[3][3].cardContainer.length === 16) {
+				setWinConditions([true, true]);
+			} else {
+				setWinConditions([true, false]);
 			}
 		}
-		console.log(state.containers)
+		if (winConditions[1]) {
+			alert("You Won! Congrats");
+		}
 	}, [state.moves]);
 
 	useEffect(()=> {
@@ -89,9 +99,18 @@ const GameContainer = () => {
 		setIsShowRulesModal(false);
 	}
 
+	const openDedicationModal = () => {
+		setIsShowDedicationModal(true);
+	}
+
+	const closeDedicationModal = () => {
+		setIsShowDedicationModal(false);
+	}
+
 	return (
 		<>
 			{isShowRulesModal && <RulesModal onClose={closeRulesModal}/>}
+			{isShowDedicationModal && <DedicationModal onClose={closeDedicationModal} />}
 			<div className={classes.gameContainer}>
 				<img className={classes.headerImage} src='\images\hexitairelaidoutThin.jpg' alt='Hexitaire Logo'/>
 				<div id='TopLine' className={`${classes.containers} ${classes.top}`}>
@@ -113,20 +132,22 @@ const GameContainer = () => {
 					<InPlayContainer containerNum={6} topLine={state.middleLine} />
 					<InPlayContainer containerNum={7} topLine={state.middleLine} />
 				</div>
-				<div className={classes.buttons}>
-					<button className={`${classes.button} ${classes.easy}`} onClick={newGame} value={1}>New Game (Easy)</button>
-					<button className={`${classes.button} ${classes.medium}`} onClick={newGame} value={3}>New Game (Medium)</button>
-					<button className={`${classes.button} ${classes.hard}`} onClick={newGame} value={5}>New Game (Hard)</button>
+				<div className={classes.bottomButtons}>
+					<div className={classes.buttons}>
+						<button className={`${classes.button} ${classes.easy}`} onClick={newGame} value={1}>New Game (Easy)</button>
+						<button className={`${classes.button} ${classes.medium}`} onClick={newGame} value={3}>New Game (Medium)</button>
+						<button className={`${classes.button} ${classes.hard}`} onClick={newGame} value={5}>New Game (Hard)</button>
+					</div>
+					<div className={`${classes.footer} ${classes.footerTop}`}>
+						<p className={classes.moves}>Moves: {state.moves}</p>
+					</div>
+					
+					<footer className={`${classes.footer} ${classes.footerBottom}`}>
+						<p className={classes.dedicaiton} onClick={openDedicationModal}>Dedications and Acknowledgements</p>
+						<p className={classes.rulesBtn} onClick={openRulesModal}>What are the rules?</p>
+						<p>A <a href='https:RyanUlch.com'><span  className={classes.name}>Ryan Ulch</span></a> website</p>
+					</footer>
 				</div>
-				<div className={classes.footer}>
-					<p>What are the <span onClick={openRulesModal}>Rules</span></p>
-					<p className={classes.moves}>Moves: {state.moves}</p>
-				</div>
-				
-				<footer className={classes.footer}>
-					<p className={classes.attribute}>Background Image by <a href="https://www.freepik.com/free-photo/top-view-felt-fabric-texture_27640942.htm#query=felt%20texture&position=40&from_view=search&track=sph">Freepik</a></p>
-					<p className={classes.name}>A <a href='https:RyanUlch.com'><span>Ryan Ulch</span></a> website</p>
-				</footer>
 			</div>
 		</>
 	)

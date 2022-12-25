@@ -62,7 +62,7 @@ const shuffle = (origDeck: card[]) => {
 
 
 export const shuffleDeck = () => {
-	return cardGenerator()//shuffle(cardGenerator());
+	return shuffle(cardGenerator());
 }
 
 // Take the shuffled deck and give cards to containers to create the starting State

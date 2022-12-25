@@ -57,7 +57,7 @@ const ShownContainer = (props: {moves: number, topLine: number | undefined}) => 
 	}, [state]);
 
 	return (
-		<div id='shown' className={classes.holder}>
+		<div id='shown' className={classes.container}>
 			{shownCards}
 			
 		</div>
