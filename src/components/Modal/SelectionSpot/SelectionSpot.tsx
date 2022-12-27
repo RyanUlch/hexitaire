@@ -1,7 +1,7 @@
 import { AppContext } from "../../../context/context";
 import { useContext, useEffect, useState } from "react";
 import classes from './SelectionSpot.module.css';
-const SelectionSpot = (props: {moves: number}) => {
+const SelectionSpot = () => {
 	const {state, dispatch} = useContext(AppContext);
 	const [isEmpty, setIsEmpty] = useState(false);
 	const showMore = () => {
@@ -18,7 +18,7 @@ const SelectionSpot = (props: {moves: number}) => {
 
 	useEffect(()=> {
 		setIsEmpty(state.containers[1][0].cardContainer.length > 0 ? false : true);
-	},[props.moves]);
+	},[state.containers[1][0].changed]);
 
 	return (
 		<div onClick={showMore} className={`${isEmpty ? classes.empty : classes.full} ${classes.container}`}>

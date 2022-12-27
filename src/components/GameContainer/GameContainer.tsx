@@ -17,10 +17,21 @@ const GameContainer = () => {
 	});
 	const [isShowRulesModal, setIsShowRulesModal] = useState(false);
 	const [isShowDedicationModal, setIsShowDedicationModal] = useState(false);
-
-	const [topLine, setTopLine] = useState<number | undefined>(0);
-
 	const [winConditions, setWinConditions] = useState([false, false]);
+
+	const undo = () => {
+		const move = state.lastMove;
+		dispatch({
+			type: 'MOVECARD',
+			payload: {
+				cardTop: -1,
+				cardLeft: -1,
+				StartingContainer: move.to,
+				isUndo: true,
+				endingContainer: move.from,
+			}
+		})
+	}
 
 	useEffect(() => {
 		if (!winConditions[0] && !winConditions[1]) {
@@ -66,7 +77,6 @@ const GameContainer = () => {
 			type: 'SETMIDDLELINE',
 			payload: [middleLineElement?.getBoundingClientRect().top, windowSize.height, windowSize.width],
 		})
-		// setTopLine(middleLineElement?.getBoundingClientRect().top)
 	}, [windowSize.height, windowSize.width]);
 
 	useEffect(() => {
@@ -76,7 +86,6 @@ const GameContainer = () => {
 				height: window.innerHeight,
 			});
 		}
-
 		window.addEventListener("resize", handleResize);
 		handleResize();
 		return () => window.removeEventListener("resize", handleResize);
@@ -114,23 +123,23 @@ const GameContainer = () => {
 			<div className={classes.gameContainer}>
 				<img className={classes.headerImage} src='\images\hexitairelaidoutThin.jpg' alt='Hexitaire Logo'/>
 				<div id='TopLine' className={`${classes.containers} ${classes.top}`}>
-					<FinishedContainer containerNum={0} topLine={topLine} />
-					<FinishedContainer containerNum={1} topLine={topLine} />
-					<FinishedContainer containerNum={2} topLine={topLine} />
-					<FinishedContainer containerNum={3} topLine={topLine} />
-					<SelectionSpot moves={state.moves} />
-					<ShownContainer moves={state.moves} topLine={topLine}/>
+					<FinishedContainer containerNum={0} />
+					<FinishedContainer containerNum={1} />
+					<FinishedContainer containerNum={2} />
+					<FinishedContainer containerNum={3} />
+					<SelectionSpot />
+					<ShownContainer />
 				</div>
 				<div id='MiddleLine' />
 				<div className={`${classes.containers} ${classes.bottom}`}>		
-					<InPlayContainer containerNum={0} topLine={state.middleLine} />
-					<InPlayContainer containerNum={1} topLine={state.middleLine} />
-					<InPlayContainer containerNum={2} topLine={state.middleLine} />
-					<InPlayContainer containerNum={3} topLine={state.middleLine} />
-					<InPlayContainer containerNum={4} topLine={state.middleLine} />
-					<InPlayContainer containerNum={5} topLine={state.middleLine} />
-					<InPlayContainer containerNum={6} topLine={state.middleLine} />
-					<InPlayContainer containerNum={7} topLine={state.middleLine} />
+					<InPlayContainer containerNum={0} />
+					<InPlayContainer containerNum={1} />
+					<InPlayContainer containerNum={2} />
+					<InPlayContainer containerNum={3} />
+					<InPlayContainer containerNum={4} />
+					<InPlayContainer containerNum={5} />
+					<InPlayContainer containerNum={6} />
+					<InPlayContainer containerNum={7} />
 				</div>
 				<div className={classes.bottomButtons}>
 					<div className={classes.buttons}>
@@ -140,6 +149,7 @@ const GameContainer = () => {
 					</div>
 					<div className={`${classes.footer} ${classes.footerTop}`}>
 						<p className={classes.moves}>Moves: {state.moves}</p>
+						
 					</div>
 					
 					<footer className={`${classes.footer} ${classes.footerBottom}`}>

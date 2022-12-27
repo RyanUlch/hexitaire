@@ -3,7 +3,7 @@ import { AppContext } from '../../context/context';
 import PlayCard from '../PlayCard/PlayCard';
 import classes from './InPlayContainers.module.css';
 
-const InPlayContainer = (props: {containerNum: number, topLine: number | undefined}) => {
+const InPlayContainer = (props: {containerNum: number}) => {
 	const {state, dispatch} = useContext(AppContext);
 	const [bounds, setBounds] = useState({left: 0, top: 0});
 
@@ -33,13 +33,14 @@ const InPlayContainer = (props: {containerNum: number, topLine: number | undefin
 				parentPosition={[bounds.left, bounds.top]}
 				container={[2, props.containerNum]}
 				positionInContainer={0}
-				moves={state.moves}
 				showOne={false}
 				zIndex={1}
 				// key={`${(state.containers[2][props.containerNum].cardContainer.length > 0) ? state.containers[2][props.containerNum].cardContainer[0].number+'-'+state.containers[2][props.containerNum].cardContainer[0].suit : 'InPlay'+props.containerNum}`}
 			/>)
+		} else {
+			setCardSet(<></>);
 		}
-	}, [state.containers[2][props.containerNum].cardContainer.length]);
+	}, [state.containers[2][props.containerNum].changed]);
 
 	return (
 		<div id={`c${props.containerNum}`} className={classes.container}>

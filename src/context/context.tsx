@@ -12,10 +12,11 @@ type container = {
 	cardContainer: card[],
 	containerDisplay: number[],
 	validFrom: number,
+	changed: boolean,
 }
 
 // The type for all the information required by Hexitaire
-type gameContainer = {
+export type gameContainer = {
 	containers: [
 		// Container containing the not shown cards to pull from for flipped container
 		container[],	// Draw Pile
@@ -30,6 +31,10 @@ type gameContainer = {
 	moves: number,
 	difficulty: number,
 	window: number[],
+	lastMove: {
+		to: number[],
+		from: number[],
+	}
 }
 
 // Create cards for entire Deck in order (suits: 0-3, numbers: 0-15)
@@ -74,6 +79,7 @@ const createStartingDeck = (): gameContainer =>  {
 					cardContainer: [],
 					containerDisplay: [0, 0],
 					validFrom: 0,
+					changed: false,
 				},
 			],
 			[
@@ -81,6 +87,7 @@ const createStartingDeck = (): gameContainer =>  {
 					cardContainer: [],
 					containerDisplay: [0, 0],
 					validFrom: 0,
+					changed: false,
 				},
 			],
 			[
@@ -88,41 +95,49 @@ const createStartingDeck = (): gameContainer =>  {
 					cardContainer: [],
 					containerDisplay: [0, 0],
 					validFrom: -1,
+					changed: false,
 				},
 				{
 					cardContainer: [],
 					containerDisplay: [0, 0],
 					validFrom: -1,
+					changed: false,
 				},
 				{
 					cardContainer: [],
 					containerDisplay: [0, 0],
 					validFrom: -1,
+					changed: false,
 				},
 				{
 					cardContainer: [],
 					containerDisplay: [0, 0],
 					validFrom: -1,
+					changed: false,
 				},
 				{
 					cardContainer: [],
 					containerDisplay: [0, 0],
 					validFrom: -1,
+					changed: false,
 				},
 				{
 					cardContainer: [],
 					containerDisplay: [0, 0],
 					validFrom: -1,
+					changed: false,
 				},
 				{
 					cardContainer: [],
 					containerDisplay: [0, 0],
 					validFrom: -1,
+					changed: false,
 				},
 				{
 					cardContainer: [],
 					containerDisplay: [0, 0],
 					validFrom: -1,
+					changed: false,
 				},
 			],
 			[
@@ -130,21 +145,25 @@ const createStartingDeck = (): gameContainer =>  {
 					cardContainer: [],
 					containerDisplay: [0, 0],
 					validFrom: 0,
+					changed: false,
 				},
 				{
 					cardContainer: [],
 					containerDisplay: [0, 0],
 					validFrom: 0,
+					changed: false,
 				},
 				{
 					cardContainer: [],
 					containerDisplay: [0, 0],
 					validFrom: 0,
+					changed: false,
 				},
 				{
 					cardContainer: [],
 					containerDisplay: [0, 0],
 					validFrom: 0,
+					changed: false,
 				},
 			],
 			[
@@ -152,6 +171,7 @@ const createStartingDeck = (): gameContainer =>  {
 					cardContainer: [],
 					containerDisplay: [0, 0],
 					validFrom: 0,
+					changed: false,
 				},
 			],
 		],
@@ -159,6 +179,10 @@ const createStartingDeck = (): gameContainer =>  {
 		moves: 0,
 		difficulty: 0,
 		window: [0, 0,],
+		lastMove: {
+			to: [-1, -1, -1],
+			from: [-1, -1, -1],
+		}
 	}
 }
 
@@ -181,9 +205,5 @@ const AppProvider = (props: { children: any }) => {
 		</AppContext.Provider>
 	)
 }
-
-
-
-//const useAppContext = () => React.useContext(AppContext);
 
 export { AppContext, AppProvider };

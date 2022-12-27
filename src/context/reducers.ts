@@ -1,4 +1,5 @@
 import { shuffleDeck } from './context';
+import { gameContainer } from './context';
 
 const dropCheckInPlay: (lVal: {number: number, suit: number}, rVal: {number: number, suit: number}, state: any) => boolean = (lVal, rVal, state) => {
 	return ((lVal.number-1 === rVal.number) && lVal.suit < 2 !== rVal.suit < 2) ? true : false;
@@ -18,8 +19,6 @@ const dropCheckFinished: (lVal: {number: number, suit: number}, containers: any,
 }
 
 const containerCheck = (container: any) => {
-	console.log(container);
-
 	// If the container is already valid from the start, or if the container has one or less cards, set validFrom to 0
 	if (container.validFrom === 0 || container.cardContainer.length <= 1) {
 		return 0;
@@ -40,93 +39,112 @@ const containerCheck = (container: any) => {
 export const cardReducer = (state: any, action: any) => {
 	switch (action.type) {
 		case 'NEWGAME': {
-			const newContainer = state;
+			const newContainer = <gameContainer>{};
 			newContainer.difficulty = action.payload.difficulty;
+			newContainer.middleLine = state.middleLine;
+			newContainer.moves = 0;
+			newContainer.window = state.window;
+			
 			const deck = shuffleDeck();
 			newContainer.containers = [
 				[
 					{
 						cardContainer: deck.slice(0, 0),
-						containerDisplay: [...state.containers[1][0].containerDisplay],
-						validFrom: state.containers[1][0].cardContainer.length -1,
+						containerDisplay: state.containers[0][0].containerDisplay,
+						validFrom: 0,
+						changed: !state.containers[0][0].changed,
 					},
 				],
 				[
 					{
 						cardContainer: deck.slice(36),
-						containerDisplay: [...state.containers[1][0].containerDisplay],
-						validFrom: null,
+						containerDisplay: state.containers[1][0].containerDisplay,
+						validFrom: 0,
+						changed: !state.containers[1][0].changed,
 					},
 				],
 				[
 					{
 						cardContainer: deck.slice(0, 1),
-						containerDisplay: [...state.containers[2][0].containerDisplay],
+						containerDisplay: state.containers[2][0].containerDisplay,
 						validFrom: containerCheck({validFrom: -1, cardContainer: [...deck.slice(0, 1)]}),
+						changed: !state.containers[2][0].changed,
 					},
 					{
 						cardContainer: deck.slice(1, 3),
-						containerDisplay: [...state.containers[2][1].containerDisplay],
+						containerDisplay: state.containers[2][1].containerDisplay,
 						validFrom: containerCheck({validFrom: -1, cardContainer: [...deck.slice(1, 3)]}),
+						changed: !state.containers[2][1].changed,
 					},
 					{
 						cardContainer: deck.slice(3, 6),
-						containerDisplay: [...state.containers[2][2].containerDisplay],
+						containerDisplay: state.containers[2][2].containerDisplay,
 						validFrom: containerCheck({validFrom: -1, cardContainer: [...deck.slice(3, 6)]}),
+						changed: !state.containers[2][2].changed,
 					},
 					{
 						cardContainer: deck.slice(6, 10),
-						containerDisplay: [...state.containers[2][3].containerDisplay],
+						containerDisplay: state.containers[2][3].containerDisplay,
 						validFrom: containerCheck({validFrom: -1, cardContainer: [...deck.slice(6, 10)]}),
+						changed: !state.containers[2][3].changed,
 					},
 					{
 						cardContainer: deck.slice(10, 15),
-						containerDisplay: [...state.containers[2][4].containerDisplay],
+						containerDisplay: state.containers[2][4].containerDisplay,
 						validFrom: containerCheck({validFrom: -1, cardContainer: [...deck.slice(10, 15)]}),
+						changed: !state.containers[2][4].changed,
 					},
 					{
 						cardContainer: deck.slice(15, 21),
-						containerDisplay: [...state.containers[2][5].containerDisplay],
+						containerDisplay: state.containers[2][5].containerDisplay,
 						validFrom: containerCheck({validFrom: -1, cardContainer: [...deck.slice(15, 21)]}),
+						changed: !state.containers[2][5].changed,
 					},
 					{
 						cardContainer: deck.slice(21, 28),
-						containerDisplay: [...state.containers[2][6].containerDisplay],
+						containerDisplay: state.containers[2][6].containerDisplay,
 						validFrom: containerCheck({validFrom: -1, cardContainer: [...deck.slice(21, 28)]}),
+						changed: !state.containers[2][6].changed,
 					},
 					{
 						cardContainer: deck.slice(28, 36),
-						containerDisplay: [...state.containers[2][7].containerDisplay],
+						containerDisplay: state.containers[2][7].containerDisplay,
 						validFrom: containerCheck({validFrom: -1, cardContainer: [...deck.slice(28, 36)]}),
+						changed: !state.containers[2][7].changed,
 					},
 				],
 				[
 					{
 						cardContainer: deck.slice(0, 0),
-						containerDisplay: [...state.containers[3][0].containerDisplay],
-						validFrom: state.containers[3][0].cardContainer.length - 1,
+						containerDisplay: state.containers[3][0].containerDisplay,
+						validFrom: 0,
+						changed: !state.containers[3][0].changed,
 					},
 					{
 						cardContainer: deck.slice(0, 0),
-						containerDisplay: [...state.containers[3][1].containerDisplay],
-						validFrom: state.containers[3][1].cardContainer.length - 1,
+						containerDisplay: state.containers[3][1].containerDisplay,
+						validFrom: 0,
+						changed: !state.containers[3][1].changed,
 					},
 					{
 						cardContainer: deck.slice(0, 0),
-						containerDisplay: [...state.containers[3][2].containerDisplay],
-						validFrom: state.containers[3][2].cardContainer.length - 1,
+						containerDisplay: state.containers[3][2].containerDisplay,
+						validFrom: 0,
+						changed: !state.containers[3][2].changed,
 					},
 					{
 						cardContainer: deck.slice(0, 0),
-						containerDisplay: [...state.containers[3][3].containerDisplay],
-						validFrom: state.containers[3][3].cardContainer.length - 1,
+						containerDisplay: state.containers[3][3].containerDisplay,
+						validFrom: 0,
+						changed: !state.containers[3][3].changed,
 					},
 				],
 				[
 					{
 						cardContainer: deck.slice(0, 0),
-						containerDisplay: [...state.containers[4][0].containerDisplay],
-						validFrom: null,
+						containerDisplay: state.containers[4][0].containerDisplay,
+						validFrom: 0,
+						changed: !state.containers[4][0].changed,
 					},
 				],
 			]
@@ -134,18 +152,23 @@ export const cardReducer = (state: any, action: any) => {
 		}
 
 		case 'FLIPCARDS': {
+			console.log('flip');
 			const flipState = state;
 			const newCards = flipState.containers[1][0].cardContainer.splice(0, flipState.difficulty);
+			flipState.containers[1][0].changed = !flipState.containers[1][0].changed;
 			flipState.containers[4][0].cardContainer.push(...flipState.containers[0][0].cardContainer.splice(0));
 			flipState.containers[0][0].cardContainer.push(...newCards);
 			flipState.moves += 1;
 			flipState.containers[0][0].validFrom = flipState.containers[0][0].cardContainer.length -1;
+			flipState.containers[0][0].changed = !flipState.containers[0][0].changed;
+			console.log(flipState)
 			return {...flipState};
 		}
 		case 'RESETFLIPPEDCARDS': {
 			const resetFlipState = state;
 			resetFlipState.containers[4][0].cardContainer.push(...resetFlipState.containers[0][0].cardContainer.splice(0));
 			resetFlipState.containers[1][0].cardContainer = resetFlipState.containers[4][0].cardContainer.splice(0);
+			resetFlipState.containers[1][0].changed = !resetFlipState.containers[1][0].changed;
 			resetFlipState.moves += 1;
 			return {...resetFlipState};
 		}
@@ -172,9 +195,8 @@ export const cardReducer = (state: any, action: any) => {
 					// Check if cards are dropped within the bounds of the columns
 					if (containers[i].containerDisplay[0] < cardLeft && cardLeft < containers[i].containerDisplay[1]) {
 						if (3 === action.payload.StartingContainer[0] && i === action.payload.StartingContainer[1]) {
-							console.log('It knows!');
 							// Card is from the same container as it was dropped, reset it
-
+							moveState.containers[3][i].changed = !moveState.containers[3][i].changed;
 							return {...moveState};
 						} else {
 							// Card dropped within bounds of Finished Container
@@ -182,8 +204,10 @@ export const cardReducer = (state: any, action: any) => {
 								// check if the card being dropped is valid
 								if (dropCheckFinished(moveState.containers[3][i].cardContainer.slice(-1)[0], moveState.containers, [action.payload.StartingContainer[0], action.payload.StartingContainer[1]], action.payload.StartingContainer[0] === 3 ? moveState.containers[3][action.payload.StartingContainer[1]].cardContainer.length-1 : action.payload.position)) {
 									const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.StartingContainer[0] !== 3 ? action.payload.position : -1);
+									moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].changed = !moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].changed;
 									moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].validFrom = containerCheck(moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]]);
 									moveState.containers[3][i].cardContainer.push(...addToContainer);
+									moveState.containers[3][i].changed = !moveState.containers[3][i].changed;
 									if (action.payload.StartingContainer[0] === 0 && state.containers[0][0].cardContainer.length === 0 && state.containers[4][0].cardContainer.length > 0) {
 										moveState.containers[0][0].cardContainer = moveState.containers[4][0].cardContainer.splice(-1);
 										//moveState.containers[4][0].validFrom = containerCheck(moveState.containers[4][0]);
@@ -192,6 +216,7 @@ export const cardReducer = (state: any, action: any) => {
 									return {...moveState};
 								} else {
 									// If incorrect placement, reset position
+									moveState.containers[3][i].changed = !moveState.containers[3][i].changed;
 									return {...moveState};
 								}
 							} else if (moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer[action.payload.position].number === 0) {
@@ -199,14 +224,18 @@ export const cardReducer = (state: any, action: any) => {
 								if (moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.length === action.payload.position+1) {
 									// card has no children, and can be added to finished container
 									const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.StartingContainer[0] !== 3 ? action.payload.position : -1);
+									moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].changed = !moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].changed;
 									moveState.containers[3][i].cardContainer.push(...addToContainer);
+									moveState.containers[3][i].changed = !moveState.containers[3][i].changed;
 									moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].validFrom = containerCheck(moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]]);
 									if (action.payload.StartingContainer[0] === 0 && state.containers[0][0].cardContainer.length === 0 && state.containers[4][0].cardContainer.length > 0) {
 										moveState.containers[0][0].cardContainer = moveState.containers[4][0].cardContainer.splice(-1);
+										moveState.containers[0][0].changed = !moveState.containers[0][0].changed;
 									}
 									moveState.moves += 1;
 									return {...moveState};
 								} else {
+									moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].changed = !moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].changed;
 									return {...moveState};
 								}
 							} else {
@@ -224,39 +253,44 @@ export const cardReducer = (state: any, action: any) => {
 				for (let i = 0; i < containers.length; ++i) {
 					// Check if cards are dropped within the bounds of the columns
 					if ((containers[i].containerDisplay[0] < cardLeft) && (cardLeft < containers[i].containerDisplay[1])) {
-						
 						if (2 === action.payload.StartingContainer[0] && i === action.payload.StartingContainer[1]) {
 							// Card is from the same container as it was dropped, reset it
+							moveState.containers[2][i].changed = !moveState.containers[2][i].changed;
 							return {...moveState};
 						} else {
 							// Check if the container has any cards
 							if(containers[i].cardContainer.length > 0) { 
-								
 								// check if the card being dropped is valid
 								const secondCard = action.payload.StartingContainer[0] === 3 ? moveState.containers[3][action.payload.StartingContainer[1]].cardContainer[moveState.containers[3][action.payload.StartingContainer[1]].cardContainer.length-1] : moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer[action.payload.position];
-								console.log(secondCard)
 								if (dropCheckInPlay(moveState.containers[2][i].cardContainer.slice(-1)[0], secondCard, state)) {
 									const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
+									moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].changed = !moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]];
 									moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].validFrom = containerCheck(moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]]);
 									moveState.containers[2][i].cardContainer.push(...addToContainer);
+									moveState.containers[2][i].changed = !moveState.containers[2][i].changed;
 									moveState.containers[2][i].validFrom = containerCheck(moveState.containers[2][i]);
 									if (action.payload.StartingContainer[0] === 0 && state.containers[0][0].cardContainer.length === 0 && state.containers[4][0].cardContainer.length > 0) {
 										moveState.containers[0][0].cardContainer = moveState.containers[4][0].cardContainer.splice(-1);
+										moveState.containers[0][0].changed = !moveState.containers[0][0].changed;
 									}
 									moveState.moves += 1;
 									return {...moveState};
 								} else {
 									// Incorrect placement, reset position
+									moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].changed = !moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]];
 									return {...moveState};
 								}
 							} else {
 								// Is an empty container, can put any card there
 								const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
+								moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].changed = !moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].changed;
 								moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].validFrom = containerCheck(moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]]);
 								moveState.containers[2][i].cardContainer.push(...addToContainer);
+								moveState.containers[2][i].changed = !moveState.containers[2][i].changed;
 								moveState.containers[2][i].validFrom = containerCheck(moveState.containers[2][i]);
 								if (action.payload.StartingContainer[0] === 0 && state.containers[0][0].cardContainer.length === 0 && state.containers[4][0].cardContainer.length > 0) {
 									moveState.containers[0][0].cardContainer = moveState.containers[4][0].cardContainer.splice(-1);
+									moveState.containers[0][0].changed = !moveState.containers[0][0].changed;
 								}
 								moveState.moves += 1;
 								return {...moveState};
@@ -265,6 +299,7 @@ export const cardReducer = (state: any, action: any) => {
 					}
 				}
 				// Dropped elsewhere, reset position
+				moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].changed = !moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]];
 				return {...moveState};
 			}
 		}

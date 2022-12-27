@@ -3,7 +3,7 @@ import { AppContext } from '../../context/context';
 import PlayCard from '../PlayCard/PlayCard';
 import classes from './FinishedContainer.module.css';
 
-const FinishedContainer = (props: {containerNum: number, topLine: number | undefined}) => {
+const FinishedContainer = (props: {containerNum: number}) => {
 	const {state, dispatch} = useContext(AppContext);
 	const [bounds, setBounds] = useState({left: 0, top: 0});
 
@@ -24,7 +24,7 @@ const FinishedContainer = (props: {containerNum: number, topLine: number | undef
 			})
 		}
 	}, [state.window[0], state.window[1]]);
-
+	
 	const [cardSet, setCardSet] = useState(<></>);
 
 	useEffect(()=> {
@@ -35,7 +35,6 @@ const FinishedContainer = (props: {containerNum: number, topLine: number | undef
 						parentPosition={[bounds.left, bounds.top]}
 						container={[3, props.containerNum]}
 						positionInContainer={state.containers[3][props.containerNum].cardContainer.length-1}
-						moves={state.moves}
 						showOne={true}
 						zIndex={1}
 						// key={`${(state.containers[2][props.containerNum].cardContainer.length > 0) ? state.containers[2][props.containerNum].cardContainer[0].number+'-'+state.containers[2][props.containerNum].cardContainer[0].suit : 'InPlay'+props.containerNum}`}
@@ -45,7 +44,6 @@ const FinishedContainer = (props: {containerNum: number, topLine: number | undef
 							parentPosition={[bounds.left, bounds.top]}
 							container={[3, props.containerNum]}
 							positionInContainer={state.containers[3][props.containerNum].cardContainer.length-2}
-							moves={state.moves}
 							showOne={true}
 							zIndex={0}
 						/>
@@ -53,8 +51,10 @@ const FinishedContainer = (props: {containerNum: number, topLine: number | undef
 					}
 				</>
 			)
+		} else {
+			setCardSet(<></>);
 		}
-	}, [state.containers[3][props.containerNum].cardContainer.length]);
+	}, [state.containers[3][props.containerNum].changed]);
 
 	return (
 		<div id={`f${props.containerNum}`} className={`${classes.container}`}>

@@ -10,8 +10,7 @@ import classes from './PlayCard.module.css';
 const PlayCard = (props: {
 	parentPosition: number[],
 	container: number[],
-	positionInContainer: number
-	moves: number,
+	positionInContainer: number,
 	showOne: boolean,
 	zIndex: number,
 }) => {
@@ -22,6 +21,33 @@ const PlayCard = (props: {
 		left: state.containers[props.container[0]][props.container[1]].containerDisplay[0],
 		top: props.positionInContainer*2 * parseFloat(getComputedStyle(document.documentElement).fontSize),
 	});
+
+	// const [cardInfo, setCardInfo] = useState({
+	// 	suit: -1,
+	// 	number: -1,
+	// 	isRed: true,
+	// 	child: <></>,
+	// });
+
+	// useEffect(() => {
+	// 	if (state.containers[props.container[0]][props.container[1]].cardContainer.length > 0) {
+	// 		setCardInfo({
+	// 			suit: state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer].suit,
+	// 		number: state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer].number,
+	// 		isRed: state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer].suit < 2,
+	// 		child: state.containers[props.container[0]][props.container[1]].cardContainer.length > props.positionInContainer+1 && !props.showOne
+	// 			? <PlayCard 
+	// 				zIndex={props.zIndex+1}
+	// 				parentPosition={[position.left, position.top]}
+	// 				container={props.container}
+	// 				positionInContainer={props.positionInContainer+1}
+	// 				showOne={false}
+	// 			/>
+	// 			: <></>,
+	// 		})
+	// 	}
+	// }, [props.container[0], props.container[1]]);
+
 	let cardInfo = (!state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer]) 
 	? {
 		suit: -1,
@@ -39,13 +65,10 @@ const PlayCard = (props: {
 				parentPosition={[position.left, position.top]}
 				container={props.container}
 				positionInContainer={props.positionInContainer+1}
-				moves={props.moves}
 				showOne={false}
 			/>
 			: <></>,
 	}
-
-
 
 	const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
 
@@ -154,8 +177,8 @@ const PlayCard = (props: {
 	let timeout: NodeJS.Timeout;
 	// Move with the parent element
 	useEffect(()=> {
-		timeout = setTimeout(() => {
-			console.log(props.parentPosition);
+
+		// timeout = setTimeout(() => {
 		//setTimeoutID(setTimeout(() => {
 			let addition = ((props.positionInContainer > 0) && !props.showOne) ? (2*fontSize) : 0;
 			if (state.containers[props.container[0]][props.container[1]].cardContainer.length > 5) {
@@ -165,16 +188,16 @@ const PlayCard = (props: {
 					left: props.parentPosition[0],
 					top: props.parentPosition[1] + addition,
 			});
-		}, 1);
+		// }, 1);
 
-		return () => {
-			clearTimeout(timeout);
-		}
+		// return () => {
+		// 	clearTimeout(timeout);
+		// }
 
-	}, [props.parentPosition]);
+	}, [state, props.parentPosition]);
 
 	useEffect(() => {
-		if (position) {
+		if (position.left !== 0 && position.top !== 0) {
 			setLoaded(true);
 		}
 	}, [position]);
