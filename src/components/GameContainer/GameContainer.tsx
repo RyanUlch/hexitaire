@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from 'react';
 import classes from './GameContainer.module.css'
-import SelectionSpot from '../Modal/SelectionSpot/SelectionSpot';
+import SelectionSpot from '../SelectionSpot/SelectionSpot';
 import InPlayContainer from '../InPlayContainer/InPlayContainer';
-import { AppContext } from '../../context/context';
+import { AppContext, AppDispatchContext } from '../../context/context';
 import FinishedContainer from '../FinishedContainer/FinishedContainer';
 import ShownContainer from '../ShownContainer/ShownContainer';
 import { autoFinish } from '../../helpers/moveValidator';
@@ -10,7 +10,9 @@ import RulesModal from '../Modal/RulesModal/RulesModal';
 import DedicationModal from '../Modal/DedicationModal/DedicationModal';
 
 const GameContainer = () => {
-	const {state, dispatch} = useContext(AppContext);
+	const { state } = useContext(AppContext);
+	const { dispatch } = useContext(AppDispatchContext);
+
 	const [windowSize, setWindowSize] = useState<{width: Number, height: number}>({
 		width: 0,
 		height: 0,
@@ -20,17 +22,11 @@ const GameContainer = () => {
 	const [winConditions, setWinConditions] = useState([false, false]);
 
 	const undo = () => {
-		const move = state.lastMove;
-		dispatch({
-			type: 'MOVECARD',
-			payload: {
-				cardTop: -1,
-				cardLeft: -1,
-				StartingContainer: move.to,
-				isUndo: true,
-				endingContainer: move.from,
-			}
-		})
+		if (state.lastMove.length > 0) {
+			dispatch({
+				type: 'UNDO',
+			})
+		}	
 	}
 
 	useEffect(() => {
@@ -95,7 +91,7 @@ const GameContainer = () => {
 		dispatch({
 			type: 'NEWGAME',
 			payload: {
-				difficulty: event.target.value,
+				difficulty: Number(event.target.value),
 			}
 		})
 	}
@@ -149,7 +145,7 @@ const GameContainer = () => {
 					</div>
 					<div className={`${classes.footer} ${classes.footerTop}`}>
 						<p className={classes.moves}>Moves: {state.moves}</p>
-						
+						<button disabled={state.lastMove.length === 0} className={`${classes.button} ${classes.undoBtn}`} onClick={undo}>Undo</button>
 					</div>
 					
 					<footer className={`${classes.footer} ${classes.footerBottom}`}>

@@ -1,14 +1,16 @@
 import React, { createContext, useReducer } from 'react';
+import type { Dispatch, ReactElement, ReactNode } from 'react';
+
 import{ cardReducer } from './reducers';
 
 // Containing info to determine all card data
-type card = {
+export type card = {
 	number: number,	// 0 - 15 (10-15 are displayed as A-F)
 	suit: number, 	// 0 = Hearts, 1 = Diamonds, 2 = Spades, 3 = Clubs
 }
 
 // All Information for individual containers
-type container = {
+export type container = {
 	cardContainer: card[],
 	containerDisplay: number[],
 	validFrom: number,
@@ -17,24 +19,22 @@ type container = {
 
 // The type for all the information required by Hexitaire
 export type gameContainer = {
-	containers: [
-		// Container containing the not shown cards to pull from for flipped container
-		container[],	// Draw Pile
-		// Container Users can only pull cards from
-		container[],	// Hidden Draw Pile
-		// Containers User can drop cards to and from
-		container[],	// In Play Containers
-		container[],	// Finished containers
-		container[],	// Reset Draw Pile
-	],
+	containers: container[][];
+	// containers: [
+	// 	// Container containing the not shown cards to pull from for flipped container
+	// 	container[],	// Draw Pile
+	// 	// Container Users can only pull cards from
+	// 	container[],	// Hidden Draw Pile
+	// 	// Containers User can drop cards to and from
+	// 	container[],	// In Play Containers
+	// 	container[],	// Finished containers
+	// 	container[],	// Reset Draw Pile
+	// ],
 	middleLine: number,
 	moves: number,
 	difficulty: number,
 	window: number[],
-	lastMove: {
-		to: number[],
-		from: number[],
-	}
+	lastMove: container[][],
 }
 
 // Create cards for entire Deck in order (suits: 0-3, numbers: 0-15)
@@ -64,7 +64,6 @@ const shuffle = (origDeck: card[]) => {
 	}
 	return shuffleDeck;
 }
-
 
 export const shuffleDeck = () => {
 	return shuffle(cardGenerator());
@@ -179,31 +178,25 @@ const createStartingDeck = (): gameContainer =>  {
 		moves: 0,
 		difficulty: 0,
 		window: [0, 0,],
-		lastMove: {
-			to: [-1, -1, -1],
-			from: [-1, -1, -1],
-		}
+		lastMove: [],
 	}
 }
 
 // The initial state of the gameContainer, has an initial shuffled deck, but no information for the containers bounds at first.
 const initialState = createStartingDeck();
 
-const AppContext = createContext<{
-	state: gameContainer;
-	dispatch: React.Dispatch<any>;
-}>({
-	state: initialState,
-	dispatch: () => null
-});
+const AppContext = createContext<{state: gameContainer;}>({state: initialState,});
+const AppDispatchContext = createContext<{dispatch: React.Dispatch<any>}>({dispatch: () => null})
 
-const AppProvider = (props: { children: any }) => {
+const AppProvider = (props: { children: ReactNode }) => {
 	const [state, dispatch] = useReducer(cardReducer, initialState);
 	return (
-		<AppContext.Provider value={{state, dispatch}}>
-			{props.children}
+		<AppContext.Provider value={{state}}>
+			<AppDispatchContext.Provider value={{dispatch}}>
+				{props.children}
+			</AppDispatchContext.Provider>
 		</AppContext.Provider>
 	)
 }
 
-export { AppContext, AppProvider };
+export { AppContext, AppDispatchContext, AppProvider };

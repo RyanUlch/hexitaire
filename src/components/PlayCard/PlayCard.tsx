@@ -1,11 +1,13 @@
-import { useRef, useContext, useState, useEffect, useTransition } from 'react';
-import { isConstructorDeclaration } from 'typescript';
+import { useRef, useContext, useState, useEffect } from 'react';
 
-import { AppContext } from '../../context/context';
+import { AppContext, AppDispatchContext } from '../../context/context';
 import { cardMidHeight, cardMidWidth, fontSize } from '../../helpers/globals';
 import { validateAutoMove } from '../../helpers/moveValidator';
 
 import classes from './PlayCard.module.css';
+
+import type { MouseEventHandler } from 'react';
+
 
 const PlayCard = (props: {
 	parentPosition: number[],
@@ -13,10 +15,11 @@ const PlayCard = (props: {
 	positionInContainer: number,
 	showOne: boolean,
 	zIndex: number,
+	changed: boolean,
 }) => {
-	const [zIndex, setZIndex] = useState(props.zIndex);
 	const [loaded, setLoaded] = useState(false);
-	const {state, dispatch} = useContext(AppContext);
+	const { state } = useContext(AppContext);
+	const { dispatch } = useContext(AppDispatchContext);
 	const [position, setPosition] = useState({
 		left: state.containers[props.container[0]][props.container[1]].containerDisplay[0],
 		top: props.positionInContainer*2 * parseFloat(getComputedStyle(document.documentElement).fontSize),
@@ -26,52 +29,32 @@ const PlayCard = (props: {
 	// 	suit: -1,
 	// 	number: -1,
 	// 	isRed: true,
-	// 	child: <></>,
 	// });
 
 	// useEffect(() => {
-	// 	if (state.containers[props.container[0]][props.container[1]].cardContainer.length > 0) {
+	// 	if (state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer]) {
 	// 		setCardInfo({
 	// 			suit: state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer].suit,
-	// 		number: state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer].number,
-	// 		isRed: state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer].suit < 2,
-	// 		child: state.containers[props.container[0]][props.container[1]].cardContainer.length > props.positionInContainer+1 && !props.showOne
-	// 			? <PlayCard 
-	// 				zIndex={props.zIndex+1}
-	// 				parentPosition={[position.left, position.top]}
-	// 				container={props.container}
-	// 				positionInContainer={props.positionInContainer+1}
-	// 				showOne={false}
-	// 			/>
-	// 			: <></>,
+	// 			number: state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer].number,
+	// 			isRed: state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer].suit < 2,
 	// 		})
 	// 	}
-	// }, [props.container[0], props.container[1]]);
+	// }, [state]);
 
 	let cardInfo = (!state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer]) 
 	? {
 		suit: -1,
 		number: -1,
 		isRed: true,
-		child: <></>,
 	}
 	: {
-		suit: state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer].suit,
-		number: state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer].number,
-		isRed: state.containers[props.container[0]][props.container[1]].cardContainer[props.positionInContainer].suit < 2,
-		child: state.containers[props.container[0]][props.container[1]].cardContainer.length > props.positionInContainer+1 && !props.showOne
-			? <PlayCard 
-				zIndex={props.zIndex+1}
-				parentPosition={[position.left, position.top]}
-				container={props.container}
-				positionInContainer={props.positionInContainer+1}
-				showOne={false}
-			/>
-			: <></>,
+		suit: state?.containers[props.container[0]][props.container[1]]?.cardContainer[props.positionInContainer]?.suit,
+		number: state?.containers[props.container[0]][props.container[1]]?.cardContainer[props.positionInContainer]?.number,
+		isRed: state?.containers[props.container[0]][props.container[1]]?.cardContainer[props.positionInContainer]?.suit < 2,
 	}
 
 	const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
-
+	
 	// Attempt to drop the held card. If within the same container, just re-add to container
 	const attemptCardDrop = (e: any) => {
 		if (e.target) {
@@ -79,71 +62,137 @@ const PlayCard = (props: {
 			dispatch({
 				type: 'MOVECARD',
 				payload: {
+					to: [],
+					from: [props.container[0], props.container[1], props.container[0] === 2 ? props.positionInContainer : state.containers[props.container[0]][props.container[1]].cardContainer.length-1],
 					cardTop: cardDropLocation.top+cardMidHeight,
 					cardLeft: cardDropLocation.left+cardMidWidth,
-					StartingContainer: props.container,
-					position: props.container[0] === 3 ? state.containers[props.container[0]][props.container[1]].cardContainer.length-1: props.positionInContainer,
 				}
 			})
 		}
 	}
 
-	// Move Cards if Possible
-	useEffect(()=> {
-		const element = ref.current;
-		let isMoving = false;
-		if (element) {
+	// function onMouseUp(e: any) {
+	// 	document.onmouseup = null;
+	// 	document.onmousemove = null;
+	// 	if (isMoving) {
+	// 		attemptCardDrop(e);
+	// 		isMoving = false;
+	// 	}
+	// }
 
-			element.ondblclick = (e: Event) => {
-				console.log('auto begin')
-				e = e || window.event;
-				e.preventDefault();
-				e.stopPropagation();
-				if (props.container[0] === 3 || state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer) {
-					console.log(cardInfo)
-					const moveTo = validateAutoMove(state, props.container, props.positionInContainer);
-					if (moveTo.position > -1) {
-						dispatch({
-							type: 'MOVECARD',
-							payload: moveTo,
-						});
-					}
-				}
-			}
+	// function onMouseMove(e: any) {
+	// 	e = e || window.event;
+	// 		e.preventDefault();
+	// 		if (isMoving) {
+	// 			setPosition({
+	// 				top: e.clientY - cardMidHeight,
+	// 				left: e.clientX - cardMidWidth,
+	// 			})
+	// 		}
+	// }
+	function onMouseDown(eve: any) { //MouseEventHandler<HTMLDivElement>) {
+		eve = eve || window.event;
+		eve.preventDefault();
+		eve.stopPropagation();
 
-
-			element.onmousedown = (e: Event) => {
-				e = e || window.event;
-				e.preventDefault();
-				e.stopPropagation();
-				if (isMoving || state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer) {
-					isMoving = true;
-				} else {
+		let isMoving = state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer;
+				
+		if (isMoving) {
+			document.onmouseup = () => {
+				document.onmouseup = null;
+				document.onmousemove = null;
+				if (isMoving) {
+					attemptCardDrop(eve);
 					isMoving = false;
 				}
-				document.onmouseup = () => {
-					document.onmouseup = null;
-					document.onmousemove = null;
-					setZIndex(props.zIndex);
-					if (isMoving) {
-						attemptCardDrop(e);
-						isMoving = false;
-					}
-				};
-				document.onmousemove = (e: any) => {
-					e = e || window.event;
-					e.preventDefault();
-					if (isMoving) {
-						setPosition({
-							top: e.clientY - cardMidHeight,
-							left: e.clientX - cardMidWidth,
-						})
-					}
-				};
-
 			};
+
+		
+			document.onmousemove = (e: any) => {
+				e = e || window.event;
+				e.preventDefault();
+				// if (isMoving) {
+					setPosition({
+						top: e.clientY - cardMidHeight,
+						left: e.clientX - cardMidWidth,
+					})
+				// }
+			};
+		} else {
+			document.onmouseup = null;
+			document.onmousemove = null;
 		}
-	}, []);
+	}
+
+	// function onDblClick(e: any) {
+	// 	e = e || window.event;
+	// 	e.preventDefault();
+	// 	e.stopPropagation();
+	// 	if (props.container[0] === 3 || (props.container[0] !== 4 && state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer)) {
+	// 		const moveCard = validateAutoMove(state, props.container, props.container[0] === 3 ? state.containers[props.container[0]][props.container[1]].cardContainer.length-1: props.positionInContainer);
+	// 		if (moveCard.to.length > 0) {
+	// 			dispatch({
+	// 				type: 'MOVECARD',
+	// 				payload: moveCard,
+	// 			});
+	// 		}
+	// 	}
+	// }
+
+	// Move Cards if Possible
+	// useEffect(()=> {
+	// 	const element = ref.current;
+	// 	let isMoving = false;
+	// 	if (element) {
+	// 		// element.ondblclick = onDblClick;
+	// 		// element.ondblclick = (e: Event) => {
+	// 		// 	e = e || window.event;
+	// 		// 	e.preventDefault();
+	// 		// 	e.stopPropagation();
+	// 		// 	if (props.container[0] === 3 || (props.container[0] !== 4 && state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer)) {
+	// 		// 		const moveCard = validateAutoMove(state, props.container, props.container[0] === 3 ? state.containers[props.container[0]][props.container[1]].cardContainer.length-1: props.positionInContainer);
+	// 		// 		if (moveCard.to.length > 0) {
+	// 		// 			dispatch({
+	// 		// 				type: 'MOVECARD',
+	// 		// 				payload: moveCard,
+	// 		// 			});
+	// 		// 		}
+	// 		// 	}
+	// 		// }
+	// 		// element.onmousedown = onMouseDown;
+	// 		// element.onmousedown = (e: Event) => {
+	// 		// 	e = e || window.event;
+	// 		// 	e.preventDefault();
+	// 		// 	e.stopPropagation();
+	// 		// 	console.log(state)
+	// 		// 	if (isMoving || state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer) {
+	// 		// 		isMoving = true;
+	// 		// 	} else {
+	// 		// 		isMoving = false;
+	// 		// 	}
+	// 		// 	document.onmouseup = () => {
+	// 		// 		document.onmouseup = null;
+	// 		// 		document.onmousemove = null;
+	// 		// 		if (isMoving) {
+	// 		// 			attemptCardDrop(e);
+	// 		// 			isMoving = false;
+	// 		// 		}
+	// 		// 	};
+	// 		// 	document.onmousemove = (e: any) => {
+	// 		// 		e = e || window.event;
+	// 		// 		e.preventDefault();
+	// 		// 		if (isMoving) {
+	// 		// 			setPosition({
+	// 		// 				top: e.clientY - cardMidHeight,
+	// 		// 				left: e.clientX - cardMidWidth,
+	// 		// 			})
+	// 		// 		}
+	// 		// 	};
+
+	// 		// };
+			
+	// 	}
+	// }, []);
 
 	// Sets the suit symbol as a string based on suit number
 	const suitSymbol = () => {
@@ -194,24 +243,43 @@ const PlayCard = (props: {
 		// 	clearTimeout(timeout);
 		// }
 
-	}, [state, props.parentPosition]);
+	}, [props.parentPosition[0], props.parentPosition[1], state.containers[props.container[0]][props.container[1]].changed]);
 
-	useEffect(() => {
-		if (position.left !== 0 && position.top !== 0) {
-			setLoaded(true);
-		}
-	}, [position]);
+	// useEffect(() => {
+	// 	if (position.left !== 0 && position.top !== 0) {
+	// 		setLoaded(true);
+	// 	}
+	// }, [position]);
 
 	return (
 
-		<div ref={ref} style={{zIndex: props.zIndex, left: position.left, top: position.top}} className={cardInfo.number!==-1 && loaded ? `${classes.PlayCard} ${state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer ? classes.valid : classes.invalid} ${cardInfo.isRed ? classes.red : classes.black} ${props.parentPosition[1] === 0 ? classes.hidden : classes.shown}`: classes.empty}>
-			{cardInfo.number!==-1 
+		<div
+			onMouseDown={onMouseDown}
+			// onDoubleClick={onDblClick}
+
+			ref={ref} 
+			style={{zIndex: props.zIndex, left: position.left, top: position.top}} 
+			className={
+				cardInfo.number !== -1 && cardInfo.number !== undefined 
+					? `${classes.PlayCard} ${state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer ? classes.valid : classes.invalid} ${cardInfo.isRed ? classes.red : classes.black} ${props.parentPosition[1] === 0 ? classes.hidden : classes.shown}`
+					: classes.empty}>
+			{cardInfo.number !== -1 && cardInfo.number !== undefined 
 			? <div className={classes.cardText}>
 				<p className={classes.top}>{numberSymbol()}{suitSymbol()}</p>
 				<p className={classes.middle}>{numberSymbol()}{suitSymbol()}</p>
 				<p className={classes.bottom}>{numberSymbol()}{suitSymbol()}</p>
 			</div> : <></>}
-			{cardInfo.child}
+			{state.containers[props.container[0]][props.container[1]].cardContainer.length > props.positionInContainer+1 && !props.showOne
+				? <PlayCard 
+					zIndex={props.zIndex+1}
+					parentPosition={[position.left, position.top]}
+					container={props.container}
+					positionInContainer={props.positionInContainer+1}
+					showOne={false}
+					changed={props.changed}
+				/> 
+				: <></>
+			}
 		</div>
 	);
 }

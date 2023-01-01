@@ -4,13 +4,13 @@ export const validateAutoMove = (state: any, container: number[], position: numb
 	// If the clicked card is the 0th card, find the first open finished container, place it there
 	if (card.number === 0) {
 		for (let i = 0; i < 4; ++i) {
+			if (container[0] === 3 && container[1] === i) continue;
 			if (state.containers[3][i].cardContainer.length === 0) {
 				// return container info
+				console.log('to:', [3, i, -1], 'from:', [container[0], container[1], position]);
 				return {
-					cardTop: state.middleLine-1,
-					cardLeft: state.containers[3][i].containerDisplay[0]+1,
-					StartingContainer: container,
-					position: position,
+					to: [3, i, -1],
+					from: [container[0], container[1], position],
 				}
 			}
 		}
@@ -18,53 +18,54 @@ export const validateAutoMove = (state: any, container: number[], position: numb
 
 	// Check all finished containers first, if there is a spot with that cards suit and is the next number, place it there
 	for (let i = 0; i < 4; ++i) {
+		if (container[0] === 3 && container[1] === i) continue;
 		if (state.containers[3][i].cardContainer.length > 0) {
 			const finCard = state.containers[3][i].cardContainer[state.containers[3][i].cardContainer.length-1];
 			if (card.number === finCard.number+1 && card.suit === finCard.suit) {
 				// return container info
+				console.log('to:', [3, i, state.containers[3][i].cardContainer.length-1], 'from:', [container[0], container[1], position]);
+
 				return {
-					cardTop: state.middleLine-1,
-					cardLeft: state.containers[3][i].containerDisplay[0]+1,
-					StartingContainer: container,
-					position: position,
+					to: [3, i, state.containers[3][i].cardContainer.length-1],
+					from: [container[0], container[1], position],
 				}
 			}
 		}
 	}
 
 	// If it is not ready to be sent to finished container, look through the top cards of each InPlay container to see if it is allowed within that stack
-	const emptyContainer = [];
+	// const emptyContainer = [];
 	for (let i = 0; i < 7; ++i) {
+		if (container[0] === 2 && container[1] === i) continue;
 		if (state.containers[2][i].cardContainer.length > 0) {
 			const inPlayCard = state.containers[2][i].cardContainer[state.containers[2][i].cardContainer.length-1];
 			if (card.number === inPlayCard.number-1 && card.suit<2 !== inPlayCard.suit<2) {
 				// return container info
+				console.log('to:', [2, i, state.containers[2][i].cardContainer.length-1], 'from:', [container[0], container[1], position]);
+
 				return {
-					cardTop: state.middleLine+1,
-					cardLeft: state.containers[2][i].containerDisplay[0]+1,
-					StartingContainer: container,
-					position: position,
+					to: [2, i, state.containers[2][i].cardContainer.length-1],
+					from: [container[0], container[1], position],
 				}
 			}
-		} else {
-			emptyContainer.push(i);
 		}
 	}
 
 	// If the card is not able to be allowed in any container, but there was a free spot in an InPlay container, place it there
-	if (emptyContainer.length > 0) {
-		// return container info
-		return {
-			cardTop: state.middleLine+1,
-			cardLeft: state.containers[2][emptyContainer[0]].containerDisplay[0]+1,
-			StartingContainer: container,
-			position: position,
+	for (let i = 0; i < 7; ++i) {
+		if (container[0] === 2 && container[1] === i) continue;
+		if (state.containers[2][i].cardContainer.length === 0) {
+			console.log('to:', [2, i, state.containers[2][i].cardContainer.length-1], 'from:', [container[0], container[1], position]);
+			return {
+				to: [2, i, state.containers[2][i].cardContainer.length-1],
+				from: [container[0], container[1], position],
+			}
 		}
 	}
 
 	// Finally, there is no valid spot for the card to go, and should not be moved at all, send an object that indicated there is no valid spot (position: -1)
 	return {
-		position: -1,
+		to: [],
 	}
 }
 

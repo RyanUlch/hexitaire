@@ -15,3 +15,8 @@
 .container {
 	border: var(--border) var(--selectionSpotColor);
 }
+
+.img {
+	width: var(--cardWidth);
+	height: var(--cardHeight)
+}

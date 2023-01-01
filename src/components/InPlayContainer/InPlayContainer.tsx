@@ -1,11 +1,12 @@
 import { useState, useEffect, useContext } from 'react';
-import { AppContext } from '../../context/context';
+import { AppContext, AppDispatchContext } from '../../context/context';
 import PlayCard from '../PlayCard/PlayCard';
 import classes from './InPlayContainers.module.css';
 
 const InPlayContainer = (props: {containerNum: number}) => {
-	const {state, dispatch} = useContext(AppContext);
-	const [bounds, setBounds] = useState({left: 0, top: 0});
+	const { state } = useContext(AppContext);
+	const { dispatch } = useContext(AppDispatchContext);	const [bounds, setBounds] = useState({left: 0, top: 0});
+	const [changed, setChanged] = useState(false);
 
 	useEffect(() => {
 		const getBounds = document.querySelector(String(`#c${props.containerNum}`))?.getBoundingClientRect();
@@ -25,26 +26,24 @@ const InPlayContainer = (props: {containerNum: number}) => {
 		}
 	}, [state.window[0], state.window[1]]);
 
-	const [cardSet, setCardSet] = useState(<></>);
-
-	useEffect(()=> {
-		if (state.containers[2][props.containerNum].cardContainer.length > 0) {
-			setCardSet(<PlayCard
-				parentPosition={[bounds.left, bounds.top]}
-				container={[2, props.containerNum]}
-				positionInContainer={0}
-				showOne={false}
-				zIndex={1}
-				// key={`${(state.containers[2][props.containerNum].cardContainer.length > 0) ? state.containers[2][props.containerNum].cardContainer[0].number+'-'+state.containers[2][props.containerNum].cardContainer[0].suit : 'InPlay'+props.containerNum}`}
-			/>)
-		} else {
-			setCardSet(<></>);
-		}
+	useEffect(() => {
+		setChanged(prevState => !prevState);
 	}, [state.containers[2][props.containerNum].changed]);
 
 	return (
-		<div id={`c${props.containerNum}`} className={classes.container}>
-			{cardSet}
+		<div id={`c${props.containerNum}`} className={`${classes.container}`}>
+			{state.containers[2][props.containerNum].cardContainer.length > 0
+				? <PlayCard
+					changed={changed}
+					parentPosition={[bounds.left, bounds.top]}
+					container={[2, props.containerNum]}
+					positionInContainer={0}
+					showOne={false}
+					zIndex={1}
+					// key={'inplay1'}
+				/>
+				: <></>
+			} 
 		</div>
 	)
 }

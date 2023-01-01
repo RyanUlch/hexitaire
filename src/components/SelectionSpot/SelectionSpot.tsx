@@ -1,10 +1,11 @@
-import { AppContext } from "../../../context/context";
+import { AppContext, AppDispatchContext } from "../../context/context";
 import { useContext, useEffect, useState } from "react";
 import classes from './SelectionSpot.module.css';
 const SelectionSpot = () => {
-	const {state, dispatch} = useContext(AppContext);
-	const [isEmpty, setIsEmpty] = useState(false);
+	const { state } = useContext(AppContext);
+	const { dispatch } = useContext(AppDispatchContext);	const [isEmpty, setIsEmpty] = useState(false);
 	const showMore = () => {
+		console.log('showing more')
 		if (state.containers[1][0].cardContainer.length > 0) {
 			dispatch({
 				type: 'FLIPCARDS',
@@ -21,8 +22,8 @@ const SelectionSpot = () => {
 	},[state.containers[1][0].changed]);
 
 	return (
-		<div onClick={showMore} className={`${isEmpty ? classes.empty : classes.full} ${classes.container}`}>
-		
+		<div onClick={showMore} className={classes.container}>
+			{isEmpty ? <></> : <img src='\images\hexBack.png' className={classes.img} alt='' />}
 		</div>
 	)
 }

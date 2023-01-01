@@ -5,9 +5,10 @@ import { AppContext } from '../../context/context';
 import { cardMidWidth } from '../../helpers/globals';
 
 const ShownContainer = () => {
-	const {state, dispatch} = useContext(AppContext);
-	const [shownCards, setShownCards] = useState<JSX.Element[]>([])
+	const { state } = useContext(AppContext);
+	// const [shownCards, setShownCards] = useState<JSX.Element[]>([])
 	const [bounds, setBounds] = useState({left: 0, top: 0});
+	const [changed, setChanged] = useState(false);
 
 	useEffect(() => {
 		const getBounds = document.querySelector(String(`#shown`))?.getBoundingClientRect();
@@ -20,34 +21,104 @@ const ShownContainer = () => {
 	}, [state.window[0], state.window[1]]);
 
 	useEffect(() => {
-		setShownCards(() => {
-			const cards = [];
-			for (let i = 0; i < state.containers[0][0].cardContainer.length; ++i) {
-				cards.push(<PlayCard
-					parentPosition={[(bounds.left+(i*cardMidWidth)), bounds.top]}
+		setChanged(prevState => !prevState);
+	}, [state.containers[0][0].changed]);
+
+	// useEffect(() => {
+	// 	setShownCards(() => {
+	// 		const cards = [];
+	// 		for (let i = 0; i < state.containers[0][0].cardContainer.length; ++i) {
+	// 			cards.push(<PlayCard
+	// 				parentPosition={[(bounds.left+(i*cardMidWidth)), bounds.top]}
+	// 				container={[0, 0]}
+	// 				positionInContainer={i}
+	// 				showOne={true}
+	// 				zIndex={i}
+	// 				// key={`${state.containers[0][0].cardContainer.length > 0 ? state.containers[0][0].cardContainer[i].number+'-'+state.containers[0][0].cardContainer[i].suit+'-'+state.moves : 'ShownEmpty'}`}
+	// 			/>)
+	// 		}
+	// 		cards.push(<PlayCard
+	// 			parentPosition={[(bounds.left), bounds.top]}
+	// 			container={[4, 0]}
+	// 			positionInContainer={state.containers[4][0].cardContainer.length-1}
+	// 			showOne={true}
+	// 			zIndex={-1}
+	// 			// key={`${state.containers[4][0].cardContainer.length > 0 ? state.containers[4][0].cardContainer[state.containers[4][0].cardContainer.length-1].number+'-'+state.containers[4][0].cardContainer[state.containers[4][0].cardContainer.length-1].suit+'-'+state.moves : 'ShownEmpty'}`}
+	// 		/>)
+	// 		return cards;	
+	// 	});
+	// }, [state.containers[0][0].changed, state.containers[4][0].changed]);
+	return (
+		<div id='shown' className={`${classes.container} ${changed}`}>
+			{state.containers[0][0].cardContainer.length >= 5
+				? <PlayCard
+					parentPosition={[(bounds.left+(5*cardMidWidth)), bounds.top]}
 					container={[0, 0]}
-					positionInContainer={i}
+					positionInContainer={4}
 					showOne={true}
-					zIndex={i}
-					key={`${state.containers[0][0].cardContainer.length > 0 ? state.containers[0][0].cardContainer[i].number+'-'+state.containers[0][0].cardContainer[i].suit+'-'+state.moves : 'ShownEmpty'}`}
-				/>)
-			}
-			cards.push(<PlayCard
+					zIndex={5}
+					changed={changed}
+					// key={'shown5'}
+
+					// key={`${state.containers[0][0].cardContainer.length > 0 ? state.containers[0][0].cardContainer[i].number+'-'+state.containers[0][0].cardContainer[i].suit+'-'+state.moves : 'ShownEmpty'}`}
+				/> : <></>}
+			{state.containers[0][0].cardContainer.length >= 4
+				? <PlayCard
+					parentPosition={[(bounds.left+(4*cardMidWidth)), bounds.top]}
+					container={[0, 0]}
+					positionInContainer={3}
+					showOne={true}
+					zIndex={4}
+					changed={changed}
+					// key={'shown4'}
+
+					// key={`${state.containers[0][0].cardContainer.length > 0 ? state.containers[0][0].cardContainer[i].number+'-'+state.containers[0][0].cardContainer[i].suit+'-'+state.moves : 'ShownEmpty'}`}
+				/> : <></>}
+			{state.containers[0][0].cardContainer.length >= 3
+				? <PlayCard
+					parentPosition={[(bounds.left+(3*cardMidWidth)), bounds.top]}
+					container={[0, 0]}
+					positionInContainer={2}
+					showOne={true}
+					zIndex={3}
+					changed={changed}
+					// key={'shown3'}
+
+					// key={`${state.containers[0][0].cardContainer.length > 0 ? state.containers[0][0].cardContainer[i].number+'-'+state.containers[0][0].cardContainer[i].suit+'-'+state.moves : 'ShownEmpty'}`}
+				/> : <></>}
+			{state.containers[0][0].cardContainer.length >= 2
+				? <PlayCard
+					parentPosition={[(bounds.left+(2*cardMidWidth)), bounds.top]}
+					container={[0, 0]}
+					positionInContainer={1}
+					showOne={true}
+					zIndex={2}
+					changed={changed}
+					// key={'shown2'}
+
+					// key={`${state.containers[0][0].cardContainer.length > 0 ? state.containers[0][0].cardContainer[i].number+'-'+state.containers[0][0].cardContainer[i].suit+'-'+state.moves : 'ShownEmpty'}`}
+				/> : <></>}
+			{state.containers[0][0].cardContainer.length >= 1
+				? <PlayCard
+					parentPosition={[(bounds.left+(0*cardMidWidth)), bounds.top]}
+					container={[0, 0]}
+					positionInContainer={0}
+					showOne={true}
+					zIndex={1}
+					changed={changed}
+					// key={'shown1'}
+					// key={`${state.containers[0][0].cardContainer.length > 0 ? state.containers[0][0].cardContainer[i].number+'-'+state.containers[0][0].cardContainer[i].suit+'-'+state.moves : 'ShownEmpty'}`}
+				/> : <></>}
+			{/* {state.containers[4][0].cardContainer.length > 0 ? <PlayCard
 				parentPosition={[(bounds.left), bounds.top]}
 				container={[4, 0]}
 				positionInContainer={state.containers[4][0].cardContainer.length-1}
 				showOne={true}
 				zIndex={-1}
-				key={`${state.containers[4][0].cardContainer.length > 0 ? state.containers[4][0].cardContainer[state.containers[4][0].cardContainer.length-1].number+'-'+state.containers[4][0].cardContainer[state.containers[4][0].cardContainer.length-1].suit+'-'+state.moves : 'ShownEmpty'}`}
-			/>)
-			return cards;	
-		});
-	}, [state.containers[0][0].changed]);
+				// key={`${state.containers[4][0].cardContainer.length > 0 ? state.containers[4][0].cardContainer[state.containers[4][0].cardContainer.length-1].number+'-'+state.containers[4][0].cardContainer[state.containers[4][0].cardContainer.length-1].suit+'-'+state.moves : 'ShownEmpty'}`}
+			/> : <></>} */}
 
-	return (
-		<div id='shown' className={classes.container}>
-			{shownCards}
-			
+
 		</div>
 	);
 }
