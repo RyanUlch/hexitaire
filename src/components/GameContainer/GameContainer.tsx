@@ -8,6 +8,7 @@ import ShownContainer from '../ShownContainer/ShownContainer';
 import { autoFinish } from '../../helpers/moveValidator';
 import RulesModal from '../Modal/RulesModal/RulesModal';
 import DedicationModal from '../Modal/DedicationModal/DedicationModal';
+import Timer from '../../Timer/Timer';
 
 const GameContainer = () => {
 	const { state } = useContext(AppContext);
@@ -20,6 +21,7 @@ const GameContainer = () => {
 	const [isShowRulesModal, setIsShowRulesModal] = useState(false);
 	const [isShowDedicationModal, setIsShowDedicationModal] = useState(false);
 	const [winConditions, setWinConditions] = useState([false, false]);
+	const [timer, setTimer] = useState(-1);
 
 	const undo = () => {
 		if (state.lastMove.length > 0) {
@@ -64,6 +66,7 @@ const GameContainer = () => {
 		}
 		if (winConditions[1]) {
 			alert("You Won! Congrats");
+			setTimer(1);
 		}
 	}, [state.moves]);
 
@@ -93,7 +96,9 @@ const GameContainer = () => {
 			payload: {
 				difficulty: Number(event.target.value),
 			}
-		})
+		});
+		setTimer(2);
+		setTimer(0);
 	}
 
 	const openRulesModal = () => {
@@ -146,6 +151,7 @@ const GameContainer = () => {
 					<div className={`${classes.footer} ${classes.footerTop}`}>
 						<p className={classes.moves}>Moves: {state.moves}</p>
 						<button disabled={state.lastMove.length === 0} className={`${classes.button} ${classes.undoBtn}`} onClick={undo}>Undo</button>
+						<Timer timerReact={timer} />
 					</div>
 					
 					<footer className={`${classes.footer} ${classes.footerBottom}`}>

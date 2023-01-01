@@ -124,20 +124,20 @@ const PlayCard = (props: {
 		}
 	}
 
-	// function onDblClick(e: any) {
-	// 	e = e || window.event;
-	// 	e.preventDefault();
-	// 	e.stopPropagation();
-	// 	if (props.container[0] === 3 || (props.container[0] !== 4 && state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer)) {
-	// 		const moveCard = validateAutoMove(state, props.container, props.container[0] === 3 ? state.containers[props.container[0]][props.container[1]].cardContainer.length-1: props.positionInContainer);
-	// 		if (moveCard.to.length > 0) {
-	// 			dispatch({
-	// 				type: 'MOVECARD',
-	// 				payload: moveCard,
-	// 			});
-	// 		}
-	// 	}
-	// }
+	function onDblClick(e: any) {
+		e = e || window.event;
+		e.preventDefault();
+		e.stopPropagation();
+		if (props.container[0] === 3 || (props.container[0] !== 4 && state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer)) {
+			const moveCard = validateAutoMove(state, props.container, props.container[0] === 3 ? state.containers[props.container[0]][props.container[1]].cardContainer.length-1: props.positionInContainer);
+			if (moveCard.to.length > 0) {
+				dispatch({
+					type: 'MOVECARD',
+					payload: moveCard,
+				});
+			}
+		}
+	}
 
 	// Move Cards if Possible
 	// useEffect(()=> {
@@ -255,7 +255,7 @@ const PlayCard = (props: {
 
 		<div
 			onMouseDown={onMouseDown}
-			// onDoubleClick={onDblClick}
+			onDoubleClick={onDblClick}
 
 			ref={ref} 
 			style={{zIndex: props.zIndex, left: position.left, top: position.top}} 
