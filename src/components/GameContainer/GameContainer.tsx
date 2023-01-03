@@ -142,22 +142,23 @@ const GameContainer = () => {
 					<InPlayContainer containerNum={6} />
 					<InPlayContainer containerNum={7} />
 				</div>
-				<div className={classes.bottomButtons}>
-					<div className={classes.buttons}>
-						<button className={`${classes.button} ${classes.easy}`} onClick={newGame} value={1}>New Game (Easy)</button>
-						<button className={`${classes.button} ${classes.medium}`} onClick={newGame} value={3}>New Game (Medium)</button>
-						<button className={`${classes.button} ${classes.hard}`} onClick={newGame} value={5}>New Game (Hard)</button>
+				<div className={classes.footerContainer}>
+					<div className={`${classes.footer} ${classes.buttons}`}>
+						<button className={`${classes.even}`}>New Game:</button>
+						<button className={`${classes.odd} ${classes.clickable}`} onClick={newGame} value={1}>Easy</button>
+						<button className={`${classes.even} ${classes.clickable}`} onClick={newGame} value={3}>Medium</button>
+						<button className={`${classes.odd} ${classes.clickable}`} onClick={newGame} value={5}>Hard</button>
 					</div>
 					<div className={`${classes.footer} ${classes.footerTop}`}>
-						<p className={classes.moves}>Moves: {state.moves}</p>
-						<button disabled={state.lastMove.length === 0} className={`${classes.button} ${classes.undoBtn}`} onClick={undo}>Undo</button>
-						<Timer timerReact={timer} />
+						<button className={`${classes.even}`}>Moves: {state.moves}</button>
+						<button className={`${classes.odd}  ${state.lastMove.length !== 0 ? classes.clickable : ''}`} disabled={state.lastMove.length === 0} onClick={undo}>Undo</button>
+						<Timer timerReact={timer} classes={classes} />
 					</div>
 					
 					<footer className={`${classes.footer} ${classes.footerBottom}`}>
-						<p className={classes.dedicaiton} onClick={openDedicationModal}>Dedications and Acknowledgements</p>
-						<p className={classes.rulesBtn} onClick={openRulesModal}>What are the rules?</p>
-						<p>A <a href='https:RyanUlch.com'><span  className={classes.name}>Ryan Ulch</span></a> website</p>
+						<button className={`${classes.odd}  ${classes.clickable}`} onClick={openDedicationModal}>Dedications and Acknowledgements</button>
+						<button className={`${classes.even}  ${classes.clickable}`} onClick={openRulesModal}>What are the rules?</button>
+						<button className={`${classes.odd} ${classes.clickable}`} onClick={() => {window.open('https:RyanUlch.com','_blank')}}>A <span className={classes.name}>Ryan Ulch</span> website</button>
 					</footer>
 				</div>
 			</div>

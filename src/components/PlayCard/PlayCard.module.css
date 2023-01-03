@@ -54,6 +54,10 @@
 	padding: 0 3px;
 }
 
+.cardText > p {
+	font-family: var(--fontSansSerif);
+}
+
 .top {
 	align-self: flex-start;
 }

@@ -11,12 +11,31 @@
 	border: var(--border) black;
 }
 
+.textContainer > p {
+	padding: 10px 0;
+	text-align: center;
+}
+
 .title {
 	text-decoration: underline;
 	padding: 0 0 0 5px;
 	text-align: center;
 }
 
-.center {
-	text-align: center;
+.textContainer > a {
+}
+
+.font1 {
+	font-family: var(--fontSerif);
+	color: var(--textColor);
+}
+
+.font2 {
+	font-family: var(--fontSansSerif);
+	color: var(--textColor);
+}
+
+.font3 {
+	font-family: var(--fontCursive);
+	color: var(--textColor);
 }

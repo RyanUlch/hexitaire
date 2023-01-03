@@ -29,9 +29,8 @@
 	--borderColor: black;
 	--invalidColor: rgb(121, 121, 121);
 	--fontSize: clamp(0rem, 2vw, 2rem);
-
-	--fontSerif: ;
-	--fontSansSerif: ;
+	--fontSerif: 'Merriweather', serif;
+	--fontSansSerif: 'Sigmar One', sans-serif;
 	--fontCursive: 'Vujahday Script', "Brush Script MT", cursive;
 
 
@@ -39,6 +38,11 @@
 	--selectionSpotColor: rgb(89, 0, 0);
 	--InPlayColor: black;
 	--finishedColor: rgb(0, 199, 0);
+
+}
+
+h1, h2, h3, h4, h5, h6, p, button, input, li {
+	font-family: var(--fontSerif);
 }
 
 div {

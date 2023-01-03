@@ -1,0 +1,7 @@
+.title {
+	text-decoration: underline;
+}
+
+.list > li {
+	padding: 3px 0;
+}

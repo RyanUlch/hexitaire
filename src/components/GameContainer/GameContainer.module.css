@@ -1,18 +1,11 @@
 .containers {
 	display: flex;
 	flex-direction: row;
-	/* width: 100%; */
 }
 
 .containers > div {
-	/* min-width: var(--cardWidthMin);
-	width: var(--cardWidth);
-	max-width: var(--cardWidthMax); */
 	width: var(--cardWidthClamp);
-	/* border: 2px solid black; */
 }
-
-
 
 .top {
 	display: flex;
@@ -20,9 +13,7 @@
 	flex-wrap: nowrap;
 }
 
-
 .bottom {
-	/* height: 100%; */
 	height: var(--cardHeightClamp)
 }
 
@@ -31,31 +22,12 @@
 	bottom: 0;
 }
 
-.buttons {
-	display: flex;
-	flex-direction: row;
-	width: var(--gameContainerWidthClamp);
-	flex-wrap: nowrap;
-}
-
-.rulesBtn {
-	cursor: pointer;
-	text-decoration: underline;
-}
-
 .gameContainer {
 	display: flex;
 	flex-direction: column;
-	/* min-width: var(--gameContainerWidthMin);
-	width: var(--gameContainerWidth);
-	max-width: var(--gameContainerWidthMax); */
 	width: var(--gameContainerWidthClamp);
 	margin: 0 auto;
 	height: 100vh;
-	/* border-width: 5px;
-	border-style: none inset;
-	border-color: black;
-	box-shadow: 0 0 20px black; */
 }
 
 body {
@@ -64,7 +36,6 @@ body {
 	background-position: center;
 	background-size:auto;
 	background-color: #C68946;
-
 	overflow-x: hidden;
 }
 
@@ -73,44 +44,42 @@ body {
 	height: calc(var(--gameContainerWidthClamp) * 0.20390625);
 }
 
-.moves {
-	text-align: center;
-}
-
-.easy {
-	background-color: var(--blackColor);
-}
-
-.medium {
-	background-color: #0a8a51;
-}
-
-.hard {
-	background-color: var(--blackInvalidColor);
-}
-
-.button {
+button {
 	width: 100%;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.clickable:hover {
+	opacity: 80%;
 }
 
 .name {
 	font-family: var(--fontCursive);
-	color: var(--textColor);
+}
+
+.footerContainer {
+	width: var(--gameContainerWidthClamp);
+	position: fixed;
+	bottom: 0;
 }
 
 .footer {
 	display: flex;
 	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-evenly;
 	padding: 0 20px;
 }
 
-.footerTop {
+.even {
 	background-color: var(--redColor);
-	justify-content: space-around;
-	text-align: center;
+
 }
 
-.footerBottom {
+.odd {
 	background-color: var(--blackColor);
-	justify-content: space-between;
+
 }

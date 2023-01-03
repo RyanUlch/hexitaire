@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
-const Timer = (props: {timerReact: number}) => {
-	const [timer, setTimer] = useState([0,0,0]);
+const Timer = (props: {timerReact: number, classes: any}) => {
+	const [timer, setTimer] = useState([0,0]);
 
 	useEffect(() => {
 		let intervalID: NodeJS.Timer;
@@ -11,15 +11,11 @@ const Timer = (props: {timerReact: number}) => {
 				intervalID = setInterval(() => {
 					setTimer(prev => {
 						const newTime = [...prev];
-						if (newTime[2] === 59) {
-							newTime[2] = 0;
-							newTime[1] += 1;
-							if (newTime[1] === 59) {
-								newTime[1] = 0;
-								newTime[0] += 1;
-							}
+						newTime[1] += 1;
+						if (newTime[1] === 59) {
+							newTime[1] = 0;
+							newTime[0] += 1;
 						}
-						newTime[2] += 1;
 						return newTime;
 					});
 				}, 1000);
@@ -38,7 +34,7 @@ const Timer = (props: {timerReact: number}) => {
 	}, [props.timerReact]);
 	
 	return (
-		<p>Timer: Hours: {timer[0]}, Minutes: {timer[1]}, Seconds: {timer[2]}</p>
+		<button className={props.classes.even}>Minutes: {timer[0]} Seconds: {timer[1]}</button>
 	)
 }
 
