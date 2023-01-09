@@ -205,7 +205,7 @@ const GameContainer = () => {
 					<footer className={`${classes.footer} ${classes.footerBottom}`}>
 						<button className={`${classes.fElement} ${classes.odd}	`} onClick={openDedicationModal}>Dedications and Acknowledgements</button>
 						<button className={`${classes.fElement} ${classes.even}	`} onClick={openRulesModal}>What are the rules?</button>
-						<button className={`${classes.fElement} ${classes.odd}	`} onClick={() => {window.open('https:RyanUlch.com','_blank')}}>A <span className={classes.name}>Ryan Ulch</span> website</button>
+						<button className={`${classes.fElement} ${classes.odd}	`} onClick={() => {window.open('https:RyanUlch.com','_blank')}}>A&nbsp;<span className={classes.name}>Ryan Ulch</span>&nbsp;website</button>
 					</footer>
 				</div>
 			</div>

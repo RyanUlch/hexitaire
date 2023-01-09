@@ -51,6 +51,45 @@ const PlayCard = (props: {
 		}
 	}
 
+	function onTouch(eve: any) {
+		eve = eve || window.event;
+		eve.preventDefault();
+		eve.stopPropagation();
+
+		let isMoving = state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer;
+
+		if (isMoving) {
+			document.ontouchend = () => {
+				document.ontouchend = null;
+				document.ontouchmove = null;
+				document.ontouchcancel = null;
+				if (isMoving) {
+					attemptCardDrop(eve);
+					isMoving = false;
+				}
+			};
+
+			document.ontouchmove = (e: any) => {
+				e = e || window.event;
+				e.preventDefault();
+					setPosition({
+						top: e.clientY - cardMidHeight,
+						left: e.clientX - cardMidWidth,
+					})
+			};
+
+			document.ontouchcancel = (e: any) => {
+				document.ontouchend = null;
+				document.ontouchmove = null;
+				document.ontouchcancel = null;
+			}
+		} else {
+			document.ontouchend = null;
+			document.ontouchmove = null;
+			document.ontouchcancel = null;
+		}
+	}
+
 	function onMouseDown(eve: any) { //MouseEventHandler<HTMLDivElement>) {
 		eve = eve || window.event;
 		eve.preventDefault();
@@ -68,7 +107,6 @@ const PlayCard = (props: {
 				}
 			};
 
-		
 			document.onmousemove = (e: any) => {
 				e = e || window.event;
 				e.preventDefault();
@@ -135,10 +173,11 @@ const PlayCard = (props: {
 			clearTimeout(timeout);
 		}
 	}, [props.parentPosition[0], props.parentPosition[1], state.containers[props.container[0]][props.container[1]].changed]);
-
+console.log(state)
 	return (
 		<div
 			onMouseDown={onMouseDown}
+			onTouchStart={onTouch}
 			onDoubleClick={onDblClick}
 
 			ref={ref} 
@@ -149,9 +188,9 @@ const PlayCard = (props: {
 					: classes.empty}>
 			{cardInfo.number !== -1 && cardInfo.number !== undefined 
 			? <div className={classes.cardText}>
-				<p className={classes.top}>{numberSymbol()}{suitSymbol()}</p>
+				{state.window[1] > 500 ? <p className={classes.top}>{numberSymbol()}{suitSymbol()}</p> : <></>}
 				<p className={classes.middle}>{numberSymbol()}{suitSymbol()}</p>
-				<p className={classes.bottom}>{numberSymbol()}{suitSymbol()}</p>
+				{state.window[1] > 500 ? <p className={classes.bottom}>{numberSymbol()}{suitSymbol()}</p> : <></>}
 			</div> : <></>}
 			{state.containers[props.container[0]][props.container[1]].cardContainer.length > props.positionInContainer+1 && !props.showOne
 				? <PlayCard 

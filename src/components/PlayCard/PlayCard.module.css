@@ -25,7 +25,7 @@
 
 .invalid {
 	border: var(--border) var(--invalidColor);
-	color: var(--invalidColor);
+	color: var(--invalidColor) !important;
 }
 
 .invalid.red {
