@@ -1,3 +1,4 @@
 .container {
 	border: var(--border) var(--InPlayColor);
+	border-radius: var(--borderRadius);
 }

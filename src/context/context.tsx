@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from 'react';
-import type { Dispatch, ReactElement, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import{ cardReducer } from './reducers';
 
@@ -20,25 +20,16 @@ export type container = {
 // The type for all the information required by Hexitaire
 export type gameContainer = {
 	containers: container[][];
-	// containers: [
-	// 	// Container containing the not shown cards to pull from for flipped container
-	// 	container[],	// Draw Pile
-	// 	// Container Users can only pull cards from
-	// 	container[],	// Hidden Draw Pile
-	// 	// Containers User can drop cards to and from
-	// 	container[],	// In Play Containers
-	// 	container[],	// Finished containers
-	// 	container[],	// Reset Draw Pile
-	// ],
 	middleLine: number,
 	moves: number,
 	difficulty: number,
 	window: number[],
 	lastMove: container[][],
+	winCondition: boolean[],
 }
 
 // Create cards for entire Deck in order (suits: 0-3, numbers: 0-15)
-const cardGenerator = () => {
+export const cardGenerator = () => {
 	const orderedDeck: card[] = [];
 	for (let suit = 0; suit < 4; ++suit) {
 		for (let num = 0; num < 16; ++num) {
@@ -179,6 +170,7 @@ const createStartingDeck = (): gameContainer =>  {
 		difficulty: 0,
 		window: [0, 0,],
 		lastMove: [],
+		winCondition: [false, false],
 	}
 }
 
@@ -191,11 +183,11 @@ const AppDispatchContext = createContext<{dispatch: React.Dispatch<any>}>({dispa
 const AppProvider = (props: { children: ReactNode }) => {
 	const [state, dispatch] = useReducer(cardReducer, initialState);
 	return (
-		<AppContext.Provider value={{state}}>
-			<AppDispatchContext.Provider value={{dispatch}}>
+		<AppDispatchContext.Provider value={{dispatch}}>
+			<AppContext.Provider value={{state}}>
 				{props.children}
-			</AppDispatchContext.Provider>
-		</AppContext.Provider>
+			</AppContext.Provider>
+		</AppDispatchContext.Provider>
 	)
 }
 

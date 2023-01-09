@@ -1,4 +1,4 @@
-import { shuffleDeck } from './context';
+import { cardGenerator, shuffleDeck } from './context';
 import type { gameContainer, container, card } from './context';
 
 const dropCheckInPlay: (lVal: {number: number, suit: number}, rVal: {number: number, suit: number}, state: any) => boolean = (lVal, rVal, state) => {
@@ -36,7 +36,7 @@ const containerCheck = (container: any) => {
 	}
 }
 
-const deepCopyState = (state: gameContainer) => {
+export const deepCopyState = (state: gameContainer) => {
 	const newState: gameContainer = {
 		containers: [
 			[
@@ -71,6 +71,7 @@ const deepCopyState = (state: gameContainer) => {
 		window: [...state.window],
 		moves: state.moves,
 		lastMove: [...state.lastMove],
+		winCondition: [...state.winCondition],
 	}
 	return newState;
 }
@@ -121,7 +122,6 @@ const containerCopy = (containers: container[][]) => {
 			{cardContainer: [...containers[2][5].cardContainer], containerDisplay: [...containers[2][5].containerDisplay], changed: containers[2][5].changed, validFrom: containers[2][5].validFrom},
 			{cardContainer: [...containers[2][6].cardContainer], containerDisplay: [...containers[2][6].containerDisplay], changed: containers[2][6].changed, validFrom: containers[2][6].validFrom},
 			{cardContainer: [...containers[2][7].cardContainer], containerDisplay: [...containers[2][7].containerDisplay], changed: containers[2][7].changed, validFrom: containers[2][7].validFrom},
-
 		],
 		[
 			{cardContainer: [...containers[3][0].cardContainer], containerDisplay: [...containers[3][0].containerDisplay], changed: containers[3][0].changed, validFrom: containers[3][0].validFrom},
@@ -247,6 +247,123 @@ export const cardReducer = (state: gameContainer, action: {type: string, payload
 					],
 				],
 				lastMove: [],
+				winCondition: [false, false],
+			};
+			return {...newContainer};
+		}
+
+		// Action Type only for dev purposes, puts game into almost won state where finishing game can be tested easily
+		case 'NEWGAMEDEV': {
+			const deck = cardGenerator();
+			const newContainer : gameContainer = {
+				difficulty: 1,
+				middleLine: state.middleLine,
+				moves: 0,
+				window: state.window,
+				containers: [
+					[
+						{
+							cardContainer: deck.slice(0, 0),
+							containerDisplay: state.containers[0][0].containerDisplay,
+							validFrom: 0,
+							changed: !state.containers[0][0].changed,
+						},
+					],
+					[
+						{
+							cardContainer: deck.slice(62),
+							containerDisplay: state.containers[1][0].containerDisplay,
+							validFrom: 0,
+							changed: !state.containers[1][0].changed,
+						},
+					],
+					[
+						{
+							cardContainer: deck.slice(0, 0),
+							containerDisplay: state.containers[2][0].containerDisplay,
+							validFrom: containerCheck({validFrom: -1, cardContainer: [...deck.slice(0, 0)]}),
+							changed: !state.containers[2][0].changed,
+						},
+						{
+							cardContainer: deck.slice(0, 0),
+							containerDisplay: state.containers[2][1].containerDisplay,
+							validFrom: containerCheck({validFrom: -1, cardContainer: [...deck.slice(0, 0)]}),
+							changed: !state.containers[2][1].changed,
+						},
+						{
+							cardContainer: deck.slice(0, 0),
+							containerDisplay: state.containers[2][2].containerDisplay,
+							validFrom: containerCheck({validFrom: -1, cardContainer: [...deck.slice(0, 0)]}),
+							changed: !state.containers[2][2].changed,
+						},
+						{
+							cardContainer: deck.slice(0, 0),
+							containerDisplay: state.containers[2][3].containerDisplay,
+							validFrom: containerCheck({validFrom: -1, cardContainer: [...deck.slice(0, 0)]}),
+							changed: !state.containers[2][3].changed,
+						},
+						{
+							cardContainer: deck.slice(0, 0),
+							containerDisplay: state.containers[2][4].containerDisplay,
+							validFrom: containerCheck({validFrom: -1, cardContainer: [...deck.slice(0, 0)]}),
+							changed: !state.containers[2][4].changed,
+						},
+						{
+							cardContainer: deck.slice(0, 0),
+							containerDisplay: state.containers[2][5].containerDisplay,
+							validFrom: containerCheck({validFrom: -1, cardContainer: [...deck.slice(0, 0)]}),
+							changed: !state.containers[2][5].changed,
+						},
+						{
+							cardContainer: deck.slice(0, 0),
+							containerDisplay: state.containers[2][6].containerDisplay,
+							validFrom: containerCheck({validFrom: -1, cardContainer: [...deck.slice(0, 0)]}),
+							changed: !state.containers[2][6].changed,
+						},
+						{
+							cardContainer: deck.slice(0, 0),
+							containerDisplay: state.containers[2][7].containerDisplay,
+							validFrom: containerCheck({validFrom: -1, cardContainer: [...deck.slice(0, 0)]}),
+							changed: !state.containers[2][7].changed,
+						},
+					],
+					[
+						{
+							cardContainer: deck.slice(0, 16),
+							containerDisplay: state.containers[3][0].containerDisplay,
+							validFrom: 0,
+							changed: !state.containers[3][0].changed,
+						},
+						{
+							cardContainer: deck.slice(16, 32),
+							containerDisplay: state.containers[3][1].containerDisplay,
+							validFrom: 0,
+							changed: !state.containers[3][1].changed,
+						},
+						{
+							cardContainer: deck.slice(32, 48),
+							containerDisplay: state.containers[3][2].containerDisplay,
+							validFrom: 0,
+							changed: !state.containers[3][2].changed,
+						},
+						{
+							cardContainer: deck.slice(48, 62),
+							containerDisplay: state.containers[3][3].containerDisplay,
+							validFrom: 0,
+							changed: !state.containers[3][3].changed,
+						},
+					],
+					[
+						{
+							cardContainer: deck.slice(0, 0),
+							containerDisplay: state.containers[4][0].containerDisplay,
+							validFrom: 0,
+							changed: !state.containers[4][0].changed,
+						},
+					],
+				],
+				lastMove: [],
+				winCondition: [false, false],
 			};
 			return {...newContainer};
 		}
@@ -279,11 +396,11 @@ export const cardReducer = (state: gameContainer, action: {type: string, payload
 			updateState.containers[action.payload.column[0]][action.payload.column[1]].containerDisplay[1] = action.payload.right;
 			return {...updateState};
 		}
-		case 'SETMIDDLELINE': {	// payload: number
-			const midLineState = deepCopyState(state);
-			midLineState.middleLine = action.payload[0];
-			midLineState.window = [action.payload[1], action.payload[2]];
-			return {...midLineState};
+		case 'SETWINDOWVALUES': {	// payload: number
+			const windowState = deepCopyState(state);
+			windowState.middleLine = action.payload.middleLine;
+			windowState.window = [action.payload.wHeight, action.payload.wWidth];
+			return {...windowState};
 		}
 
 		case 'MOVECARD': { 
@@ -332,6 +449,30 @@ export const cardReducer = (state: gameContainer, action: {type: string, payload
 				moveState.containers[pay.to[0]][pay.to[1]].cardContainer.push(...newCards);
 				moveState.containers = updateContainer(moveState.containers, pay.to[0], pay.to[1]);
 				moveState.moves += 1;
+
+				let canWin = true;
+				if (moveState.containers[3][0].cardContainer.length === 16 && moveState.containers[3][1].cardContainer.length === 16 && moveState.containers[3][2].cardContainer.length === 16 && moveState.containers[3][3].cardContainer.length === 16) {
+					alert("You Won! Congrats");
+					// setTimer(false);
+					moveState.winCondition = [true, true];
+					canWin = false;
+				} else if (!moveState.winCondition[1] && (moveState.containers[0][0].cardContainer.length > 0 || moveState.containers[1][0].cardContainer.length > 0 || moveState.containers[4][0].cardContainer.length > 0)) {
+					// Check there are no more cards in the draw, hidden, or reset piles, if all fails, the user has uncovered all cards, and can win!
+					moveState.winCondition = [false, false];
+					canWin = false;
+				} else if (!moveState.winCondition[1]) {
+					// Check that each InPlay container is valid from the top of the pile, if not, Can't win yet.
+					for (let i = 0; i < moveState.containers[2].length; ++i) {
+						if (moveState.containers[2][i].validFrom !== 0) {
+							moveState.winCondition = [false, false];
+							canWin = false;
+							break;
+						}
+					}
+				}
+				if (canWin){
+					moveState.winCondition = [true, false];
+				}
 				return {...moveState};
 			} else {
 				// Check Failed, update "from" container to allow resetting of dropped card
@@ -340,10 +481,15 @@ export const cardReducer = (state: gameContainer, action: {type: string, payload
 			}
 		}
 
+		case 'SETWINCONDITIONS': {
+			const newState = deepCopyState(state);
+			newState.winCondition = action.payload;
+			return {...newState};
+		}
+
 		case 'UNDO': {
 			if (state.lastMove.length > 0) {
 				const newState = deepCopyState(state);
-				console.log(newState.containers, newState.lastMove);
 				newState.containers = [...newState.lastMove];
 				newState.lastMove = [];
 				newState.moves += 1;
@@ -353,144 +499,7 @@ export const cardReducer = (state: gameContainer, action: {type: string, payload
 			}
 		}
 
-
-
-
-		// case 'MOVECARD': {		// payload: {cardTop: number, cardLeft: number, StartingContainer: number[], isUndo?: boolean, endingContainer?: number[]}
-		// 	let cardTop = action.payload.cardTop;
-		// 	let cardLeft = action.payload.cardLeft;
-
-		// 	let moveState = deepCopyState(state);
-
-		// 	const cont0 = action.payload.StartingContainer[0];
-		// 	const cont1 = action.payload.StartingContainer[1];
-
-		// 	if (action.payload.isUndo) {
-		// 		// User pressed undo button, move cards back
-			
-		// 		return {...moveState};
-		// 	} else if (cardTop < moveState.middleLine) {
-		// 		// Card is dropped above the middle line, can only be validly dropped into finished containers
-		// 		const containers = state.containers[3]; // 3 = Finished Containers
-		// 		for (let i = 0; i < containers.length; ++i) {
-		// 			// Check if cards are dropped within the bounds of the columns
-		// 			if (containers[i].containerDisplay[0] < cardLeft && cardLeft < containers[i].containerDisplay[1]) {
-		// 				if (3 === cont0 && i === cont1) {
-		// 					// Card is from the same container as it was dropped, reset it
-		// 					moveState.containers[3][i].changed = !moveState.containers[3][i].changed;
-		// 					return {...moveState};
-		// 				} else {
-		// 					// Card dropped within bounds of Finished Container
-		// 					if(containers[i].cardContainer.length > 0) {
-		// 						// check if the card being dropped is valid
-		// 						if (dropCheckFinished(moveState.containers[3][i].cardContainer.slice(-1)[0], moveState.containers, [cont0, action.payload.StartingContainer[1]], cont0 === 3 ? moveState.containers[3][cont1].cardContainer.length-1 : action.payload.position)) {
-		// 							const addToContainer = moveState.containers[cont0][cont1].cardContainer.splice(cont0 !== 3 ? action.payload.position : -1);
-		// 							moveState.containers[cont0][cont1].changed = !moveState.containers[cont0][cont1].changed;
-		// 							if (cont0 !== 0) {
-		// 								moveState.containers[cont0][cont1].validFrom = containerCheck(moveState.containers[cont0][cont1]);
-		// 							}
-		// 							moveState.containers[3][i].cardContainer.push(...addToContainer);
-		// 							moveState.containers[3][i].changed = !moveState.containers[3][i].changed;
-		// 							if (cont0 === 0 && state.containers[0][0].cardContainer.length === 0 && state.containers[4][0].cardContainer.length > 0) {
-		// 								moveState.containers[0][0].cardContainer = moveState.containers[4][0].cardContainer.splice(-1);
-		// 								//moveState.containers[4][0].validFrom = containerCheck(moveState.containers[4][0]);
-		// 							}
-		// 							moveState.moves += 1;
-		// 							return {...moveState};
-		// 						} else {
-		// 							// If incorrect placement, reset position
-		// 							moveState.containers[3][i].changed = !moveState.containers[3][i].changed;
-		// 							return {...moveState};
-		// 						}
-		// 					} else if (moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer[action.payload.position].number === 0) {
-		// 						// Card being dropped is the 0 card to an empty container.
-		// 						if (moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.length === action.payload.position+1) {
-		// 							// card has no children, and can be added to finished container
-		// 							const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.StartingContainer[0] !== 3 ? action.payload.position : -1);
-		// 							moveState.containers[cont0][cont1].changed = !moveState.containers[cont0][cont1].changed;
-		// 							moveState.containers[3][i].cardContainer.push(...addToContainer);
-		// 							moveState.containers[3][i].changed = !moveState.containers[3][i].changed;
-		// 							if (cont0 !== 0) {
-		// 								moveState.containers[cont0][cont1].validFrom = containerCheck(moveState.containers[cont0][cont1]);
-		// 							} else {
-		// 								moveState.containers[0][0].validFrom = moveState.containers[0][0].cardContainer.length -1;
-		// 							}
-		// 							if (cont0 === 0 && state.containers[0][0].cardContainer.length === 0 && state.containers[4][0].cardContainer.length > 0) {
-		// 								moveState.containers[0][0].cardContainer = moveState.containers[4][0].cardContainer.splice(-1);
-		// 								moveState.containers[0][0].changed = !moveState.containers[0][0].changed;
-		// 							}
-		// 							moveState.moves += 1;
-		// 							return {...moveState};
-		// 						} else {
-		// 							moveState.containers[cont0][cont1].changed = !moveState.containers[cont0][cont1].changed;
-		// 							return {...moveState};
-		// 						}
-		// 					} else {
-		// 						// Card is not the 0th card, reset position
-		// 						return {...moveState};
-		// 					}
-		// 				}
-		// 			}
-		// 		}
-		// 		// If dropped anywhere else, reset position
-		// 		return {...moveState};
-		// 	} else {
-		// 		// Below Dividing Line (InPlay Containers)
-		// 		const containers = state.containers[2]; // 2 = InPlay containers
-		// 		for (let i = 0; i < containers.length; ++i) {
-		// 			// Check if cards are dropped within the bounds of the columns
-		// 			if ((containers[i].containerDisplay[0] < cardLeft) && (cardLeft < containers[i].containerDisplay[1])) {
-		// 				if (2 === action.payload.StartingContainer[0] && i === action.payload.StartingContainer[1]) {
-		// 					// Card is from the same container as it was dropped, reset it
-		// 					moveState.containers[2][i].changed = !moveState.containers[2][i].changed;
-		// 					return {...moveState};
-		// 				} else {
-		// 					// Check if the container has any cards
-		// 					if(containers[i].cardContainer.length > 0) { 
-		// 						// check if the card being dropped is valid
-		// 						const secondCard = action.payload.StartingContainer[0] === 3 ? moveState.containers[3][action.payload.StartingContainer[1]].cardContainer[moveState.containers[3][action.payload.StartingContainer[1]].cardContainer.length-1] : moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer[action.payload.position];
-		// 						if (dropCheckInPlay(moveState.containers[2][i].cardContainer.slice(-1)[0], secondCard, state)) {
-		// 							const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
-		// 							moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].changed = !moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]];
-		// 							moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].validFrom = containerCheck(moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]]);
-		// 							moveState.containers[2][i].cardContainer.push(...addToContainer);
-		// 							moveState.containers[2][i].changed = !moveState.containers[2][i].changed;
-		// 							moveState.containers[2][i].validFrom = containerCheck(moveState.containers[2][i]);
-		// 							if (action.payload.StartingContainer[0] === 0 && state.containers[0][0].cardContainer.length === 0 && state.containers[4][0].cardContainer.length > 0) {
-		// 								moveState.containers[0][0].cardContainer = moveState.containers[4][0].cardContainer.splice(-1);
-		// 								moveState.containers[0][0].changed = !moveState.containers[0][0].changed;
-		// 							}
-		// 							moveState.moves += 1;
-		// 							return {...moveState};
-		// 						} else {
-		// 							// Incorrect placement, reset position
-		// 							moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].changed = !moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]];
-		// 							return {...moveState};
-		// 						}
-		// 					} else {
-		// 						// Is an empty container, can put any card there
-		// 						const addToContainer = moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].cardContainer.splice(action.payload.position);
-		// 						moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].changed = !moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].changed;
-		// 						moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].validFrom = containerCheck(moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]]);
-		// 						moveState.containers[2][i].cardContainer.push(...addToContainer);
-		// 						moveState.containers[2][i].changed = !moveState.containers[2][i].changed;
-		// 						moveState.containers[2][i].validFrom = containerCheck(moveState.containers[2][i]);
-		// 						if (action.payload.StartingContainer[0] === 0 && state.containers[0][0].cardContainer.length === 0 && state.containers[4][0].cardContainer.length > 0) {
-		// 							moveState.containers[0][0].cardContainer = moveState.containers[4][0].cardContainer.splice(-1);
-		// 							moveState.containers[0][0].changed = !moveState.containers[0][0].changed;
-		// 						}
-		// 						moveState.moves += 1;
-		// 						return {...moveState};
-		// 					}
-		// 				}
-		// 			}
-		// 		}
-		// 		// Dropped elsewhere, reset position
-		// 		moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]].changed = !moveState.containers[action.payload.StartingContainer[0]][action.payload.StartingContainer[1]];
-		// 		return {...moveState};
-		// 	}
-		// }
 		default:
 			return state;
-}
+	}
 }

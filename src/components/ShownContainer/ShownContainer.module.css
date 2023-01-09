@@ -5,4 +5,6 @@
 	width: calc(var(--cardWidthClamp) * 3) !important;
 	height: var(--cardHeightClamp) !important;
 	border: var(--border) var(--shownContainerColor);
+	border-radius: var(--borderRadius);
+
 }

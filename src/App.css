@@ -1,7 +1,7 @@
 :root {
 	--gameContainerWidthMin: 400px;
 	--gameContainerWidth: 100vw;
-	--gameContainerWidthMax: 800px;
+	--gameContainerWidthMax: 700px;
 	--gameContainerWidthClamp: clamp(var(--gameContainerWidthMin), var(--gameContainerWidth), var(--gameContainerWidthMax));
 
 	--cardWidthClamp: calc(var(--gameContainerWidthClamp) / 8);

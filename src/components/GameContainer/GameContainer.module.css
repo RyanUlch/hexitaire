@@ -44,18 +44,6 @@ body {
 	height: calc(var(--gameContainerWidthClamp) * 0.20390625);
 }
 
-button {
-	width: 100%;
-}
-
-.clickable {
-	cursor: pointer;
-}
-
-.clickable:hover {
-	opacity: 80%;
-}
-
 .name {
 	font-family: var(--fontCursive);
 }
@@ -64,6 +52,7 @@ button {
 	width: var(--gameContainerWidthClamp);
 	position: fixed;
 	bottom: 0;
+	border-radius: var(--borderRadius);
 }
 
 .footer {
@@ -74,12 +63,47 @@ button {
 	padding: 0 20px;
 }
 
-.even {
-	background-color: var(--redColor);
+.footer > button:hover {
+	border-color: rgb(123, 123, 123);
+	cursor: pointer;
+}
 
+.fElement {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	font-family: var(--fontSerif);
+	padding: 0;
+}
+
+.topRight {
+	border-radius: 0 var(--borderRadius) 0 0;
+}
+
+.topLeft {
+	border-radius: var(--borderRadius) 0 0 0;
+}
+
+.dev {
+	border-radius: var(--borderRadius) var(--borderRadius) 0 0;
+}
+
+.even {
+	width: 100%;
+	background-color: var(--redColor);
+	border: var(--border) var(--borderColor);
 }
 
 .odd {
+	width: 100%;
 	background-color: var(--blackColor);
+	border: var(--border) var(--borderColor);
 
+}
+
+.disabled {
+	opacity: 100% !important;
+	border-color: var(--borderColor) !important;
+	cursor:	auto !important;
 }

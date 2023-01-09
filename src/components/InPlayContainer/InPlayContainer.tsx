@@ -40,7 +40,6 @@ const InPlayContainer = (props: {containerNum: number}) => {
 					positionInContainer={0}
 					showOne={false}
 					zIndex={1}
-					// key={'inplay1'}
 				/>
 				: <></>
 			} 
