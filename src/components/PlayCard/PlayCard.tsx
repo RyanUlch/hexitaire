@@ -1,5 +1,5 @@
 import { useRef, useContext, useState, useEffect } from 'react';
-
+import ReactDOM from 'react-dom';
 import { AppContext, AppDispatchContext, gameContainer } from '../../context/context';
 import { cardMidHeight, cardMidWidth, fontSize } from '../../helpers/globals';
 import { validateAutoMove } from '../../helpers/moveValidator';
@@ -34,7 +34,8 @@ const PlayCard = (props: {
 	}
 
 	const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
-	
+
+	const [isMoving, setIsMoving] = useState(false);
 	// Attempt to drop the held card. If within the same container, just re-add to container
 	const attemptCardDrop = (e: any) => {
 		if (e.target) {
@@ -53,29 +54,23 @@ const PlayCard = (props: {
 
 	function onTouch(eve: any) {
 		eve = eve || window.event;
-		eve.preventDefault();
 		eve.stopPropagation();
-
-		let isMoving = state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer;
-
-		if (isMoving) {
+		setIsMoving(state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer);
+		if (state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer) {
 			document.ontouchend = () => {
 				document.ontouchend = null;
 				document.ontouchmove = null;
 				document.ontouchcancel = null;
-				if (isMoving) {
-					attemptCardDrop(eve);
-					isMoving = false;
-				}
+				attemptCardDrop(eve);
+				setIsMoving(false);
 			};
 
 			document.ontouchmove = (e: any) => {
 				e = e || window.event;
-				e.preventDefault();
-					setPosition({
-						top: e.clientY - cardMidHeight,
-						left: e.clientX - cardMidWidth,
-					})
+				setPosition({
+					top: e.touches[0].clientY - cardMidHeight,
+					left: e.touches[0].clientX - cardMidWidth,
+				})
 			};
 
 			document.ontouchcancel = (e: any) => {
@@ -90,21 +85,18 @@ const PlayCard = (props: {
 		}
 	}
 
-	function onMouseDown(eve: any) { //MouseEventHandler<HTMLDivElement>) {
+	function onMouseDown(eve: any) {
 		eve = eve || window.event;
 		eve.preventDefault();
 		eve.stopPropagation();
 		
-		let isMoving = state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer;
-				
-		if (isMoving) {
+		setIsMoving(state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer);
+		if (state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer) {
 			document.onmouseup = () => {
 				document.onmouseup = null;
 				document.onmousemove = null;
-				if (isMoving) {
-					attemptCardDrop(eve);
-					isMoving = false;
-				}
+				attemptCardDrop(eve);
+				setIsMoving(false);
 			};
 
 			document.onmousemove = (e: any) => {
@@ -156,6 +148,8 @@ const PlayCard = (props: {
 		}
 	}
 
+
+
 	let timeout: NodeJS.Timeout;
 	// Move with the parent element
 	useEffect(()=> {
@@ -167,16 +161,18 @@ const PlayCard = (props: {
 			setPosition({
 					left: props.parentPosition[0],
 					top: props.parentPosition[1] + addition,
-			});
+				});
 		}, 1);
 		return () => {
 			clearTimeout(timeout);
 		}
 	}, [props.parentPosition[0], props.parentPosition[1], state.containers[props.container[0]][props.container[1]].changed]);
-console.log(state)
+
+	
 	return (
 		<div
 			onMouseDown={onMouseDown}
+			// onMouseDown={onTouch}
 			onTouchStart={onTouch}
 			onDoubleClick={onDblClick}
 
@@ -184,7 +180,7 @@ console.log(state)
 			style={{zIndex: props.zIndex, left: position.left, top: position.top}} 
 			className={
 				cardInfo.number !== -1 && cardInfo.number !== undefined 
-					? `${classes.PlayCard} ${state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer ? classes.valid : classes.invalid} ${cardInfo.isRed ? classes.red : classes.black} ${props.parentPosition[1] === 0 ? classes.hidden : classes.shown}`
+					? `${classes.PlayCard} ${state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer ? classes.valid : classes.invalid} ${cardInfo.isRed ? classes.red : classes.black} ${isMoving ? classes.moving : ''}`
 					: classes.empty}>
 			{cardInfo.number !== -1 && cardInfo.number !== undefined 
 			? <div className={classes.cardText}>
@@ -205,6 +201,7 @@ console.log(state)
 			}
 		</div>
 	);
+
 }
 
 export default PlayCard;

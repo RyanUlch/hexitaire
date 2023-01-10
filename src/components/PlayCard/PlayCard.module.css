@@ -1,20 +1,16 @@
 .PlayCard {
-	/* min-height: var(--cardHeightMin);
-	height: var(--cardHeight);
-	max-height: var(--cardHeightMax); */
 	height: var(--cardHeightClamp);
-
-	/* min-width: var(--cardWidthMin);
-	width: var(--cardWidth);
-	max-width: var(--cardWidthMax); */
 	width: var(--cardWidthClamp);
-
 	position: fixed;
 	border-radius: var(--borderRadius);
 	user-select: none;
 }
 
 .PlayCard:active {
+	z-index: 99 !important;
+}
+
+.moving {
 	z-index: 99 !important;
 }
 
@@ -49,6 +45,7 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	align-items: center;
 	height: calc(var(--cardHeightClamp) - (var(--borderWidth)*2));
 	/* max-height: calc(var(--cardHeightClamp) - (var(--borderWidth)*2)); */
 	padding: 0 3px;

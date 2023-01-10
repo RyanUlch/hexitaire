@@ -1,7 +1,9 @@
 body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-  }
+	/* Prevent user from overscrolling and refreshing page on mobile */
+	overscroll-behavior: contain;
+}
   
   /* 	Base list for reset taken from Josh W. Comeau with permission	*/
   /*	https://www.joshwcomeau.com/css/custom-css-reset/				*/
