@@ -1,10 +1,9 @@
+/* Container of the flipped over cards */
 .container {
-	/* min-width: calc(3*var(--cardWidthMin)) !important;
-	width: calc(3*var(--cardWidth)) !important;
-	max-width: calc(3*var(--cardWidthMax)) !important; */
-	width: calc(var(--cardWidthClamp) * 3) !important;
+	/* Display/Position */
 	height: var(--cardHeightClamp) !important;
+	width: calc(var(--cardWidthClamp) * 3) !important;
+	/* Border */
 	border: var(--border) var(--shownContainerColor);
 	border-radius: var(--borderRadius);
-
 }

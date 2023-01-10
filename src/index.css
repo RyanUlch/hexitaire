@@ -3,6 +3,15 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 	/* Prevent user from overscrolling and refreshing page on mobile */
 	overscroll-behavior: contain;
+	/* Color/Background */
+	background-color: #C68946;
+	background-image: url('/public/images/background.jpg');
+	background-position: center;
+	background-repeat: repeat;
+	background-size:auto;
+
+	/* Misc. */
+	overflow-x: hidden;
 }
   
   /* 	Base list for reset taken from Josh W. Comeau with permission	*/

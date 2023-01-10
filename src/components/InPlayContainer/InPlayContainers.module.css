@@ -1,4 +1,6 @@
+/* Container of In-Play piles - make it look like a card space when empty */
 .container {
+	/* Border */
 	border: var(--border) var(--InPlayColor);
 	border-radius: var(--borderRadius);
 }

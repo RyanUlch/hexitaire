@@ -1,41 +1,54 @@
+/* Main title for Modal */
+.title {
+	/* Display/Position */
+	padding: 0 0 0 5px;
+	/* Font/Text */
+	text-decoration: underline;
+	text-align: center;
+}
+
+/* Container of images */
 .imageContainer {
+	/* Display/Position */
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
 	justify-content: space-around;
 }
 
+/* Images that are children of .imageContainer */
 .imageContainer > img {
+	/* Display/Position */
 	width: 30%;
-	border-radius: var(--borderRadius);
+	/* Border */
 	border: var(--border) black;
+	border-radius: var(--borderRadius);
 }
 
+/* Text block at the top of Modal */
 .textContainer > p {
+	/* Display/Position */
 	padding: 10px 0;
+	/* Font/Text */
 	text-align: center;
 }
 
-.title {
-	text-decoration: underline;
-	padding: 0 0 0 5px;
-	text-align: center;
-}
-
-.textContainer > a {
-}
-
+/* Font attributions show what the fonts look like */
 .font1 {
+	/* Font/Text */
 	font-family: var(--fontSerif);
+	/* Color/Background */
 	color: var(--textColor);
 }
-
 .font2 {
+	/* Font/Text */
 	font-family: var(--fontSansSerif);
+	/* Color/Background */
 	color: var(--textColor);
 }
-
 .font3 {
+	/* Font/Text */
 	font-family: var(--fontCursive);
+	/* Color/Background */
 	color: var(--textColor);
 }

@@ -1,34 +1,42 @@
+/* Element behind modal, so user can click off of modal */
 .backdrop {
+	/* Display/Position */
+	left: 0;
+	height: 100vh;
 	position: fixed;
 	top: 0;
-	left: 0;
-	background-color: black;
-	opacity: 0.5;
 	width: 100vw;
-	height: 100vh;
+	/* Color/Background */
+	background-color: black;
+	/* Misc. */
+	opacity: 0.5;
 	z-index: 4;
 }
 
+/* Modal box, contains children for specific modal info */
 .modal {
-	background-color: var(--blackColor);
-	border: var(--border) var(--redColor);
-	box-sizing: content-box;
-	position: fixed;
-	min-width: 400px;
-	max-width: 800px;
-	width: 70vw;
-	height: 50vmin;
-	overflow-y: auto;
-	overflow-X:hidden;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	top: 50%;
-	z-index: 5;
-	border-radius: 5px;
+	/* Display/Position */
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	/* align-items: center; */
+	height: 50vmin;
+	left: 50%;
+	max-width: 800px;
+	min-width: 400px;
 	padding: 25px;
+	position: fixed;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 70vw;
+	/* Border */
+	border: var(--border) var(--redColor);
+	border-radius: 5px;
+	/* Color/Background */
+	background-color: var(--blackColor);
+	/* Misc. */
+	box-sizing: content-box;
+	overflow-y: auto;
+	overflow-X: hidden;
+	z-index: 5;
 }
 

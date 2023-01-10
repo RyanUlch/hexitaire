@@ -183,7 +183,6 @@ const GameContainer = () => {
 
 				{/* Footer Boxes (<footer> tag used on last line), positioned at the bottom of screen */}
 				<div className={classes.footerContainer}>
-
 					{/* Buttons for starting a new game, currently all difficulties are seperate buttons, might change to one "New Game" button with settings stored in local storage */}
 					<div className={`${classes.footer}`}>
 						<div 	className={`${classes.fElement} ${classes.even}	${classes.topLeft}	`}>New Game:</div>

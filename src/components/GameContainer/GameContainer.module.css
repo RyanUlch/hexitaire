@@ -1,62 +1,73 @@
+/* General CSS *//* General CSS *//* General CSS *//* General CSS *//* General CSS *//* General CSS */
+
+/* General container class name for both top and bottom rows */
 .containers {
+	/* Display/Position */
 	display: flex;
 	flex-direction: row;
 }
 
+/* div children of .containers should only be as big as the cards themselves */
 .containers > div {
+	/* Display/Position */
 	width: var(--cardWidthClamp);
 }
 
+/* Top row containing Finished, Shown and Select containers */
 .top {
+	/* Display/Position */
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
 }
 
+/* Bottom row with the In-play containers */
 .bottom {
-	height: var(--cardHeightClamp)
+	/* Display/Position */
+	height: var(--cardHeightClamp);
 }
 
-.bottomButtons {
-	position: fixed;
-	bottom: 0;
-}
-
+/* The container holding all of the elements with the exception of any modals */
 .gameContainer {
+	/* Display/Position */
 	display: flex;
 	flex-direction: column;
-	width: var(--gameContainerWidthClamp);
-	margin: 0 auto;
 	height: 100vh;
-}
-
-body {
-	background-image: url('/public/images/background.jpg');
-	background-repeat: repeat;
-	background-position: center;
-	background-size:auto;
-	background-color: #C68946;
-	overflow-x: hidden;
-}
-
-.headerImage {
-	width: 100%;
-	height: calc(var(--gameContainerWidthClamp) * 0.20390625);
-}
-
-.name {
-	font-family: var(--fontCursive);
-	font-weight: bold;
-}
-
-.footerContainer {
+	margin: 0 auto;
 	width: var(--gameContainerWidthClamp);
-	position: fixed;
+}
+
+/* Header CSS *//* Header CSS *//* Header CSS *//* Header CSS *//* Header CSS *//* Header CSS */
+
+/* The top image for Hexitaire logo */
+.headerImage {
+	/* Display/Position */
+	height: calc(var(--gameContainerWidthClamp) * 0.20390625);
+	width: 100%;
+}
+
+/* Footer CSS *//* Footer CSS *//* Footer CSS *//* Footer CSS *//* Footer CSS *//* Footer CSS */
+
+/* Buttons and game info is always at the bottom of the screen */
+.bottomButtons {
+	/* Display/Position */
 	bottom: 0;
+	position: fixed;
+}
+
+/* Div containing all .footer rows */
+.footerContainer {
+	/* Display/Position */
+	bottom: 0;
+	position: fixed;
+	width: var(--gameContainerWidthClamp);
+	/* Border */
 	border-radius: var(--borderRadius);
 }
 
+/* Multiple containers that make up the bottom boxes, although the true footer is the last of the rows */
 .footer {
+	/* Display/Position */
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
@@ -64,47 +75,73 @@ body {
 	padding: 0 20px;
 }
 
+/* When hovering of a button that is the child of a .footer row, change border and cursor */
 .footer > button:hover {
+	/* Color/Background */
 	border-color: rgb(123, 123, 123);
+	/* Misc. */
 	cursor: pointer;
 }
 
+/* Footer Element - used to make buttons and divs look the same */
 .fElement {
+	/* Display/Position */
+	align-items: center;
 	display: flex;
 	justify-content: center;
-	align-items: center;
-	text-align: center;
-	font-family: var(--fontSerif);
 	padding: 0;
+	width: 100%;
+	/* Font/Text */
+	font-family: var(--fontSerif);
+	text-align: center;
 }
 
+/* Top-Right of footer content, used to give a rounded corner on entire block */
 .topRight {
+	/* Border */
 	border-radius: 0 var(--borderRadius) 0 0;
 }
 
+/* Top-Left of footer content, used to give a rounded corner on entire block */
 .topLeft {
+	/* Border */
 	border-radius: var(--borderRadius) 0 0 0;
 }
 
+/* Specific to Development version. rounds edges of button to help remind it is not apart of the built program*/
 .dev {
+	/* Border */
 	border-radius: var(--borderRadius) var(--borderRadius) 0 0;
 }
 
+/* Footer Elements alternate colors based on if they are even or odd */
 .even {
-	width: 100%;
+	/* Border */
+	border: var(--border) var(--borderColor);
+	/* Color/Background */
 	background-color: var(--redColor);
-	border: var(--border) var(--borderColor);
 }
 
+/* Footer Elements alternate colors based on if they are even or odd */
 .odd {
-	width: 100%;
-	background-color: var(--blackColor);
+	/* Border */
 	border: var(--border) var(--borderColor);
-
+	/* Color/Background */
+	background-color: var(--blackColor);
 }
 
+/* The undo button can be disabled if there the user cannot use the feature */
 .disabled {
-	opacity: 100% !important;
-	border-color: var(--borderColor) !important;
-	cursor:	auto !important;
+	/* Color/Background */
+		border-color: var(--borderColor) !important;
+	/* Misc. */
+		opacity: 100% !important;
+		cursor:	auto !important;
+}
+
+/* Special text of "Ryan Ulch" in a different font than the rest of the program */
+.name {
+	/* Font/Text */
+	font-family: var(--fontCursive);
+	font-weight: bold;
 }

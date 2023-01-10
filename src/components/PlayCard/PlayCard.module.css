@@ -1,74 +1,102 @@
+/* Card Display/Position *//* Card Display/Position *//* Card Display/Position */
+
+/* Play card size and shape */
 .PlayCard {
+	/* Display/Position */
 	height: var(--cardHeightClamp);
-	width: var(--cardWidthClamp);
 	position: fixed;
+	width: var(--cardWidthClamp);
+	/* Border */
 	border-radius: var(--borderRadius);
+	/* Misc. */
 	user-select: none;
 }
 
+/* Put card on top when it's being moved (works on desktop) */
 .PlayCard:active {
+	/* Misc. */
 	z-index: 99 !important;
 }
 
+/* Put card on top when moving (trying to get to work on Mobile */
+/* Currently not working on mobile/touch devices */
 .moving {
+	/* Misc. */
 	z-index: 99 !important;
 }
 
-.valid {
-	border: var(--border) var(--borderColor);
-	color: black !important;
-}
+/* Card Text CSS *//* Card Text CSS *//* Card Text CSS *//* Card Text CSS */
 
-.invalid {
-	border: var(--border) var(--invalidColor);
-	color: var(--invalidColor) !important;
-}
-
-.invalid.red {
-	background-color: var(--redInvalidColor);
-}
-
-.invalid.black {
-	background-color: var(--blackInvalidColor);
-
-}
-
-.red {
-	background-color: var(--redColor);
-}
-
-.black {
-	background-color: var(--blackColor);
-}
-
+/* Display and Position of all card text */
 .cardText {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+	/* Display/Position */
 	align-items: center;
+	display: flex;
 	height: calc(var(--cardHeightClamp) - (var(--borderWidth)*2));
-	/* max-height: calc(var(--cardHeightClamp) - (var(--borderWidth)*2)); */
-	padding: 0 3px;
+	justify-content: space-between;
+	flex-direction: column;
+	padding: 0 3px;	
 }
 
+/* Font on cards */
 .cardText > p {
+	/* Font/Text */
 	font-family: var(--fontSansSerif);
 }
 
+/* Small text on top of card */
 .top {
+	/* Display/Position */
 	align-self: flex-start;
 }
 
+/* Large text in middle of card */
 .middle {
+	/* Display/Position */
 	align-self: center;
+	/* Font/Text */
 	font-size: clamp(1.4rem, calc(var(--fontSize)*2.5), 3rem);
 }
 
+/* Small and upsidedown text on card */
 .bottom {
+	/* Display/Position */
 	align-self: flex-end;
 	transform: scale(-1, -1);
 }
 
+/* Specific Color Setting (for red/black cards, and valid/invalid cards */
+.red {
+	/* Color/Background */
+	background-color: var(--redColor);
+}
+.black {
+	/* Color/Background */
+	background-color: var(--blackColor);
+}
+.valid {
+	/* Border */
+	border: var(--border) var(--borderColor);
+	/* Color/Background */
+	color: black !important;
+}
+.invalid {
+	/* Border */
+	border: var(--border) var(--invalidColor);
+	/* Color/Background */
+	color: var(--invalidColor) !important;
+}
+.invalid.red {
+	/* Color/Background */
+	background-color: var(--redInvalidColor);
+}
+.invalid.black {
+	/* Color/Background */
+	background-color: var(--blackInvalidColor);
+}
+
+/* When the card is not available, but still trying to be rendered, show nothing (should not come up - Just in case) */
 .empty {
+	/* Misc. */
 	visibility: hidden;
 }

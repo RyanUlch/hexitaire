@@ -1,23 +1,13 @@
-.card {
-	width: var(--cardWidth);
-	height: var(--cardHeight);
-	background-color: green;
-}
-
-.empty {
-	background-color: none;
-}
-
-.full {
-	background-color: lime;
-}
-
+/* Container showing if container has cards to display or not */
 .container {
+	/* Border */
 	border: var(--border) var(--selectionSpotColor);
 	border-radius: var(--borderRadius);
 }
 
+/* Image of cardback when there is at least one card in the pile */
 .img {
+	/* Display/Position */
+	height: var(--cardHeight);
 	width: var(--cardWidth);
-	height: var(--cardHeight)
 }

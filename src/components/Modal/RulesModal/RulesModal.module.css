@@ -1,7 +1,11 @@
+/* Main title for Modal */
 .title {
+	/* Font/Text */
 	text-decoration: underline;
 }
 
+/* List items of Modal */
 .list > li {
+	/* Display/Position */
 	padding: 3px 0;
 }

@@ -52,40 +52,69 @@ const PlayCard = (props: {
 		}
 	}
 
-	function onTouch(eve: any) {
+	const onDblClick = (e: any) => {
+		e = e || window.event;
+		e.preventDefault();
+		e.stopPropagation();
+		if (props.container[0] === 3 || (props.container[0] !== 4 && state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer)) {
+			const moveCard = validateAutoMove(state.containers, props.container, props.container[0] === 3 ? state.containers[props.container[0]][props.container[1]].cardContainer.length-1: props.positionInContainer);
+			if (moveCard.to.length > 0) {
+				dispatch({
+					type: 'MOVECARD',
+					payload: moveCard,
+				});
+			}
+		}
+	}
+	
+	let mylatesttap = 0;
+	const onTouch = (eve: any) => {
 		eve = eve || window.event;
 		eve.stopPropagation();
-		setIsMoving(state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer);
-		if (state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer) {
-			document.ontouchend = () => {
-				document.ontouchend = null;
-				document.ontouchmove = null;
-				document.ontouchcancel = null;
-				attemptCardDrop(eve);
-				setIsMoving(false);
-			};
 
-			document.ontouchmove = (e: any) => {
-				e = e || window.event;
-				setPosition({
-					top: e.touches[0].clientY - cardMidHeight,
-					left: e.touches[0].clientX - cardMidWidth,
-				})
-			};
-
-			document.ontouchcancel = (e: any) => {
+		const now = new Date().getTime();
+		const timesince = now - mylatesttap;
+		if((timesince < 600) && (timesince > 0)){
+			onDblClick(eve);
+		} else{
+			// too much time to be a doubletap
+			setIsMoving(state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer);
+			if (state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer) {
+				document.ontouchend = () => {
+					document.ontouchend = null;
+					document.ontouchmove = null;
+					document.ontouchcancel = null;
+					attemptCardDrop(eve);
+					setIsMoving(false);
+				};
+	
+				document.ontouchmove = (e: any) => {
+					e = e || window.event;
+					setPosition({
+						top: e.touches[0].clientY - cardMidHeight,
+						left: e.touches[0].clientX - cardMidWidth,
+					})
+				};
+	
+				document.ontouchcancel = (e: any) => {
+					document.ontouchend = null;
+					document.ontouchmove = null;
+					document.ontouchcancel = null;
+				}
+			} else {
 				document.ontouchend = null;
 				document.ontouchmove = null;
 				document.ontouchcancel = null;
 			}
-		} else {
-			document.ontouchend = null;
-			document.ontouchmove = null;
-			document.ontouchcancel = null;
 		}
+
+		mylatesttap = new Date().getTime();
+
+
+		
 	}
 
-	function onMouseDown(eve: any) {
+	const onMouseDown = (eve: any) => {
 		eve = eve || window.event;
 		eve.preventDefault();
 		eve.stopPropagation();
@@ -113,20 +142,7 @@ const PlayCard = (props: {
 		}
 	}
 
-	function onDblClick(e: any) {
-		e = e || window.event;
-		e.preventDefault();
-		e.stopPropagation();
-		if (props.container[0] === 3 || (props.container[0] !== 4 && state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer)) {
-			const moveCard = validateAutoMove(state.containers, props.container, props.container[0] === 3 ? state.containers[props.container[0]][props.container[1]].cardContainer.length-1: props.positionInContainer);
-			if (moveCard.to.length > 0) {
-				dispatch({
-					type: 'MOVECARD',
-					payload: moveCard,
-				});
-			}
-		}
-	}
+	
 
 	// Sets the suit symbol as a string based on suit number
 	const suitSymbol = () => {
