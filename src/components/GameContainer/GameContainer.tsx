@@ -12,7 +12,7 @@ import ShownContainer						from '../ShownContainer/ShownContainer';
 import Timer 								from '../Timer/Timer';
 // Context Imports:
 import { AppContext, AppDispatchContext }	from '../../context/context';
-// Helper Function Imports:
+// Helper Import:
 import { autoFinish }						from '../../helpers/moveValidator';
 
 // Game container is the main component within Hexitaire,
@@ -36,25 +36,26 @@ const GameContainer = () => {
 
 	// Undo button was clicked, try to reset back to the last State set
 	const undo = () => {
-		// Check if there is a lastMove avaialble, and that the user hasn't won already.
+		// Check if there is a lastMove available, and that the user hasn't won already.
 		if (state.lastMove.length > 0 && !state.winCondition[1]) {
 			dispatch({
 				type: 'UNDO',
+				payload: null,
 			})
 		}	
 	}
 
-/* useEffect Section Start *//* Descriptions before each one include the dependancies */
+/* useEffect Section Start *//* Descriptions before each one include the dependencies */
 	// Use: Check and set the winCondition of the state. Used when the user is able to win (all cards free), but haven't yet finished.
-		// User can choose to autofinish the game. Should not trigger more than once, as either user autofinished or chose not to
-	// Dependenc(y/ies): {state.winCondition[0]} - Only update when the user frees all cards (winCondition[0]), but not when game is actually won (winCondition[1])
+		// User can choose to auto-finish the game. Should not trigger more than once, as either user auto-finished or chose not to
+	// Dependency: {state.winCondition[0]} - Only update when the user frees all cards (winCondition[0]), but not when game is actually won (winCondition[1])
 	useEffect(() => {
 		if (state.winCondition[0] && !state.winCondition[1] && window.confirm('All Cards are free, would you like to auto complete?')) {
 			// Get the steps needed to finish game
 			const finishSteps = autoFinish(state.containers);
 			// For every step, send a new dispatch to update State
 				// Note: This is slightly inefficient as I could write a dispatch type to handle this, however I want to add smooth animations in a future
-				// update and will need these steps to be seperate to be able to animate them individually.
+				// update and will need these steps to be separate to be able to animate them individually.
 			for (let i = 0; i < finishSteps.length; ++i) {
 				dispatch({
 					type: 'MOVECARD',
@@ -78,7 +79,7 @@ const GameContainer = () => {
 	}, [state.winCondition[1]])
 
 	// Use: Set the middleLine height, and window values in State. Used in containers to properly position elements.
-	// Dependenc(y/ies): WindowSize state (seperated as we want to update on value change)
+	// Dependencies: WindowSize state (separated as we want to update on value change)
 	useEffect(()=> {
 		const middleLineElement = document.querySelector('#MiddleLine');
 		dispatch({
@@ -91,7 +92,7 @@ const GameContainer = () => {
 	}, [windowSize.height, windowSize.width]);
 
 	// Use: set window listener to check when the window changes size. Used in previous useEffect to update spacing
-	// Dependenc(y/ies): None - run once when component mounts
+	// Dependencies: None - run once when component mounts
 	useEffect(() => {
 		// Function defined as it needs to be called in two places
 		function handleResize() {
@@ -110,18 +111,20 @@ const GameContainer = () => {
 
 /* Component Management Section Start */
 	// Create new game using the value of the button selected as the difficulty
-	const newGame = (event: any) => {
-		if (event.target.value > 0) {
+	const newGame = (event: React.SyntheticEvent) => {
+		let target = event.target as HTMLInputElement;
+		if (Number(target.value) > 0) {
 			dispatch({
 				type: 'NEWGAME',
 				payload: {
-					difficulty: Number(event.target.value),
+					difficulty: Number(target.value),
 				}
 			});
 		// There is also a DEV button in Development mode to start game nearly finished.
 		} else {
 			dispatch({
-				type: 'NEWGAMEDEV'
+				type: 'NEWGAMEDEV',
+				payload: null,
 			})
 		}
 		// Start timer on any new game
@@ -159,7 +162,7 @@ const GameContainer = () => {
 					<FinishedContainer containerNum={1} />
 					<FinishedContainer containerNum={2} />
 					<FinishedContainer containerNum={3} />
-					{/* A section to indicate the pile of unshown cards, clicked to show more */}
+					{/* A section to indicate the pile of not shown cards, clicked to show more */}
 					<SelectionSpot />
 					{/* Cards user can grab to use in Finished or In-Play containers */}
 					<ShownContainer />
@@ -183,7 +186,7 @@ const GameContainer = () => {
 
 				{/* Footer Boxes (<footer> tag used on last line), positioned at the bottom of screen */}
 				<div className={classes.footerContainer}>
-					{/* Buttons for starting a new game, currently all difficulties are seperate buttons, might change to one "New Game" button with settings stored in local storage */}
+					{/* Buttons for starting a new game, currently all difficulties are separate buttons, might change to one "New Game" button with settings stored in local storage */}
 					<div className={`${classes.footer}`}>
 						<div 	className={`${classes.fElement} ${classes.even}	${classes.topLeft}	`}>New Game:</div>
 						<button className={`${classes.fElement} ${classes.odd}						`} onClick={newGame} value={1}>Easy	</button>

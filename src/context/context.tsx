@@ -1,8 +1,11 @@
+// React Imports:
 import React, { createContext, useReducer } from 'react';
+// Type Imports:
 import type { ReactNode } from 'react';
-
+// Context (reducer) Import:
 import{ cardReducer } from './reducers';
 
+/* Type definitions Start *//* Some are used throughout program, so they are exported */
 // Containing info to determine all card data
 export type card = {
 	number: number,	// 0 - 15 (10-15 are displayed as A-F)
@@ -27,8 +30,11 @@ export type gameContainer = {
 	lastMove: container[][],
 	winCondition: boolean[],
 }
+/* Type definitions End */
 
+/* Context Management Function Start */
 // Create cards for entire Deck in order (suits: 0-3, numbers: 0-15)
+	// Currently there are hard coded expectations for the cards (ex. highest number 15), cannot change these values unless they are also updated throughout
 export const cardGenerator = () => {
 	const orderedDeck: card[] = [];
 	for (let suit = 0; suit < 4; ++suit) {
@@ -40,146 +46,68 @@ export const cardGenerator = () => {
 }
 
 // Take the deck and shuffle the order of all cards
+	// Currently the randomness of this process means games are not always winnable.
+	// Could change this process to produce games that always have a solution
 const shuffle = (origDeck: card[]) => {
 	const shuffleDeck = origDeck;
-	let currentIndex = shuffleDeck.length,  randomIndex;
-	// While there remain elements to shuffle.
+	let currentIndex = shuffleDeck.length
+	let randomIndex: number;
 	while (currentIndex !== 0) {
-		// Pick a remaining element.
 		randomIndex = Math.floor(Math.random() * currentIndex);
 		--currentIndex;
-		// And swap it with the current element.
-		[shuffleDeck[currentIndex], shuffleDeck[randomIndex]] = [
-			shuffleDeck[randomIndex], shuffleDeck[currentIndex]
-		];
+		[shuffleDeck[currentIndex], shuffleDeck[randomIndex]] = [shuffleDeck[randomIndex], shuffleDeck[currentIndex]];
 	}
 	return shuffleDeck;
 }
 
+// shuffleDeck is separated from shuffle to allow for changing out the deck if needed
 export const shuffleDeck = () => {
 	return shuffle(cardGenerator());
 }
 
-// Take the shuffled deck and give cards to containers to create the starting State
-const createStartingDeck = (): gameContainer =>  {
+// Create an empty gameContainer.
+const createStartingContainer = (): gameContainer =>  {
 	return {
 		containers: [
 			[
-				{
-					cardContainer: [],
-					containerDisplay: [0, 0],
-					validFrom: 0,
-					changed: false,
-				},
+				{ cardContainer: [], containerDisplay: [0, 0], validFrom: 0, changed: false, },
 			],
 			[
-				{
-					cardContainer: [],
-					containerDisplay: [0, 0],
-					validFrom: 0,
-					changed: false,
-				},
+				{ cardContainer: [], containerDisplay: [0, 0], validFrom: 0, changed: false, },
 			],
 			[
-				{
-					cardContainer: [],
-					containerDisplay: [0, 0],
-					validFrom: -1,
-					changed: false,
-				},
-				{
-					cardContainer: [],
-					containerDisplay: [0, 0],
-					validFrom: -1,
-					changed: false,
-				},
-				{
-					cardContainer: [],
-					containerDisplay: [0, 0],
-					validFrom: -1,
-					changed: false,
-				},
-				{
-					cardContainer: [],
-					containerDisplay: [0, 0],
-					validFrom: -1,
-					changed: false,
-				},
-				{
-					cardContainer: [],
-					containerDisplay: [0, 0],
-					validFrom: -1,
-					changed: false,
-				},
-				{
-					cardContainer: [],
-					containerDisplay: [0, 0],
-					validFrom: -1,
-					changed: false,
-				},
-				{
-					cardContainer: [],
-					containerDisplay: [0, 0],
-					validFrom: -1,
-					changed: false,
-				},
-				{
-					cardContainer: [],
-					containerDisplay: [0, 0],
-					validFrom: -1,
-					changed: false,
-				},
+				{ cardContainer: [], containerDisplay: [0, 0], validFrom: -1, changed: false, },
+				{ cardContainer: [], containerDisplay: [0, 0], validFrom: -1, changed: false, },
+				{ cardContainer: [], containerDisplay: [0, 0], validFrom: -1, changed: false, },
+				{ cardContainer: [], containerDisplay: [0, 0], validFrom: -1, changed: false, },
+				{ cardContainer: [], containerDisplay: [0, 0], validFrom: -1, changed: false, },
+				{ cardContainer: [], containerDisplay: [0, 0], validFrom: -1, changed: false, },
+				{ cardContainer: [], containerDisplay: [0, 0], validFrom: -1, changed: false, },
+				{ cardContainer: [], containerDisplay: [0, 0], validFrom: -1, changed: false, },
 			],
 			[
-				{
-					cardContainer: [],
-					containerDisplay: [0, 0],
-					validFrom: 0,
-					changed: false,
-				},
-				{
-					cardContainer: [],
-					containerDisplay: [0, 0],
-					validFrom: 0,
-					changed: false,
-				},
-				{
-					cardContainer: [],
-					containerDisplay: [0, 0],
-					validFrom: 0,
-					changed: false,
-				},
-				{
-					cardContainer: [],
-					containerDisplay: [0, 0],
-					validFrom: 0,
-					changed: false,
-				},
+				{ cardContainer: [], containerDisplay: [0, 0], validFrom: 0, changed: false, },
+				{ cardContainer: [], containerDisplay: [0, 0], validFrom: 0, changed: false, },
+				{ cardContainer: [], containerDisplay: [0, 0], validFrom: 0, changed: false, },
+				{ cardContainer: [], containerDisplay: [0, 0], validFrom: 0, changed: false, },
 			],
 			[
-				{
-					cardContainer: [],
-					containerDisplay: [0, 0],
-					validFrom: 0,
-					changed: false,
-				},
+				{ cardContainer: [], containerDisplay: [0, 0], validFrom: 0, changed: false, },
 			],
 		],
-		middleLine: 0,
-		moves: 0,
-		difficulty: 0,
-		window: [0, 0,],
-		lastMove: [],
-		winCondition: [false, false],
+		middleLine: 0,		moves: 0,		difficulty: 0,
+		window: [0, 0,],	lastMove: [],	winCondition: [false, false],
 	}
 }
+/* Context Management Function End */
 
-// The initial state of the gameContainer, has an initial shuffled deck, but no information for the containers bounds at first.
-const initialState = createStartingDeck();
+// The initial state of the gameContainer, no information for the containers bounds, or cards at first.
+const initialState = createStartingContainer();
+// Context Creations: - State and dispatch are separate as some components don't need both
+const AppContext 			= createContext<{state: gameContainer;}>		({state: initialState,});
+const AppDispatchContext 	= createContext<{dispatch: React.Dispatch<{ type: string; payload: any; }>}>({dispatch: () => null})
 
-const AppContext = createContext<{state: gameContainer;}>({state: initialState,});
-const AppDispatchContext = createContext<{dispatch: React.Dispatch<any>}>({dispatch: () => null})
-
+// AppProvider supplies entire game with the context.
 const AppProvider = (props: { children: ReactNode }) => {
 	const [state, dispatch] = useReducer(cardReducer, initialState);
 	return (

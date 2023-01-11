@@ -1,11 +1,10 @@
 // Type imports from Context
-import type { card, container, gameContainer } from "../context/context";
-import { deepCopyState } from "../context/reducers";
+import type { card, container } from "../context/context";
 
 // Validate that the double clicked card can be put somewhere else.
 	// Check in specific order so that most logical placement is used.
 		// First if card can be put into one of the finished piles
-		// Then if there is a card it can be put ontop of in the In-Play piles
+		// Then if there is a card it can be put on-top of in the In-Play piles
 		// If there still isn't a place, put into an empty In-Play column
 		// Finally, if none of the above are valid, don't move
 export const validateAutoMove = (
@@ -20,7 +19,7 @@ export const validateAutoMove = (
 		&& containers[container[0]][container[1]].validFrom <= position
 		&& container[0] !== 1 && container[0] !== 4)
 	{
-		// Copy card info for easy access. Garenteed to exist as above check will catch an invalid selection
+		// Copy card info for easy access. Guaranteed to exist as above check will catch an invalid selection
 		const card: card = containers[container[0]][container[1]].cardContainer[position];
 
 		// If the clicked card is the 0th card, find the first open finished container, place it there
@@ -137,7 +136,7 @@ export const autoFinish = (containers: container[][]) : {to: number[], from: num
 		// Look through the top card of each In-Play container. Once found, add container positions to {finishSteps} and move on to next card. 
 		for (let pIndex = 0; pIndex < 8; ++pIndex) {
 			if (InPlayLengths[pIndex] >= 0 // Fail fast if there is no cards in container 
-				// If the card if the 0th card, and the Finsihed pile is empty, put into {finishSteps}
+				// If the card if the 0th card, and the Finished pile is empty, put into {finishSteps}
 				// If not, check if the suit and number matches selected Finished pile
 					// Note: (same if check as either one of these passing has the same result)
 				&& ((cardInfo.number === -1 && containers[2][pIndex].cardContainer[InPlayLengths[pIndex]].number === 0)

@@ -25,6 +25,13 @@
 	border-radius: var(--borderRadius);
 }
 
+.textContainer {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
 /* Text block at the top of Modal */
 .textContainer > p {
 	/* Display/Position */
@@ -51,4 +58,12 @@
 	font-family: var(--fontCursive);
 	/* Color/Background */
 	color: var(--textColor);
+}
+
+
+/* Buy My a Coffee Image */
+.bmac {
+	/* Display/Position */
+	height: 60px !important;
+	width: 217px !important;
 }

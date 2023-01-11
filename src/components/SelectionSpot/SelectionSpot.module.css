@@ -5,7 +5,7 @@
 	border-radius: var(--borderRadius);
 }
 
-/* Image of cardback when there is at least one card in the pile */
+/* Image of card-back when there is at least one card in the pile */
 .img {
 	/* Display/Position */
 	height: var(--cardHeight);

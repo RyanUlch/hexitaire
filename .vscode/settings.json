@@ -1,5 +1,21 @@
 {
 	"cSpell.words": [
-		"Hexitaire"
+		"Hexitaire",
+		"Vujahday"
+	],
+	"cSpell.ignoreWords": [
+		"FLIPCARDS",
+		"Freepik",
+		"MOVECARD",
+		"NEWGAME",
+		"NEWGAMEDEV",
+		"RESETFLIPPEDCARDS",
+		"SETCOLUMNBOUNDS",
+		"SETWINCONDITIONS",
+		"SETWINDOWVALUES",
+		"bmac",
+		"closebtn",
+		"divs",
+		"hexitairelaidout"
 	]
 }

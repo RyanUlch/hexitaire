@@ -58,7 +58,7 @@
 	font-size: clamp(1.4rem, calc(var(--fontSize)*2.5), 3rem);
 }
 
-/* Small and upsidedown text on card */
+/* Small and upside-down text on card */
 .bottom {
 	/* Display/Position */
 	align-self: flex-end;

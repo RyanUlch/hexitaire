@@ -1,51 +1,34 @@
+/* CSS Variables, used to update entire game easily */
 :root {
-	--gameContainerWidthMin: 400px;
-	--gameContainerWidth: 100vw;
-	--gameContainerWidthMax: 700px;
-	--gameContainerWidthClamp: clamp(var(--gameContainerWidthMin), var(--gameContainerWidth), var(--gameContainerWidthMax));
-
-	--cardWidthClamp: calc(var(--gameContainerWidthClamp) / 8);
-	/* --cardWidthMin: calc(var(--gameContainerWidthMin) / 8); */
-	/* --cardWidth: calc(var(--gameContainerWidth) / 8); */
-	/* --cardWidthMax: calc(var(--gameContainerWidthMax) / 8); */
-
-	--cardHeightClamp: calc(var(--cardWidthClamp) * 1.4);
-	/* --cardHeightMin: calc((var(--gameContainerWidthMin) / 8) * 1.4); */
-	/* --cardHeight: calc((var(--gameContainerWidth) / 8) * 1.4); */
-	/* --cardHeightMax: calc((var(--gameContainerWidthMax) / 8) * 1.4); */
-
-
-	--borderRadius: 5px;
-	--borderWidth: 3px;
-	--border: var(--borderWidth) solid;
-
-	--blackColor: #11E083;
-	--blackInvalidColor: #086b3f;
-	--redColor: #E21284;
-	--redInvalidColor: #750b46;
-
-
-	--textColor: black;
-	--borderColor: black;
-	--invalidColor: rgb(121, 121, 121);
-	--fontSize: clamp(0rem, 2vw, 2rem);
-	--fontSerif: 'Merriweather', serif;
-	--fontSansSerif: 'Sigmar One', sans-serif;
-	--fontCursive: 'Vujahday Script', "Brush Script MT", cursive;
-
-
-	--shownContainerColor: none;
-	--selectionSpotColor: rgb(89, 0, 0);
-	--InPlayColor: black;
-	--finishedColor: rgb(0, 199, 0);
-
+	/* Sizes */
+	--gameContainerWidthMin:	400px;
+	--gameContainerWidth:		100vw;
+	--gameContainerWidthMax:	700px;
+	--gameContainerWidthClamp:	clamp(var(--gameContainerWidthMin), var(--gameContainerWidth), var(--gameContainerWidthMax));
+	--cardWidthClamp:			calc(var(--gameContainerWidthClamp) / 8);
+	--cardHeightClamp:			calc(var(--cardWidthClamp) * 1.4);
+	/* Border */
+	--borderRadius:	5px;
+	--borderWidth:	2px;
+	--border:		var(--borderWidth) solid;
+	--borderColor:	black;
+	/* Colors */
+	--blackColor: 			#11E083;
+	--blackInvalidColor: 	#086b3f;
+	--redColor: 			#E21284;
+	--redInvalidColor: 		#750b46;
+	--textColor: 			black;
+	--invalidColor: 		rgb(121, 121, 121);
+	--shownContainerColor: 	none;
+	--selectionSpotColor: 	rgb(89, 0, 0);
+	--InPlayColor: 			black;
+	--finishedColor: 		rgb(0, 199, 0);
+	/* Fonts */
+	--fontSize:			clamp(0rem, 2vw, 2rem);
+	--fontSerif:		'Merriweather', serif;
+	--fontSansSerif:	'Sigmar One', sans-serif;
+	--fontCursive:		'Vujahday Script', "Brush Script MT", cursive;
 }
 
-h1, h2, h3, h4, h5, h6, p, button, input, li {
-	font-family: var(--fontSerif);
-}
-
-div {
-	margin: 0;
-}
-
+/* Make all text used start with serif font */
+h1, h2, h3, h4, h5, h6, p, button, input, li { font-family: var(--fontSerif); }

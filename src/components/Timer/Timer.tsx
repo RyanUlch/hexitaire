@@ -9,12 +9,16 @@ const Timer = (props: {
 	gameNumber: number,							// To indicate the user clicked a new game without necessarily finishing the last one
 	classes: {readonly [key: string]: string},	// To share the same classes as rest of the gameContainer elements
 }) => {
-	// Initial State creation
+	// State Initialization:
 	const [timer, setTimer] = useState([0,0]); // timer[0] = minutes, timer[1] == seconds
 	const [intervalID, setIntervalID] = useState<NodeJS.Timer>();
-	// Note: setInterval is not the most accurate timing function.
-		// As there is no leaderboard, or even saved times, this is not much of an issue.
-		// In future update, if there is a leaderboard, should switch this to measuring time from Date.now()
+
+/* useEffect Section Start *//* Descriptions before each one include the dependencies */
+	// Use: When running, tick the shown clock up for each second, stop when the user wins
+	// Dependency: TimerReact boolean telling timer if it should be running or not, GameNumber so if a new game is started, it resets the time
+		// Note: setInterval is not the most accurate timing function.
+			// As there is no leader board, or even saved times, this is not much of an issue.
+			// In future update, if there is a leader board, should switch this to measuring time from Date.now()
 	useEffect(() => {
 		if (props.timerReact) { // If timer should be going, and is being re-rendered, reset the count, and start new timer
 			// Always try to remove previous interval. This should already be happening due to the useEffect return function, just a safety measure
@@ -41,7 +45,8 @@ const Timer = (props: {
 		// Return clearInterval so that if the component unmounts, it will not keep running the timer.
 		return () => {clearInterval(intervalID)}
 	}, [props.timerReact, props.gameNumber]);
-	
+/* useEffect Section End */
+
 	// Simple display to show current time
 	return (<div className={`${props.classes.fElement} ${props.classes.even}`}>Minutes: {timer[0]} Seconds: {timer[1]}</div>);
 }
