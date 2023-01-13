@@ -6,8 +6,6 @@ import classes from './ShownContainer.module.css';
 import PlayCard from '../PlayCard/PlayCard';
 // Context Imports:
 import { AppContext, AppDispatchContext } from '../../context/context';
-// Helper Imports
-import { cardMidWidth } from '../../helpers/globals';
 
 // ShownContainer shows the cards that are "flipped" off of the {SelectionSpot} pile in 1, 3 or 5 card increments
 	// User can only access the top card from these flipped cards
@@ -50,7 +48,7 @@ const ShownContainer = () => {
 			{/* Conditional Card 5 */}
 			{state.containers[0][0].cardContainer.length >= 5
 				? <PlayCard
-					parentPosition={[(bounds.left+(4*cardMidWidth)), bounds.top]}
+					parentPosition={[(bounds.left+(4*state.cardSizes[4])), bounds.top]}
 					container={[0, 0]}
 					positionInContainer={4}
 					showOne={true}
@@ -60,7 +58,7 @@ const ShownContainer = () => {
 			{/* Conditional Card 4 */}
 			{state.containers[0][0].cardContainer.length >= 4
 				? <PlayCard
-					parentPosition={[(bounds.left+(3*cardMidWidth)), bounds.top]}
+					parentPosition={[(bounds.left+(3*state.cardSizes[4])), bounds.top]}
 					container={[0, 0]}
 					positionInContainer={3}
 					showOne={true}
@@ -70,7 +68,7 @@ const ShownContainer = () => {
 			{/* Conditional Card 3 */}
 			{state.containers[0][0].cardContainer.length >= 3
 				? <PlayCard
-					parentPosition={[(bounds.left+(2*cardMidWidth)), bounds.top]}
+					parentPosition={[(bounds.left+(2*state.cardSizes[4])), bounds.top]}
 					container={[0, 0]}
 					positionInContainer={2}
 					showOne={true}
@@ -80,7 +78,7 @@ const ShownContainer = () => {
 			{/* Conditional Card 2 */}
 			{state.containers[0][0].cardContainer.length >= 2
 				? <PlayCard
-					parentPosition={[(bounds.left+(1*cardMidWidth)), bounds.top]}
+					parentPosition={[(bounds.left+(1*state.cardSizes[4])), bounds.top]}
 					container={[0, 0]}
 					positionInContainer={1}
 					showOne={true}
@@ -90,7 +88,7 @@ const ShownContainer = () => {
 			{/* Conditional Card 1 */}
 			{state.containers[0][0].cardContainer.length >= 1
 				? <PlayCard
-					parentPosition={[(bounds.left+(0*cardMidWidth)), bounds.top]}
+					parentPosition={[(bounds.left+(0*state.cardSizes[4])), bounds.top]}
 					container={[0, 0]}
 					positionInContainer={0}
 					showOne={true}

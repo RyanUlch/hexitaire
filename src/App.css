@@ -24,7 +24,7 @@
 	--InPlayColor: 			black;
 	--finishedColor: 		rgb(0, 199, 0);
 	/* Fonts */
-	--fontSize:			clamp(0.6rem, 2vw, 2rem);
+	--fontSize:			clamp(0.6rem, 2vw, 1.5rem);
 	--fontSerif:		'Merriweather', serif;
 	--fontSansSerif:	'Sigmar One', sans-serif;
 	--fontCursive:		'Vujahday Script', "Brush Script MT", cursive;

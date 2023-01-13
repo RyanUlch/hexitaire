@@ -45,6 +45,9 @@ const GameContainer = () => {
 		}	
 	}
 
+
+
+
 /* useEffect Section Start *//* Descriptions before each one include the dependencies */
 	// Use: Check and set the winCondition of the state. Used when the user is able to win (all cards free), but haven't yet finished.
 		// User can choose to auto-finish the game. Should not trigger more than once, as either user auto-finished or chose not to
@@ -82,13 +85,17 @@ const GameContainer = () => {
 	// Dependencies: WindowSize state (separated as we want to update on value change)
 	useEffect(()=> {
 		const middleLineElement = document.querySelector('#MiddleLine');
+		const fontSize = parseFloat(getComputedStyle(document.documentElement).fontSize)
 		dispatch({
 			type: 'SETWINDOWVALUES',
 			payload: {
 				middleLine: middleLineElement?.getBoundingClientRect().top, 
 				wHeight: windowSize.height, wWidth: windowSize.width,
+				fSize: fontSize,
+				cHeight: fontSize*7, 	cMidHeight:  (fontSize*7)/2,
+				cWidth: fontSize*5, 	cMidWidth: (fontSize*5)/2,
 			},
-		})
+		});
 	}, [windowSize.height, windowSize.width]);
 
 	// Use: set window listener to check when the window changes size. Used in previous useEffect to update spacing

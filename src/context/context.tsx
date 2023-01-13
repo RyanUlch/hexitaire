@@ -29,6 +29,7 @@ export type gameContainer = {
 	window: number[],
 	lastMove: container[][],
 	winCondition: boolean[],
+	cardSizes: number[], 		// [fontSize, cardHeight, cardMidHeight, cardWidth, cardMidWidth]
 }
 /* Type definitions End */
 
@@ -95,8 +96,9 @@ const createStartingContainer = (): gameContainer =>  {
 				{ cardContainer: [], containerDisplay: [0, 0], validFrom: 0, changed: false, },
 			],
 		],
-		middleLine: 0,		moves: 0,		difficulty: 0,
-		window: [0, 0,],	lastMove: [],	winCondition: [false, false],
+		middleLine: 0,				moves: 0,		difficulty: 0,
+		window: [0, 0,],			lastMove: [],	winCondition: [false, false],
+		cardSizes: [0, 0, 0, 0, 0],
 	}
 }
 /* Context Management Function End */

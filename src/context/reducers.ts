@@ -58,6 +58,7 @@ export const deepCopyState = (state: gameContainer) => {
 		],
 		difficulty: state.difficulty,	middleLine: state.middleLine,		window: [...state.window],
 		moves: state.moves,				lastMove: [...state.lastMove],		winCondition: [...state.winCondition],
+		cardSizes: [...state.cardSizes],
 	}
 }
 
@@ -169,6 +170,7 @@ export const cardReducer = (state: gameContainer, action: {type: string, payload
 				],
 				difficulty: action.payload.difficulty,	middleLine: state.middleLine,	window: state.window,
 				moves: 0,								lastMove: [], 					winCondition: [false, false],
+				cardSizes: [...state.cardSizes],
 			};
 		}
 
@@ -206,6 +208,7 @@ export const cardReducer = (state: gameContainer, action: {type: string, payload
 				],
 				difficulty: 1,	middleLine: state.middleLine,	window: state.window,
 				moves: 0,		lastMove: [],					winCondition: [false, false],
+				cardSizes: [...state.cardSizes],
 			};
 		}
 		// Flip cards from the draw pile into the shown pile. Won't be triggered when there are no more cards (logic in {SelectionSpot})
@@ -249,6 +252,7 @@ export const cardReducer = (state: gameContainer, action: {type: string, payload
 			const windowState = deepCopyState(state);
 			windowState.middleLine = action.payload.middleLine;
 			windowState.window = [action.payload.wHeight, action.payload.wWidth];
+			windowState.cardSizes = [action.payload.fSize, action.payload.cHeight, action.payload.cMidHeight, action.payload.cWidth, action.payload.cMidWidth];
 			return {...windowState};
 		}
 		// Attempt to move card to a new container. Run in two phases.
