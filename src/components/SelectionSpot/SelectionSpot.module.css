@@ -1,7 +1,6 @@
 /* Container showing if container has cards to display or not */
 .container {
 	/* Border */
-	border: var(--border) var(--selectionSpotColor);
 	border-radius: var(--borderRadius);
 }
 

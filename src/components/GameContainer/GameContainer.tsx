@@ -160,7 +160,7 @@ const GameContainer = () => {
 			<div id='game' className={classes.gameContainer}>
 
 				{/* Image of the Hexitaire logo, not clickable, as this is a single page app */}
-				<img className={classes.headerImage} src='\images\hexitairelaidoutThin.jpg' alt='Hexitaire Logo' />
+				<img className={classes.headerImage} src='\images\hexitairelaidoutThin.png' alt='Hexitaire Logo' />
 
 				{/* The top row of containers */}
 				<div id='TopLine' className={`${classes.containers} ${classes.top}`}>

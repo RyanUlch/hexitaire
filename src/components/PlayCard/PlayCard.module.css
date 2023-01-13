@@ -13,7 +13,13 @@
 }
 
 /* Put card on top when it's being moved (works on desktop) */
+	/* Using both hover and active for the same effect as active works better for mouse events, hover is for touch screens */
 .PlayCard:active {
+	/* Misc. */
+	z-index: 99 !important;
+}
+
+.PlayCard:hover {
 	/* Misc. */
 	z-index: 99 !important;
 }
@@ -22,6 +28,7 @@
 /* Currently not working on mobile/touch devices */
 .moving {
 	/* Misc. */
+	background-color: antiquewhite !important;
 	z-index: 99 !important;
 }
 

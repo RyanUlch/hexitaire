@@ -13,7 +13,6 @@
 	justify-content: center;
 	width: 100%;
 	/* Border */
-	border: var(--border) var(--redColor);
 	border-radius: var(--borderRadius);
 	/* Font/Text */
 	font-family: var(--fontSansSerif);

@@ -26,13 +26,14 @@ const PlayCard = (props: {
 	// Single Component use variables - These do not use state functionality as they are needed immediately (update race conditions), set once and used multiple times,
 		// or simply; putting them in a state variable caused position bugs (cardInfo)
 	// Set Additional space needed to put columns of cards in the correct places. Used in initialization, and when setting position.
-	const addition = (((props.positionInContainer > 0) && !props.showOne) ? (state.cardSizes[1]/1.5) : 0) * Math.pow((props.positionInContainer > 4) ? .95 : 1, state.containers[props.container[0]][props.container[1]].cardContainer.length);
+	const addition = (((props.positionInContainer > 0) && !props.showOne) ? (state.cardSizes[1]) : 0) * Math.pow(.94, state.containers[props.container[0]][props.container[1]].cardContainer.length);
 	// Timeout ID for when the parent card (or container) moves, wait a millisecond to see if more movement occurs (prevents too many re-renders)
 	let moveTimeout: NodeJS.Timeout;
 	// Click (or tap) counter to check if user is double clicking/tapping a card. Prevents reducer running for no reason
 		// Used to prevent case of picking up a card, putting it down, reducer running to see it was put back into same container, and player clicking again.
 		// Should prevent a fair amount of reducer calls for a player that used mostly double click/tap functionality 
 	let clickCount = 0;
+	let held = false;
 	// Ref used to access this specific card
 	const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
 	// State Initialization - position is used to let children know when PlayCard is moving
@@ -100,6 +101,7 @@ console.log(props.parentPosition)
 				});
 			}
 		}
+		held = false;
 	}
 	
 	// Event handler for when a touch device taps and holds, This is to move cards around on screen
@@ -117,6 +119,7 @@ console.log(props.parentPosition)
 				attemptCardDrop(target);
 				// NOTE: again, may not need after fixing z-index on mobile issue
 				// setIsMoving(false);
+				held = false;
 			};
 			// When player moves while still holding down on screen, move the tapped valid card with pointer
 			document.ontouchmove = (e: TouchEvent) => { setPosition({ top: e.touches[0].clientY - state.cardSizes[1], left: e.touches[0].clientX - state.cardSizes[3], }); };
@@ -128,6 +131,7 @@ console.log(props.parentPosition)
 			document.ontouchend = null;
 			document.ontouchmove = null;
 			document.ontouchcancel = null;
+			held = false;
 		}
 	}
 
@@ -143,6 +147,7 @@ console.log(props.parentPosition)
 			// Reset event listeners
 			document.onmouseup = null;
 			document.onmousemove = null;
+			held = false;
 		}
 	}
 
@@ -154,7 +159,7 @@ console.log(props.parentPosition)
 		let target = event.target as HTMLInputElement;
 		clickCount++;
 		if (clickCount === 1) {
-			let held = true;
+			held = true;
 			document.onmouseup = () => {held = false}
 			setTimeout(function(){
 				(clickCount === 1) ? onMouseDown(target, held) : onDblClick();
@@ -172,7 +177,7 @@ console.log(props.parentPosition)
 		let target = event.target as HTMLInputElement;
 		clickCount++;
 		if (clickCount === 1) {
-			let held = true
+			held = true
 			document.ontouchend = () => {held = false}
 			setTimeout(function(){
 				(clickCount === 1) ? onTouch(target, held) : onDblClick();
@@ -216,7 +221,7 @@ console.log(props.parentPosition)
 			// All ClassNames for PlayCard - Can have many different classes (valid/invalid/red/black/moving/empty)
 			className={
 				(cardInfo.number !== -1 && cardInfo.number !== undefined)
-					? `${classes.PlayCard} ${state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer ? classes.valid : classes.invalid} ${cardInfo.isRed ? classes.red : classes.black} ${isMoving ? classes.moving : ''}`
+					? `${classes.PlayCard} ${state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer ? classes.valid : classes.invalid} ${cardInfo.isRed ? classes.red : classes.black} ${held ? classes.moving : ''}`
 					: classes.empty
 			}>
 			{/* Card Info being displayed on card conditionally (if the card/context is loaded) */}

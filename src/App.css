@@ -3,7 +3,7 @@
 	/* Sizes */
 	--gameContainerWidthMin:	200px;
 	--gameContainerWidth:		100vw;
-	--gameContainerWidthMax:	700px;
+	--gameContainerWidthMax:	660px;
 	--gameContainerWidthClamp:	clamp(var(--gameContainerWidthMin), var(--gameContainerWidth), var(--gameContainerWidthMax));
 	--cardWidthClamp:			calc(var(--gameContainerWidthClamp) / 8);
 	--cardHeightClamp:			calc(var(--cardWidthClamp) * 1.4);
@@ -24,7 +24,7 @@
 	--InPlayColor: 			black;
 	--finishedColor: 		rgb(0, 199, 0);
 	/* Fonts */
-	--fontSize:			clamp(0.6rem, 2vw, 1.5rem);
+	--fontSize:			clamp(0.6rem, 2vw, 1rem);
 	--fontSerif:		'Merriweather', serif;
 	--fontSansSerif:	'Sigmar One', sans-serif;
 	--fontCursive:		'Vujahday Script', "Brush Script MT", cursive;

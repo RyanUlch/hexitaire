@@ -68,7 +68,7 @@ const FinishedContainer = (props: {containerNum: number,}) => {
 			{/* Win State card - Used when the user has won the game. This prevents user from taking cards from this pile after the game is over */}
 				{/* TODO: Update CSS to make the card look nicer - or make image for it */}
 			{state.winCondition[1]
-				? <div className={classes.finished}>You Win!</div>
+				? <img className={`${classes.finished} ${classes.img}`} src='\images\hexBack.png' alt='' />
 				: <></>
 			}
 		</div>
