@@ -1,7 +1,7 @@
 /* CSS Variables, used to update entire game easily */
 :root {
 	/* Sizes */
-	--gameContainerWidthMin:	400px;
+	--gameContainerWidthMin:	200px;
 	--gameContainerWidth:		100vw;
 	--gameContainerWidthMax:	700px;
 	--gameContainerWidthClamp:	clamp(var(--gameContainerWidthMin), var(--gameContainerWidth), var(--gameContainerWidthMax));
@@ -24,11 +24,14 @@
 	--InPlayColor: 			black;
 	--finishedColor: 		rgb(0, 199, 0);
 	/* Fonts */
-	--fontSize:			clamp(0rem, 2vw, 2rem);
+	--fontSize:			clamp(0.6rem, 2vw, 2rem);
 	--fontSerif:		'Merriweather', serif;
 	--fontSansSerif:	'Sigmar One', sans-serif;
 	--fontCursive:		'Vujahday Script', "Brush Script MT", cursive;
 }
 
 /* Make all text used start with serif font */
-h1, h2, h3, h4, h5, h6, p, button, input, li { font-family: var(--fontSerif); }
+h1, h2, h3, h4, h5, h6, p, button, input, li { 
+	font-family: var(--fontSerif); 
+	font-size: var(--fontSize);
+}

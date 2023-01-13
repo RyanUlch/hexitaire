@@ -1,17 +1,35 @@
+@viewport {
+	width: device-width ;
+	zoom: 1.0;
+	user-zoom: fixed;
+}
+
 body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	/* Prevent user from overscrolling and refreshing page on mobile */
 	overscroll-behavior: contain;
+	/* Display/Position */
+	position:fixed;
+	margin:0;
+	padding:0;
+	width:100%;
+	height:100%;
 	/* Color/Background */
 	background-color: #C68946;
 	background-image: url('/public/images/background.jpg');
 	background-position: center;
 	background-repeat: repeat;
 	background-size:auto;
-
 	/* Misc. */
 	overflow-x: hidden;
+}
+
+.fullcontainer {
+	position:absolute;
+	width:100%;
+	height:100%;
+	overflow:hidden;
 }
   
   /* 	Base list for reset taken from Josh W. Comeau with permission	*/

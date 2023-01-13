@@ -19,9 +19,9 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	height: 95vmin;
+	height: 80vmin;
 	left: 50%;
-	max-width: 800px;
+	/* max-width: 800px; */
 	min-width: 400px;
 	padding: 25px;
 	position: fixed;

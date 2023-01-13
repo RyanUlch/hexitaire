@@ -55,7 +55,7 @@
 	/* Display/Position */
 	align-self: center;
 	/* Font/Text */
-	font-size: clamp(1.4rem, calc(var(--fontSize)*2.5), 3rem);
+	font-size: clamp(1rem, calc(var(--fontSize)*1.75), 3rem);
 }
 
 /* Small and upside-down text on card */

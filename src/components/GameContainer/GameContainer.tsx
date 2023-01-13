@@ -188,8 +188,8 @@ const GameContainer = () => {
 				<div className={classes.footerContainer}>
 					{/* Buttons for starting a new game, currently all difficulties are separate buttons, might change to one "New Game" button with settings stored in local storage */}
 					<div className={`${classes.footer}`}>
-						<div 	className={`${classes.fElement} ${classes.even}	${classes.topLeft}	`}>New Game:</div>
-						<button className={`${classes.fElement} ${classes.odd}						`} onClick={newGame} value={1}>Easy	</button>
+						{/* <div 	className={`${classes.fElement} ${classes.even}	${classes.topLeft}	`}>New:</div> */}
+						<button className={`${classes.fElement} ${classes.odd}	${classes.topLeft}	`} onClick={newGame} value={1}>Easy	</button>
 						<button className={`${classes.fElement} ${classes.even}						`} onClick={newGame} value={3}>Medium</button>
 						<button className={`${classes.fElement} ${classes.odd}	${classes.topRight}	`} onClick={newGame} value={5}>Hard</button>
 						{/* Used only in Development, not shown in Production */}
@@ -198,16 +198,16 @@ const GameContainer = () => {
 
 					{/* Game Specific Information, Amount of moves, Undo button and current time */}
 					<div className={`${classes.footer} ${classes.footerTop}`}>
-						<div	className={`${classes.fElement} ${classes.even}	`}>Moves: {state.moves}</div>
+						<div	className={`${classes.fElement} ${classes.even}	`}>{state.moves}</div>
 						<button	className={`${classes.fElement} ${classes.odd}	${state.lastMove.length === 0 || state.winCondition[1] ? classes.disabled : ''}`} disabled={state.lastMove.length === 0 || state.winCondition[1]} onClick={undo}>Undo</button>
 						<Timer	timerReact={timer} gameNumber={gameNumber} classes={classes} />
 					</div>
 
 					{/* Links to Modals and my Website */}
 					<footer className={`${classes.footer} ${classes.footerBottom}`}>
-						<button className={`${classes.fElement} ${classes.odd}	`} onClick={openDedicationModal}>Dedications and Acknowledgements</button>
-						<button className={`${classes.fElement} ${classes.even}	`} onClick={openRulesModal}>What are the rules?</button>
-						<button className={`${classes.fElement} ${classes.odd}	`} onClick={() => {window.open('https:RyanUlch.com','_blank')}}>A&nbsp;<span className={classes.name}>Ryan Ulch</span>&nbsp;website</button>
+						<button className={`${classes.fElement} ${classes.odd}	`} onClick={openDedicationModal}>Tributes</button>
+						<button className={`${classes.fElement} ${classes.even}	`} onClick={openRulesModal}>Rules</button>
+						<button className={`${classes.fElement} ${classes.odd}	${classes.name}`} onClick={() => {window.open('https:RyanUlch.com','_blank')}}>Ryan Ulch</button>
 					</footer>
 				</div>
 			</div>

@@ -149,6 +149,7 @@ const PlayCard = (props: {
 	const clickCounter = (event: React.SyntheticEvent) => {
 		event = event || window.event;
 		event.stopPropagation();
+		event.preventDefault();
 		let target = event.target as HTMLInputElement;
 		clickCount++;
 		if (clickCount === 1) {
@@ -157,7 +158,7 @@ const PlayCard = (props: {
 			setTimeout(function(){
 				(clickCount === 1) ? onMouseDown(target, held) : onDblClick();
 				clickCount = 0;
-			}, 400);
+			}, 200);
 		}
 	}
 
@@ -166,6 +167,7 @@ const PlayCard = (props: {
 	const tapCounter = (event: React.SyntheticEvent) => {
 		event = event || window.event;
 		event.stopPropagation();
+		event.preventDefault();
 		let target = event.target as HTMLInputElement;
 		clickCount++;
 		if (clickCount === 1) {
@@ -174,7 +176,7 @@ const PlayCard = (props: {
 			setTimeout(function(){
 				(clickCount === 1) ? onTouch(target, held) : onDblClick();
 				clickCount = 0;
-			}, 400);
+			}, 200);
 		}
 	}
 
