@@ -252,7 +252,7 @@ export const cardReducer = (state: gameContainer, action: {type: string, payload
 			const windowState = deepCopyState(state);
 			windowState.middleLine = action.payload.middleLine;
 			windowState.window = [action.payload.wHeight, action.payload.wWidth];
-			windowState.cardSizes = [action.payload.fSize, action.payload.cHeight, action.payload.cMidHeight, action.payload.cWidth, action.payload.cMidWidth];
+			windowState.cardSizes = [action.payload.cHeight, action.payload.cMidHeight, action.payload.cWidth, action.payload.cMidWidth];
 			return {...windowState};
 		}
 		// Attempt to move card to a new container. Run in two phases.

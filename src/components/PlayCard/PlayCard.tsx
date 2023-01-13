@@ -26,7 +26,7 @@ const PlayCard = (props: {
 	// Single Component use variables - These do not use state functionality as they are needed immediately (update race conditions), set once and used multiple times,
 		// or simply; putting them in a state variable caused position bugs (cardInfo)
 	// Set Additional space needed to put columns of cards in the correct places. Used in initialization, and when setting position.
-	const addition = (((props.positionInContainer > 0) && !props.showOne) ? (2*state.cardSizes[0]) : 0) * Math.pow(0.975, state.containers[props.container[0]][props.container[1]].cardContainer.length);
+	const addition = (((props.positionInContainer > 0) && !props.showOne) ? (state.cardSizes[1]/1.5) : 0) * Math.pow((props.positionInContainer > 4) ? .95 : 1, state.containers[props.container[0]][props.container[1]].cardContainer.length);
 	// Timeout ID for when the parent card (or container) moves, wait a millisecond to see if more movement occurs (prevents too many re-renders)
 	let moveTimeout: NodeJS.Timeout;
 	// Click (or tap) counter to check if user is double clicking/tapping a card. Prevents reducer running for no reason
@@ -68,23 +68,25 @@ const PlayCard = (props: {
 	}, [props.parentPosition[0], props.parentPosition[1], state.containers[props.container[0]][props.container[1]].changed]);
 /* useEffect Section End */
 
+console.log(props.parentPosition)
+
 /* Component Management Section Start */
 	// Attempt to drop the held card, Reducer handles logic, including if it was dropped into the same container
 	const attemptCardDrop = (target: HTMLInputElement) => {
 		if (target) {
 			let cardDropLocation = target.getBoundingClientRect();
+
 			dispatch({
 				type: 'MOVECARD',
 				payload: {
 					to: [],
 					from: [props.container[0], props.container[1], props.container[0] === 2 ? props.positionInContainer : state.containers[props.container[0]][props.container[1]].cardContainer.length-1],
-					cardTop: cardDropLocation.top+state.cardSizes[2],
-					cardLeft: cardDropLocation.left+state.cardSizes[4],
+					cardTop: cardDropLocation.top+state.cardSizes[1],
+					cardLeft: cardDropLocation.left+state.cardSizes[3],
 				}
 			})
 		}
 	}
-
 	// Handle double click event (same for clicking and tapping) 
 	const onDblClick = () => {
 		// Make sure card being clicked is either from the finished container (top card can always be attempted to be moved), or that the card is from a different container and is valid to be moved
@@ -117,7 +119,7 @@ const PlayCard = (props: {
 				// setIsMoving(false);
 			};
 			// When player moves while still holding down on screen, move the tapped valid card with pointer
-			document.ontouchmove = (e: TouchEvent) => { setPosition({ top: e.touches[0].clientY - state.cardSizes[2], left: e.touches[0].clientX - state.cardSizes[4], }); };
+			document.ontouchmove = (e: TouchEvent) => { setPosition({ top: e.touches[0].clientY - state.cardSizes[1], left: e.touches[0].clientX - state.cardSizes[3], }); };
 			// When player cancels move, reset handlers
 				// NOTE: I am unsure about what constitutes a cancelled touch event, may need to run {attemptCardDrop()} for this as well
 			document.ontouchcancel = (e: TouchEvent) => { document.ontouchend = null; document.ontouchmove = null;	document.ontouchcancel = null; }
@@ -136,7 +138,7 @@ const PlayCard = (props: {
 			// When mouse button is let go, reset handlers and see if card can be dropped in current location
 			document.onmouseup = () => { document.onmouseup = null;	document.onmousemove = null; attemptCardDrop(target); };
 			// When mouse moves while still clicked, move the clicked valid card with mouse
-			document.onmousemove = (e: MouseEvent) => { setPosition({ top: e.clientY - state.cardSizes[2], left: e.clientX - state.cardSizes[4], }); };
+			document.onmousemove = (e: MouseEvent) => { setPosition({ top: e.clientY - state.cardSizes[1], left: e.clientX - state.cardSizes[3], }); };
 		} else {
 			// Reset event listeners
 			document.onmouseup = null;

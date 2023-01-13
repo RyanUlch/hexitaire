@@ -38,8 +38,9 @@ const ShownContainer = () => {
 			});
 		}
 	}, [state.window[0], state.window[1]]);
-/* useEffect Section End */
 
+	// console.log([(bounds.left+(3*state.cardSizes[3])), bounds.top])
+/* useEffect Section End */
 	return (
 		// Main container - used to as be accessible for useEffect to get the location of the container
 		<div id='shown' className={`${classes.container}`}>
@@ -48,7 +49,7 @@ const ShownContainer = () => {
 			{/* Conditional Card 5 */}
 			{state.containers[0][0].cardContainer.length >= 5
 				? <PlayCard
-					parentPosition={[(bounds.left+(4*state.cardSizes[4])), bounds.top]}
+					parentPosition={[(bounds.left+(4*state.cardSizes[3])), bounds.top]}
 					container={[0, 0]}
 					positionInContainer={4}
 					showOne={true}
@@ -58,7 +59,7 @@ const ShownContainer = () => {
 			{/* Conditional Card 4 */}
 			{state.containers[0][0].cardContainer.length >= 4
 				? <PlayCard
-					parentPosition={[(bounds.left+(3*state.cardSizes[4])), bounds.top]}
+					parentPosition={[(bounds.left+(3*state.cardSizes[3])), bounds.top]}
 					container={[0, 0]}
 					positionInContainer={3}
 					showOne={true}
@@ -68,7 +69,7 @@ const ShownContainer = () => {
 			{/* Conditional Card 3 */}
 			{state.containers[0][0].cardContainer.length >= 3
 				? <PlayCard
-					parentPosition={[(bounds.left+(2*state.cardSizes[4])), bounds.top]}
+					parentPosition={[(bounds.left+(2*state.cardSizes[3])), bounds.top]}
 					container={[0, 0]}
 					positionInContainer={2}
 					showOne={true}
@@ -78,7 +79,7 @@ const ShownContainer = () => {
 			{/* Conditional Card 2 */}
 			{state.containers[0][0].cardContainer.length >= 2
 				? <PlayCard
-					parentPosition={[(bounds.left+(1*state.cardSizes[4])), bounds.top]}
+					parentPosition={[(bounds.left+(1*state.cardSizes[3])), bounds.top]}
 					container={[0, 0]}
 					positionInContainer={1}
 					showOne={true}
@@ -88,7 +89,7 @@ const ShownContainer = () => {
 			{/* Conditional Card 1 */}
 			{state.containers[0][0].cardContainer.length >= 1
 				? <PlayCard
-					parentPosition={[(bounds.left+(0*state.cardSizes[4])), bounds.top]}
+					parentPosition={[(bounds.left+(0*state.cardSizes[3])), bounds.top]}
 					container={[0, 0]}
 					positionInContainer={0}
 					showOne={true}
