@@ -47,6 +47,7 @@ body {
   /*	3. Allow percentage-based heights in the application */
   html, body {
 	  box-sizing: border-box;
+	  overflow: hidden;
   }
   /*	Typographic tweaks!
 	  4. Add accessible line-height
