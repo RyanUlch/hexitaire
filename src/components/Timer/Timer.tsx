@@ -48,7 +48,7 @@ const Timer = (props: {
 /* useEffect Section End */
 
 	// Simple display to show current time
-	return (<div className={`${props.classes.fElement} ${props.classes.even}`}>{timer[0] < 10 ? ('0'+timer[0]).slice(-2) : timer[1]}:{timer[1] < 10 ? ('0'+timer[1]).slice(-2) : timer[1]}</div>);
+	return (<div className={`${props.classes.fElement} ${props.classes.even}`}>{timer[0] < 10 ? ('0'+timer[0]).slice(-2) : timer[0]}:{timer[1] < 10 ? ('0'+timer[1]).slice(-2) : timer[1]}</div>);
 }
 
 export default Timer;
