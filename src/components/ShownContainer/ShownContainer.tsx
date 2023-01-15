@@ -53,7 +53,7 @@ const ShownContainer = () => {
 					container={[0, 0]}
 					positionInContainer={4}
 					showOne={true}
-					zIndex={1}
+					zIndex={6}
 				/> : <></>
 			}
 			{/* Conditional Card 4 */}
@@ -63,7 +63,7 @@ const ShownContainer = () => {
 					container={[0, 0]}
 					positionInContainer={3}
 					showOne={true}
-					zIndex={-99}
+					zIndex={5}
 				/> : <></>
 			}
 			{/* Conditional Card 3 */}
@@ -73,7 +73,7 @@ const ShownContainer = () => {
 					container={[0, 0]}
 					positionInContainer={2}
 					showOne={true}
-					zIndex={-199}
+					zIndex={4}
 				/> : <></>
 			}
 			{/* Conditional Card 2 */}
@@ -83,7 +83,7 @@ const ShownContainer = () => {
 					container={[0, 0]}
 					positionInContainer={1}
 					showOne={true}
-					zIndex={-299}
+					zIndex={3}
 				/> : <></>
 			}
 			{/* Conditional Card 1 */}
@@ -93,7 +93,7 @@ const ShownContainer = () => {
 					container={[0, 0]}
 					positionInContainer={0}
 					showOne={true}
-					zIndex={-399}
+					zIndex={2}
 				/> : <></>
 			}
 			{/* Conditional Card - Under the pile */}
@@ -105,7 +105,7 @@ const ShownContainer = () => {
 					container={[4, 0]}
 					positionInContainer={state.containers[4][0].cardContainer.length-1}
 					showOne={true}
-					zIndex={-499}
+					zIndex={1}
 				/> : <></>
 			}
 		</div>

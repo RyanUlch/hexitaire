@@ -1,5 +1,14 @@
 /* Container showing if container has cards to display or not */
 .container {
+	/* Display/Position */
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	height: var(--cardHeight);
+	width: var(--cardWidth);
+	/* Border */
+	border: var(--border) var(--selectionSpotColor);
+	border-radius: var(--borderRadius);
 	/* Misc */
 	user-select: none;
 }
@@ -7,17 +16,15 @@
 /* Image of card-back when there is at least one card in the pile */
 .img {
 	/* Display/Position */
-	height: var(--cardHeight);
-	width: var(--cardWidth);
+	height: 100%;
 	/* Misc */
 	user-select: none;
 }
 
-/* Image if there is no cards in pile */
+/* Image if there is no cards in pile, but there is still cards that can be made into a new pile */
 .refreshCardImg {
 	/* Display/Position */
-	height: var(--cardHeight);
-	width: var(--cardWidth);
+	width: 50%;
 	/* Misc */
 	user-select: none;
 }

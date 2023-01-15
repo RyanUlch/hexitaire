@@ -26,7 +26,7 @@ const PlayCard = (props: {
 	// Single Component use variables - These do not use state functionality as they are needed immediately (update race conditions), set once and used multiple times,
 		// or simply; putting them in a state variable caused position bugs (cardInfo)
 	// Set Additional space needed to put columns of cards in the correct places. Used in initialization, and when setting position.
-	const addition = (((props.positionInContainer > 0) && !props.showOne) ? (state.cardSizes[1]) : 0) * Math.pow(.94, state.containers[props.container[0]][props.container[1]].cardContainer.length);
+	const addition = (((props.positionInContainer > 0) && !props.showOne) ? (state.cardSizes[1]) : 0) * Math.pow(.955, state.containers[props.container[0]][props.container[1]].cardContainer.length);
 	// Timeout ID for when the parent card (or container) moves, wait a millisecond to see if more movement occurs (prevents too many re-renders)
 	let moveTimeout: NodeJS.Timeout;
 	// Click (or tap) counter to check if user is double clicking/tapping a card. Prevents reducer running for no reason

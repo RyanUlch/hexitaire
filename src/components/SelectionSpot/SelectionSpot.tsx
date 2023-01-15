@@ -14,7 +14,7 @@ const SelectionSpot = () => {
 	const { state } = useContext(AppContext);
 	const { dispatch } = useContext(AppDispatchContext);
 	// State Initialization - isEmpty is used to determine if the card back should be shown to player
-	const [isEmpty, setIsEmpty] = useState(true);
+	const [isEmpty, setIsEmpty] = useState([true, true]);
 	
 /* useEffect Section Start *//* Descriptions before each one include the dependencies */
 	// Use: Update the state to know where the container lives, this is to make sure you drop the card in the intended spot and to move the cards if needed
@@ -36,8 +36,12 @@ const SelectionSpot = () => {
 	// Use: To update the display for when there are no more cards available in the pile
 	// Dependency: When this specific container is changed in the context
 	useEffect(()=> {
-		setIsEmpty(state.containers[1][0].cardContainer.length > 0 ? false : true);
-	},[state.containers[1][0].changed]);
+		console.log(state.containers[0][0].cardContainer)
+		setIsEmpty([
+			!(state.containers[1][0].cardContainer.length > 0),
+			!(state.containers[4][0].cardContainer.length > 0) && !(state.containers[0][0].cardContainer.length > 0)
+		]);
+	},[state.containers[1][0].changed, state.containers[0][0].changed]);
 /* useEffect Section End */
 
 /* Component Management Section Start */
@@ -61,7 +65,12 @@ const SelectionSpot = () => {
 	return (
 		// If not empty, show the back of the cards (an image), if not, show empty container
 		<div onClick={showMore} className={classes.container}>
-			{isEmpty ? <></> : <img src='\images\hexBack.png' className={classes.img} alt='' />}
+			{!isEmpty[0]
+				? <img src='\images\hexBack.png' className={classes.img} alt='' />
+				: !isEmpty[1]
+					? <img src='\images\refresh.svg' className={classes.refreshCardImg} alt='' />
+					: <></>
+			}
 		</div>
 	)
 }

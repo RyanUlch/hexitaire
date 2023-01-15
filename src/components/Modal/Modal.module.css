@@ -10,7 +10,7 @@
 	background-color: black;
 	/* Misc. */
 	opacity: 0.5;
-	z-index: 4;
+	z-index: 9998;
 }
 
 /* Modal box, contains children for specific modal info */
@@ -35,7 +35,7 @@
 	box-sizing: content-box;
 	overflow-y: auto;
 	overflow-X: hidden;
-	z-index: 5;
+	z-index: 9999;
 }
 
 /* Button to close the modal in the top-right */
