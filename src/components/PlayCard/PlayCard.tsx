@@ -48,11 +48,6 @@ const PlayCard = (props: {
 		isRed: state?.containers[props.container[0]][props.container[1]]?.cardContainer[props.positionInContainer]?.suit < 2,
 	}
 
-/* WORKING ON THIS *//* WORKING ON THIS *//* WORKING ON THIS *//* WORKING ON THIS *//* WORKING ON THIS *//* WORKING ON THIS */
-	// Trying to use state to let card change z-index to be on top when it is moving, currently not working on mobile, may not need depending on solution
-	const [isMoving, setIsMoving] = useState(false);
-/* End Work*/
-
 /* useEffect Section Start *//* Descriptions before each one include the dependencies */
 	// Use: Move with the parent element, wait 1 millisecond incase there is more movement to prevent too many re-renders
 	// Dependencies: Parent Card/Container position, and if this container updated (as this may move the card slightly due to "crunching" when columns get too large)
@@ -106,9 +101,6 @@ console.log(props.parentPosition)
 	
 	// Event handler for when a touch device taps and holds, This is to move cards around on screen
 	const onTouch = (target: HTMLInputElement, held: boolean) => {
-		// NOTE: setMoving is here while trying to fix z-index issue on mobile, may not be needed depending on fix
-		// setIsMoving(state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer);
-
 		// Check that the card can be moved at all, and that the player is still holding down on the screen after the timeout
 		if (state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer && held) {
 			// When screen is let go, reset handlers and see if card can be dropped in current location
@@ -117,8 +109,6 @@ console.log(props.parentPosition)
 				document.ontouchmove = null;
 				document.ontouchcancel = null;
 				attemptCardDrop(target);
-				// NOTE: again, may not need after fixing z-index on mobile issue
-				// setIsMoving(false);
 				held = false;
 			};
 			// When player moves while still holding down on screen, move the tapped valid card with pointer
@@ -185,13 +175,14 @@ console.log(props.parentPosition)
 			}, 200);
 		}
 	}
-
 	// Sets the suit symbol as a string based on suit number
 	const suitSymbol = () => {
 		switch(cardInfo.suit) {
-			case 0:	return '♥';	case 1:	return '♦';
-			case 2:	return '♠';	case 3:	return '♣';
-			case -1: return '';
+			case 0:	return <img className={classes.suitImg} alt='' src={state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer ? 'images/heart.svg' : 'images/heartInvalid.svg'} />
+			case 1:	return <img className={classes.suitImg} alt='' src={state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer ? 'images/diamond.svg' : 'images/diamondInvalid.svg'} />
+			case 2:	return <img className={classes.suitImg} alt='' src={state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer ? 'images/spade.svg' : 'images/spadeInvalid.svg'} />
+			case 3:	return <img className={classes.suitImg} alt='' src={state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer ? 'images/club.svg' : 'images/clubInvalid.svg'} />
+			case -1: return <></>;
 			default:throw Error('Card Suit Not Defined');
 		}
 	}
@@ -218,10 +209,10 @@ console.log(props.parentPosition)
 			ref={ref} 
 			// Styles set with state
 			style={{zIndex: props.zIndex, left: position.left, top: position.top}} 
-			// All ClassNames for PlayCard - Can have many different classes (valid/invalid/red/black/moving/empty)
+			// All ClassNames for PlayCard - Can have many different classes (valid/invalid/red/black/empty)
 			className={
 				(cardInfo.number !== -1 && cardInfo.number !== undefined)
-					? `${classes.PlayCard} ${state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer ? classes.valid : classes.invalid} ${cardInfo.isRed ? classes.red : classes.black} ${held ? classes.moving : ''}`
+					? `${classes.PlayCard} ${state.containers[props.container[0]][props.container[1]].validFrom <= props.positionInContainer ? classes.valid : classes.invalid} ${cardInfo.isRed ? classes.red : classes.black}`
 					: classes.empty
 			}>
 			{/* Card Info being displayed on card conditionally (if the card/context is loaded) */}

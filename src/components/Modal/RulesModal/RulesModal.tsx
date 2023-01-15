@@ -18,7 +18,7 @@ const RulesModal = (props: {onClose: () => void}) => {
 				<li>If an in-play pile becomes empty, it can be filled with any card or sequence of cards that are built down in alternating colors.</li>
 				<li>The draw pile can be turned over to give you 1 (easy), 3 (medium), or 5 (hard) cards at a time to form the stock pile. The top card of the stock pile is available for play to the finished or in-play piles.</li>
 				<li>The game is won when all the cards have been moved to the foundation piles.</li>
-				<li>The game is lost when no more moves can be made and the draw pile is empty.</li>
+				<li>The game is lost when no more moves can be made.</li>
 			</ul>
 		</Modal>
 	)

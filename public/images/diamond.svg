@@ -1,0 +1,18 @@
+<!-- Diamond SVG -->
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox="0 0 516.4 665.88"
+>
+	<!-- <defs>
+		<style>.cls-1{fill:#f4323f;}</style>
+	</defs> -->
+	<g id="Layer_2" data-name="Layer 2">
+		<g id="Layer_1-2" data-name="Layer 1">
+			<path
+				id="diamond"
+				class="cls-1"
+				d="M258.2,0S199.71,138,0,332.94C199.71,527.86,258.2,665.88,258.2,665.88s58.49-138,258.2-332.94C316.69,138,258.2,0,258.2,0Z"
+			/>
+		</g>
+	</g>
+</svg>

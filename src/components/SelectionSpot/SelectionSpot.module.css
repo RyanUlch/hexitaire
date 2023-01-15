@@ -1,7 +1,7 @@
 /* Container showing if container has cards to display or not */
 .container {
-	/* Border */
-	border-radius: var(--borderRadius);
+	/* Misc */
+	user-select: none;
 }
 
 /* Image of card-back when there is at least one card in the pile */
@@ -9,4 +9,15 @@
 	/* Display/Position */
 	height: var(--cardHeight);
 	width: var(--cardWidth);
+	/* Misc */
+	user-select: none;
+}
+
+/* Image if there is no cards in pile */
+.refreshCardImg {
+	/* Display/Position */
+	height: var(--cardHeight);
+	width: var(--cardWidth);
+	/* Misc */
+	user-select: none;
 }

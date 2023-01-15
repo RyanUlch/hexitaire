@@ -24,14 +24,6 @@
 	z-index: 99 !important;
 }
 
-/* Put card on top when moving (trying to get to work on Mobile */
-/* Currently not working on mobile/touch devices */
-.moving {
-	/* Misc. */
-	background-color: antiquewhite !important;
-	z-index: 99 !important;
-}
-
 /* Card Text CSS *//* Card Text CSS *//* Card Text CSS *//* Card Text CSS */
 
 /* Display and Position of all card text */
@@ -42,13 +34,23 @@
 	height: calc(var(--cardHeightClamp) - (var(--borderWidth)*2));
 	justify-content: space-between;
 	flex-direction: column;
-	padding: 0 3px;	
+	padding: 5px 10px;	
 }
 
 /* Font on cards */
 .cardText > p {
+	/* Display/Position */
+	align-items: center;
+	display: flex;
+	flex-direction: row;
+	gap: 3px;
+	justify-content: center;
 	/* Font/Text */
 	font-family: var(--fontSansSerif);
+}
+
+.suitImg {
+	display: inline;
 }
 
 /* Small text on top of card */

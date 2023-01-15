@@ -1,0 +1,18 @@
+<!-- Heart SVG -->
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox="0 0 558.87 665.88"
+>
+	<!-- <defs>
+		<style>.cls-1{fill:#f4323f;}</style>
+	</defs> -->
+	<g id="Layer_2" data-name="Layer 2">
+		<g id="Layer_1-2" data-name="Layer 1">
+			<path
+				id="heart"
+				class="cls-1"
+				d="M558.87,193.08c0,169.37-279.44,284-279.44,472.8C279.43,477,0,362.45,0,193.08c0-256.56,279.43-258.32,279.43,0C279.43-65.24,558.87-63.48,558.87,193.08Z"
+			/>
+		</g>
+	</g>
+</svg>

@@ -1,5 +1,6 @@
 /* Container of Finished Piles (4 in total) */
 .container {
+	/* Border */
 	border: var(--border) var(--finishedColor);
 	border-radius: var(--borderRadius);
 }
