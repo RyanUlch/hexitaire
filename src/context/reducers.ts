@@ -108,7 +108,7 @@ const compareCards = (isSameSuit: boolean, lCard: card, rCard: card, fromHasChil
 			// 1. If there is no card in the container, you can drop any card or stack of cards into InPlay containers
 			// 2. Check that the suits are different colors (0-1: red, 2-3: black)
 			// 3. Check that the numbers are in order based on InPlay Container rules (dropped card 1 less than existing card)
-		return (rCard.suit === -1 || (!isSameSuit && lCard.suit < 2 !== rCard.suit <2 && lCard.number === rCard.number-1));
+		return ((rCard.suit === -1) || (!isSameSuit && (lCard.suit < 2) !== (rCard.suit < 2) && lCard.number === rCard.number-1));
 	}
 }
 

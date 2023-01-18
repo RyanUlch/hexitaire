@@ -42,7 +42,7 @@ const DedicationModal = (props: {onClose: () => void}) => {
 			<br />
 			{/* Buy Me A Coffee link for anyone wishing to support my work monetarily */}
 			<div className={classes.textContainer}>
-				<a href="https://www.buymeacoffee.com/RyanUlch" target="_blank"><img className={classes.bmac} src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Donate button for Hexitaire" /></a>
+				<a href="https://www.buymeacoffee.com/RyanUlch" target="_blank" rel='noreferrer'><img className={classes.bmac} src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Donate button for Hexitaire" /></a>
 			</div>
 		</Modal>
 	);

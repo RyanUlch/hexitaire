@@ -37,7 +37,7 @@ const ShownContainer = () => {
 				top: getBounds.top,
 			});
 		}
-	}, [state.window[0], state.window[1]]);
+	}, [state.window[0], state.window[1], dispatch]);
 
 	// console.log([(bounds.left+(3*state.cardSizes[3])), bounds.top])
 /* useEffect Section End */

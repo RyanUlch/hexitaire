@@ -68,7 +68,7 @@ const GameContainer = () => {
 				payload: [true, true],
 			})
 		}		 
-	}, [state.winCondition[0]]);
+	}, [state.winCondition[0], state.containers, state.winCondition, dispatch]);
 
 	// Use: Stop the timer once the game has been won (state.winCondition[1]), ignore all else, as the timer is started elsewhere
 	// Dependency: state.winCondition[1] - only worry about if the game is fully won, not if all cards are free (state.winCondition[0])
@@ -76,7 +76,7 @@ const GameContainer = () => {
 		if (state.winCondition[1]) {
 			setTimer(false);
 		}
-	}, [state.winCondition[1]])
+	}, [state.winCondition[1], state.winCondition, dispatch])
 
 	// Use: Set the middleLine height, and window values in State. Used in containers to properly position elements.
 	// Dependencies: WindowSize state (separated as we want to update on value change)
@@ -96,7 +96,7 @@ const GameContainer = () => {
 				},
 			});
 		}
-	}, [windowSize.height, windowSize.width]);
+	}, [windowSize.height, windowSize.width, dispatch]);
 
 	// Use: set window listener to check when the window changes size. Used in previous useEffect to update spacing
 	// Dependencies: None - run once when component mounts

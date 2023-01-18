@@ -35,7 +35,7 @@ const InPlayContainer = (props: {containerNum: number}) => {
 				top: getBounds.top,
 			})
 		}
-	}, [state.window[0], state.window[1]]);
+	}, [state.window[0], state.window[1], props.containerNum, dispatch]);
 /* useEffect Section End */
 
 	return (

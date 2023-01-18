@@ -31,7 +31,7 @@ const SelectionSpot = () => {
 				}
 			});
 		}
-	}, [state.window[0], state.window[1]]);
+	}, [state.window[0], state.window[1], dispatch]);
 
 	// Use: To update the display for when there are no more cards available in the pile
 	// Dependency: When this specific container is changed in the context
@@ -41,7 +41,7 @@ const SelectionSpot = () => {
 			!(state.containers[1][0].cardContainer.length > 0),
 			!(state.containers[4][0].cardContainer.length > 0) && !(state.containers[0][0].cardContainer.length > 0)
 		]);
-	},[state.containers[1][0].changed, state.containers[0][0].changed]);
+	},[state.containers[1][0].changed, state.containers[0][0].changed, state.containers]);
 /* useEffect Section End */
 
 /* Component Management Section Start */

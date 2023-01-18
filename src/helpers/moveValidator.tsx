@@ -69,7 +69,7 @@ export const validateAutoMove = (
 				// Get the last card in the container, will succeed since we checked there was at least one card above
 				const inPlayCard = containers[2][i].cardContainer[containers[2][i].cardContainer.length-1];
 				// Check the two cards have the correct rules for being placed here
-				if (card.number === inPlayCard.number-1 && card.suit<2 !== inPlayCard.suit<2) {
+				if (card.number === inPlayCard.number-1 && (card.suit < 2) !== (inPlayCard.suit < 2)) {
 					// return container info
 					return {
 						to: [2, i, containers[2][i].cardContainer.length-1],

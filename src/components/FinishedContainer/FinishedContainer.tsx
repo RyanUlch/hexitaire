@@ -33,9 +33,9 @@ const FinishedContainer = (props: {containerNum: number,}) => {
 			setBounds({
 				left: getBounds.left,
 				top: getBounds.top,
-			})
+			});
 		}
-	}, [state.window[0], state.window[1]]);
+	}, [state.window[0], state.window[1], dispatch, props.containerNum]);
 /* useEffect Section End */
 
 	return (

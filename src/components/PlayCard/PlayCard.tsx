@@ -28,7 +28,7 @@ const PlayCard = (props: {
 	// Set Additional space needed to put columns of cards in the correct places. Used in initialization, and when setting position.
 	const addition = (((props.positionInContainer > 0) && !props.showOne) ? (state.cardSizes[1]) : 0) * Math.pow(.955, state.containers[props.container[0]][props.container[1]].cardContainer.length);
 	// Timeout ID for when the parent card (or container) moves, wait a millisecond to see if more movement occurs (prevents too many re-renders)
-	let moveTimeout: NodeJS.Timeout;
+	const moveTimeout = useRef() as React.MutableRefObject<NodeJS.Timeout>;
 	// Click (or tap) counter to check if user is double clicking/tapping a card. Prevents reducer running for no reason
 		// Used to prevent case of picking up a card, putting it down, reducer running to see it was put back into same container, and player clicking again.
 		// Should prevent a fair amount of reducer calls for a player that used mostly double click/tap functionality 
@@ -52,16 +52,16 @@ const PlayCard = (props: {
 	// Use: Move with the parent element, wait 1 millisecond incase there is more movement to prevent too many re-renders
 	// Dependencies: Parent Card/Container position, and if this container updated (as this may move the card slightly due to "crunching" when columns get too large)
 	useEffect(()=> {
-		moveTimeout = setTimeout(() => {
+		moveTimeout.current = setTimeout(() => {
 			setPosition({
 					left: props.parentPosition[0],
 					top: props.parentPosition[1] + addition,
 				});
 		}, 1);
 		return () => {
-			clearTimeout(moveTimeout);
+			clearTimeout(moveTimeout.current);
 		}
-	}, [props.parentPosition[0], props.parentPosition[1], state.containers[props.container[0]][props.container[1]].changed]);
+	}, [props.parentPosition[0], props.parentPosition[1], state.containers[props.container[0]][props.container[1]].changed, addition, props.parentPosition]);
 /* useEffect Section End */
 
 console.log(props.parentPosition)
