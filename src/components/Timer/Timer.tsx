@@ -44,7 +44,7 @@ const Timer = (props: {
 		}
 		// Return clearInterval so that if the component unmounts, it will not keep running the timer.
 		return () => {clearInterval(intervalID)}
-	}, [props.timerReact, props.gameNumber, intervalID]);
+	}, [props.timerReact, props.gameNumber]);
 /* useEffect Section End */
 
 	// Simple display to show current time

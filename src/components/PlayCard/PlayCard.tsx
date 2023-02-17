@@ -64,8 +64,6 @@ const PlayCard = (props: {
 	}, [props.parentPosition[0], props.parentPosition[1], state.containers[props.container[0]][props.container[1]].changed, addition, props.parentPosition]);
 /* useEffect Section End */
 
-console.log(props.parentPosition)
-
 /* Component Management Section Start */
 	// Attempt to drop the held card, Reducer handles logic, including if it was dropped into the same container
 	const attemptCardDrop = (target: HTMLInputElement) => {

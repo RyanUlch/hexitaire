@@ -36,7 +36,6 @@ const SelectionSpot = () => {
 	// Use: To update the display for when there are no more cards available in the pile
 	// Dependency: When this specific container is changed in the context
 	useEffect(()=> {
-		console.log(state.containers[0][0].cardContainer)
 		setIsEmpty([
 			!(state.containers[1][0].cardContainer.length > 0),
 			!(state.containers[4][0].cardContainer.length > 0) && !(state.containers[0][0].cardContainer.length > 0)

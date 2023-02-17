@@ -9,7 +9,7 @@
 	--cardHeightClamp:			calc(var(--cardWidthClamp) * 1.4);
 	/* Border */
 	--borderRadius:	5px;
-	--borderWidth:	2px;
+	--borderWidth:	1px;
 	--border:		var(--borderWidth) solid;
 	--borderColor:	black;
 	/* Colors */

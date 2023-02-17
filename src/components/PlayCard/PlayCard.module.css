@@ -34,7 +34,7 @@
 	height: calc(var(--cardHeightClamp) - (var(--borderWidth)*2));
 	justify-content: space-between;
 	flex-direction: column;
-	padding: 5px 10px;	
+	padding: 0.1rem 0.3rem;	
 }
 
 /* Font on cards */
@@ -51,6 +51,8 @@
 
 .suitImg {
 	display: inline;
+	height: clamp(1rem, 2vh, 2rem);
+	transform: translate(0, 2px);
 }
 
 /* Small text on top of card */
